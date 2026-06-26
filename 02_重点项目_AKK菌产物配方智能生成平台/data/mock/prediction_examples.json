@@ -1,0 +1,23 @@
+[
+  {
+    "predictionId": "pred-gut-health-fit",
+    "targetName": "肠道健康概念适配性",
+    "predictedValue": "高",
+    "confidenceScore": 0.78,
+    "explanation": "目标性质与 AKK 后生元、代谢物和纤维复配方向匹配，适合作为肠道健康概念配方的起点。"
+  },
+  {
+    "predictionId": "pred-sensory-risk",
+    "targetName": "感官风险",
+    "predictedValue": "中",
+    "confidenceScore": 0.64,
+    "explanation": "存在风味和口感变化风险，需要感官小试验证。"
+  },
+  {
+    "predictionId": "pred-stability-risk",
+    "targetName": "加工稳定性",
+    "predictedValue": "中",
+    "confidenceScore": 0.69,
+    "explanation": "建议重点开展热处理、酸性体系或复水稳定性实验，以确认实际加工表现。"
+  }
+]

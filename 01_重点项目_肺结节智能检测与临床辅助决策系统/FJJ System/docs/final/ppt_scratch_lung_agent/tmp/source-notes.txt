@@ -1,0 +1,15 @@
+肺结节检测/标注与随访 Agent 系统结题答辩 PPT 来源记录
+
+本地来源：
+- docs/world_frontier/luna16_evaluation_froc_bootstrap_ci_report.md：evaluation fixed 10 mm NMS CPM、CI、bootstrap 设置。
+- docs/world_frontier/luna16_subset0_split_valid_nms_report.md：calibration/evaluation 分区、固定 10 mm NMS 提升。
+- docs/world_frontier/luna16/patch_test_103/metrics/bootstrap_summary.json：FPRED 独立测试 AUC、sensitivity、specificity 和 CI。
+- docs/research_loop/：本地病例闭环、review-proxy 指标和病例清单图。
+- docs/world_frontier/experiment_index.md：实验索引和产物路径。
+
+公开来源：
+- LUNA16 Grand Challenge Data page: https://luna16.grand-challenge.org/Data/
+- CLAIM 2024 Update: https://pubs.rsna.org/doi/abs/10.1148/ryai.240300
+- TRIPOD+AI statement: https://www.bmj.com/content/385/bmj-2023-078378
+
+重要边界：本 PPT 不宣称完整 LUNA16 官方成绩；所有公共性能表述均限定为 subset0 或 subset0 evaluation split。

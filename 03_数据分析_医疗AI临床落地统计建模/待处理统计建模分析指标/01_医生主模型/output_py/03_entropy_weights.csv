@@ -1,0 +1,6 @@
+gap_variable,gap_name_cn,coverage_pct,entropy,diversity_coefficient,entropy_weight
+TrustGap,技术信任鸿沟,0.89,0.978006,0.021994,0.078946
+LiabilityGap,责任治理鸿沟,0.505,0.871054,0.128946,0.462842
+DataGap,数据安全鸿沟,0.745,0.944441,0.055559,0.199425
+ManageGap,医院管理鸿沟,0.975,0.995222,0.004778,0.01715
+WorkflowGap,流程嵌入鸿沟,0.7,0.932681,0.067319,0.241637

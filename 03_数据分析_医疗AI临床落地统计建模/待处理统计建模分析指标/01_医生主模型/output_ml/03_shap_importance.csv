@@ -1,0 +1,11 @@
+variable,variable_label,mean_abs_shap
+ValueIndex,AI综合价值感知指数,0.522608
+AIExperience,AI接触经验,0.395654
+LiabilityGap,责任治理鸿沟,0.366922
+HospitalGrade,医院等级,0.20593
+PainIndex,流程痛点指数,0.194931
+CaseVolume,病例量,0.155749
+WorkflowGap,流程嵌入鸿沟,0.099929
+DataGap,数据安全鸿沟,0.091474
+TrustGap,技术信任鸿沟,0.02511
+ManageGap,医院管理鸿沟,0.004973

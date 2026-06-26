@@ -1,0 +1,906 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>肺结节智能辅助诊断工作台 M2.1</title>
+    <style>
+        :root {
+            --bg: #0b0f14;
+            --panel: #17202a;
+            --panel2: #0f151d;
+            --line: #2c5364;
+            --accent: #5eead4;
+            --text: #eef6f8;
+            --muted: #91a4ad;
+            --blue: #38bdf8;
+            --red: #fb7185;
+            --yellow: #facc15;
+            --green: #34d399;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            height: 100vh;
+            background: var(--bg);
+            color: var(--text);
+            font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+            display: grid;
+            grid-template-columns: 250px minmax(560px, 1fr) 430px;
+            overflow: hidden;
+        }
+        button, input, select, textarea { font: inherit; }
+        button {
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            background: transparent;
+            border-radius: 4px;
+            min-height: 34px;
+            cursor: pointer;
+        }
+        button:disabled { color: #60717a; border-color: #3b4750; cursor: not-allowed; }
+        .primary { background: var(--accent); color: #061014; border: none; font-weight: 700; }
+        .danger { border-color: var(--red); color: var(--red); }
+        .sidebar, .right-panel { background: var(--panel); overflow: auto; }
+        .sidebar { border-right: 1px solid var(--line); }
+        .right-panel { border-left: 1px solid var(--line); padding: 16px; }
+        .upload-box { padding: 16px; border-bottom: 1px solid var(--line); }
+        .patient-item {
+            padding: 12px 14px;
+            border-bottom: 1px solid #0b1118;
+            cursor: pointer;
+            color: var(--muted);
+        }
+        .patient-item:hover, .patient-item.active { background: #20313a; color: var(--text); }
+        .main-view {
+            display: grid;
+            grid-template-rows: 1fr auto auto;
+            min-width: 0;
+            background: #030506;
+        }
+        .viewport {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-bottom: 1px solid var(--line);
+        }
+        #transform-layer { position: relative; width: 512px; height: 512px; transform-origin: center center; }
+        #ct-img { display: none; width: 512px; height: 512px; image-rendering: pixelated; }
+        #draw-layer { position: absolute; inset: 0; width: 512px; height: 512px; cursor: crosshair; }
+        .zoom-bar { position: absolute; top: 14px; left: 14px; z-index: 5; display: flex; gap: 8px; }
+        .navigation-bar { display: flex; gap: 12px; align-items: center; padding: 10px 16px; background: var(--panel); }
+        #sliceSlider { flex: 1; accent-color: var(--accent); }
+        .hud { padding: 7px 14px; color: var(--muted); background: #05080b; font-size: 12px; text-align: center; }
+        h2, h3, h4 { margin: 0 0 10px; color: var(--accent); }
+        h2 { font-size: 18px; }
+        h3 { font-size: 15px; margin-top: 18px; }
+        h4 { font-size: 13px; color: var(--text); }
+        .panel-block {
+            background: var(--panel2);
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 14px;
+        }
+        .actions { display: grid; grid-template-columns: 1fr; gap: 9px; }
+        .row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        label { display: block; color: var(--muted); font-size: 12px; margin: 8px 0 4px; }
+        input, textarea, select {
+            width: 100%;
+            background: #091018;
+            color: var(--text);
+            border: 1px solid #30434d;
+            border-radius: 4px;
+            padding: 8px;
+        }
+        textarea { min-height: 62px; resize: vertical; }
+        .finding-card {
+            border-left: 4px solid #60717a;
+            background: #091018;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 8px 0;
+            cursor: pointer;
+            line-height: 1.55;
+            font-size: 13px;
+        }
+        .finding-card.active { outline: 1px solid var(--accent); background: #10222a; }
+        .finding-card small { display: block; color: var(--muted); }
+        .status-line { color: var(--muted); font-size: 12px; margin-top: 8px; line-height: 1.5; }
+        .tag {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 999px;
+            background: #20313a;
+            color: var(--accent);
+            font-size: 12px;
+            margin-right: 5px;
+        }
+        .followup-card { white-space: pre-wrap; line-height: 1.65; font-size: 13px; }
+        .missing-list { margin: 8px 0 0 18px; color: #cbd5dc; }
+        .agent-section {
+            border-top: 1px solid #243844;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+            margin: 8px 0;
+        }
+        .metric {
+            background: #071019;
+            border: 1px solid #243844;
+            border-radius: 4px;
+            padding: 7px;
+            min-height: 54px;
+        }
+        .metric strong { display: block; color: var(--accent); font-size: 16px; }
+        .risk-row {
+            background: #071019;
+            border-left: 3px solid var(--accent);
+            border-radius: 4px;
+            padding: 8px;
+            margin-top: 6px;
+        }
+        .risk-row small { display: block; color: var(--muted); line-height: 1.5; }
+    </style>
+</head>
+<body>
+<aside class="sidebar">
+    <div class="upload-box">
+        <button class="primary" style="width:100%;" onclick="document.getElementById('folderInput').click()">批量上传 CT 文件夹</button>
+        <input type="file" id="folderInput" webkitdirectory directory multiple style="display:none" onchange="uploadPatients()">
+        <div class="status-line" id="upload-status">可选择单个病例文件夹，也可选择包含多个病例子文件夹的总目录。</div>
+    </div>
+    <div id="plist-content"></div>
+</aside>
+
+<main class="main-view">
+    <div class="viewport" onwheel="onScroll(event)">
+        <div class="zoom-bar">
+            <button onclick="changeZoom(0.2)">+</button>
+            <button onclick="changeZoom(-0.2)">-</button>
+            <button onclick="resetZoom()">1:1</button>
+        </div>
+        <div id="transform-layer">
+            <img id="ct-img" alt="CT slice">
+            <canvas id="draw-layer" width="512" height="512"
+                    onmousedown="onCanvasMouseDown(event)"
+                    onmousemove="onCanvasMouseMove(event)"
+                    onmouseup="onCanvasMouseUp(event)"
+                    onmouseleave="onCanvasMouseLeave(event)"></canvas>
+        </div>
+    </div>
+    <div class="navigation-bar">
+        <button onclick="prevSlice()">上一层</button>
+        <input type="range" id="sliceSlider" min="0" max="0" value="0" oninput="onSliderMove(this.value)">
+        <button onclick="nextSlice()">下一层</button>
+    </div>
+    <div class="hud">
+        病例：<span id="patient-name">未选择</span> |
+        层数：<span id="cur-txt">0</span> / <span id="total-txt">0</span> |
+        缩放：<span id="zoom-txt">1.0</span>x |
+        模式：<span id="mode-txt">浏览</span>
+    </div>
+</main>
+
+<aside class="right-panel">
+    <h2>医生复核工作台 M2.1</h2>
+    <div class="panel-block actions">
+        <button id="btn-detect" class="primary" onclick="runDetection()" disabled>第一步：模型检测</button>
+        <button id="btn-identify" onclick="runIdentification()" disabled>第二步：性质识别</button>
+        <button id="btn-add" onclick="toggleBoxMode()" disabled>拖拽框选新增结节</button>
+        <button id="btn-save-review" onclick="saveDoctorReview()" disabled>保存医生复核</button>
+        <button id="btn-followup" onclick="runFollowup()" disabled>基于复核生成随访建议</button>
+    </div>
+
+    <div class="panel-block">
+        <h3>窗宽窗位</h3>
+        <label>窗宽 WW：<span id="ww-val">1500 HU</span></label>
+        <input type="range" id="ww" min="100" max="2000" value="1500" oninput="applySettings()">
+        <label>窗位 WL：<span id="wl-val">-600 HU</span></label>
+        <input type="range" id="wl" min="-1000" max="500" value="-600" oninput="applySettings()">
+    </div>
+
+    <div class="panel-block">
+        <h3>结节列表</h3>
+        <div id="results-area"><div class="status-line">检测后显示模型候选结节；医生可拖拽框选新增漏检结节。</div></div>
+    </div>
+
+    <div class="panel-block" id="editor-block" style="display:none;">
+        <h3>当前结节复核</h3>
+        <div class="row">
+            <div><label>来源</label><input id="edit-source" disabled></div>
+            <div><label>中心层</label><input id="edit-slice" type="number" onchange="updateSelectedFromEditor()"></div>
+        </div>
+        <div class="row">
+            <div><label>起始层 Z1</label><input id="edit-z1" type="number" onchange="updateSelectedFromEditor()"></div>
+            <div><label>结束层 Z2</label><input id="edit-z2" type="number" onchange="updateSelectedFromEditor()"></div>
+        </div>
+        <div class="row">
+            <div><label>X1</label><input id="edit-x1" type="number" onchange="updateSelectedFromEditor()"></div>
+            <div><label>Y1</label><input id="edit-y1" type="number" onchange="updateSelectedFromEditor()"></div>
+        </div>
+        <div class="row">
+            <div><label>X2</label><input id="edit-x2" type="number" onchange="updateSelectedFromEditor()"></div>
+            <div><label>Y2</label><input id="edit-y2" type="number" onchange="updateSelectedFromEditor()"></div>
+        </div>
+        <div class="row">
+            <div><label>最大径 mm</label><input id="edit-diameter" type="number" step="0.1" onchange="updateSelectedFromEditor()"></div>
+            <div>
+                <label>状态</label>
+                <select id="edit-status" onchange="updateSelectedFromEditor()">
+                    <option value="confirmed">医生确认</option>
+                    <option value="benign">良性倾向</option>
+                    <option value="malignant">恶性倾向</option>
+                    <option value="dismissed">排除</option>
+                    <option value="pending">待定</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div>
+                <label>毛刺</label>
+                <select id="edit-spiculation" onchange="updateSelectedFromEditor()">
+                    <option value="">未补充</option><option value="未见">未见</option><option value="可疑">可疑</option><option value="明确">明确</option>
+                </select>
+            </div>
+            <div>
+                <label>分叶</label>
+                <select id="edit-lobulation" onchange="updateSelectedFromEditor()">
+                    <option value="">未补充</option><option value="未见">未见</option><option value="可疑">可疑</option><option value="明确">明确</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div>
+                <label>胸膜牵拉</label>
+                <select id="edit-pleural" onchange="updateSelectedFromEditor()">
+                    <option value="">未补充</option><option value="未见">未见</option><option value="可疑">可疑</option><option value="明确">明确</option>
+                </select>
+            </div>
+            <div>
+                <label>结节类型</label>
+                <select id="edit-solid" onchange="updateSelectedFromEditor()">
+                    <option value="">未补充</option><option value="实性">实性</option><option value="磨玻璃">磨玻璃</option><option value="部分实性">部分实性</option>
+                </select>
+            </div>
+        </div>
+        <label>医生意见</label>
+        <textarea id="edit-note" placeholder="例如：医生框选可疑结节，建议结合原始薄层CT复核。" oninput="updateSelectedFromEditor()"></textarea>
+        <div class="row" style="margin-top:8px;">
+            <button onclick="confirmSelected()">确认结节</button>
+            <button class="danger" onclick="dismissSelected()">排除结节</button>
+        </div>
+        <button class="danger" style="width:100%; margin-top:8px;" onclick="deleteSelected()">删除当前结节</button>
+    </div>
+
+    <div class="panel-block">
+        <h3>患者临床补充</h3>
+        <div class="row">
+            <div><label>年龄</label><input id="ctx-age" placeholder="如 62"></div>
+            <div>
+                <label>性别</label>
+                <select id="ctx-sex"><option value="">未补充</option><option value="男">男</option><option value="女">女</option></select>
+            </div>
+        </div>
+        <label>吸烟史</label><input id="ctx-smoking" placeholder="如 30包年 / 无">
+        <label>既往CT对比</label><input id="ctx-previous" placeholder="如 较去年增大 / 无既往片">
+        <label>既往肿瘤史</label><input id="ctx-tumor" placeholder="如 无 / 肺癌术后">
+        <label>症状</label><input id="ctx-symptoms" placeholder="如 咳嗽、咯血、无明显症状">
+        <label>其他疾病/病理/手写备注</label><textarea id="ctx-notes" placeholder="补充病理、慢性病、家族史、医生手写建议等。"></textarea>
+    </div>
+
+    <div class="panel-block" id="followup-block" style="display:none;">
+        <h3>Agent 随访建议</h3>
+        <div id="followup-area" class="followup-card"></div>
+    </div>
+</aside>
+
+<script>
+    let currentPID = "";
+    let imageList = [];
+    let currentIdx = 0;
+    let findings = [];
+    let selectedId = "";
+    let boxMode = false;
+    let isDraggingBox = false;
+    let dragStart = null;
+    let dragPreview = null;
+    let zoomLevel = 1.0;
+    let followupResult = null;
+
+    window.onload = loadPatients;
+
+    function uid(prefix) {
+        return `${prefix}_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+    }
+
+    function escapeHtml(value) {
+        return String(value ?? "").replace(/[&<>"']/g, ch => ({
+            "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+        }[ch]));
+    }
+
+    function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, value));
+    }
+
+    function canvasPoint(event) {
+        const rect = event.currentTarget.getBoundingClientRect();
+        return {
+            x: clamp(Math.round((event.clientX - rect.left) * 512 / rect.width), 0, 511),
+            y: clamp(Math.round((event.clientY - rect.top) * 512 / rect.height), 0, 511)
+        };
+    }
+
+    function bboxFromCorners(a, b, z1 = currentIdx, z2 = currentIdx) {
+        const x1 = Math.min(a.x, b.x);
+        const y1 = Math.min(a.y, b.y);
+        const x2 = Math.max(a.x, b.x);
+        const y2 = Math.max(a.y, b.y);
+        const startZ = Math.min(Number(z1), Number(z2));
+        const endZ = Math.max(Number(z1), Number(z2));
+        return { x1, y1, x2, y2, z1: startZ, z2: endZ };
+    }
+
+    function centerFromBbox(bbox) {
+        return {
+            x: Math.round((Number(bbox.x1) + Number(bbox.x2)) / 2),
+            y: Math.round((Number(bbox.y1) + Number(bbox.y2)) / 2),
+            slice_idx: Math.round((Number(bbox.z1) + Number(bbox.z2)) / 2)
+        };
+    }
+
+    function bboxForFinding(f) {
+        if (f.bbox_3d && Number.isFinite(Number(f.bbox_3d.x1))) return f.bbox_3d;
+        const x = Number(f.x ?? 256);
+        const y = Number(f.y ?? 256);
+        const z = Number(f.slice_idx ?? currentIdx);
+        return { x1: x - 15, y1: y - 15, x2: x + 15, y2: y + 15, z1: z, z2: z };
+    }
+
+    function normalizeFinding(raw, index, source = "model") {
+        const bbox = raw.bbox_3d || null;
+        const center = bbox ? centerFromBbox(bbox) : {};
+        return {
+            nodule_id: raw.nodule_id || raw.id || `${source}_${index + 1}`,
+            source: raw.source || source,
+            doctor_confirmed: raw.doctor_confirmed ?? source === "doctor",
+            slice_idx: Number(raw.slice_idx ?? raw.slice_index ?? center.slice_idx ?? currentIdx),
+            x: Number(raw.x ?? center.x ?? 256),
+            y: Number(raw.y ?? center.y ?? 256),
+            bbox_3d: raw.bbox_3d || {},
+            area: raw.area ?? "",
+            diameter_mm: raw.diameter_mm ?? "",
+            prob: raw.prob ?? raw.detection_prob ?? "",
+            malignancy_prob: raw.malignancy_prob ?? "",
+            status: raw.status || (source === "doctor" ? "confirmed" : "pending"),
+            doctor_assessment: raw.doctor_assessment || "",
+            imaging_features: raw.imaging_features || {}
+        };
+    }
+
+    async function loadPatients() {
+        const res = await fetch('/get_patients');
+        const data = await res.json();
+        const container = document.getElementById('plist-content');
+        container.innerHTML = "";
+        (data.patients || []).forEach(pid => {
+            const div = document.createElement('div');
+            div.className = `patient-item ${pid === currentPID ? 'active' : ''}`;
+            div.innerText = pid;
+            div.onclick = () => selectPatient(pid);
+            container.appendChild(div);
+        });
+    }
+
+    async function uploadPatients() {
+        const files = document.getElementById('folderInput').files;
+        if (!files.length) return;
+        const formData = new FormData();
+        for (const file of files) formData.append('files', file, file.webkitRelativePath || file.name);
+        document.getElementById('upload-status').innerText = `正在上传 ${files.length} 个文件，并按病患文件夹分组...`;
+        const res = await fetch('/upload', { method: 'POST', body: formData });
+        const data = await res.json();
+        const count = (data.patient_ids || []).length;
+        document.getElementById('upload-status').innerText = data.status === "success" || data.status === "partial_success"
+            ? `上传完成：成功解析 ${count} 个病例。`
+            : `上传失败：${data.message || "未知错误"}`;
+        await loadPatients();
+        if (data.patient_id) selectPatient(data.patient_id);
+    }
+
+    async function selectPatient(pid) {
+        currentPID = pid;
+        selectedId = "";
+        findings = [];
+        followupResult = null;
+        document.getElementById('patient-name').innerText = pid;
+        document.querySelectorAll('.patient-item').forEach(item => item.classList.toggle('active', item.innerText === pid));
+
+        const res = await fetch(`/get_patient_detail/${pid}`);
+        const data = await res.json();
+        imageList = data.images || [];
+        currentIdx = 0;
+        document.getElementById('sliceSlider').max = Math.max(imageList.length - 1, 0);
+        document.getElementById('total-txt').innerText = Math.max(imageList.length - 1, 0);
+
+        await loadDoctorReview(pid);
+        setButtonsForPatient();
+        renderResults("已选择病例，等待检测或继续复核。");
+        updateView();
+    }
+
+    async function loadDoctorReview(pid) {
+        try {
+            const res = await fetch(`/doctor/review/${pid}`);
+            const data = await res.json();
+            const review = data.review || {};
+            findings = [...(review.model_findings || []), ...(review.doctor_nodules || [])]
+                .map((item, idx) => normalizeFinding(item, idx, item.source || "model"));
+            fillClinicalContext(review.clinical_context || {});
+        } catch {
+            findings = [];
+        }
+    }
+
+    function setButtonsForPatient() {
+        document.getElementById('btn-detect').disabled = !currentPID;
+        document.getElementById('btn-identify').disabled = findings.length === 0;
+        document.getElementById('btn-add').disabled = !currentPID;
+        document.getElementById('btn-save-review').disabled = !currentPID;
+        document.getElementById('btn-followup').disabled = !currentPID;
+        document.getElementById('followup-block').style.display = "none";
+        document.getElementById('editor-block').style.display = selectedId ? "block" : "none";
+    }
+
+    function updateView() {
+        if (!currentPID || !imageList.length) return;
+        document.getElementById('ct-img').src = `/static/processed/${currentPID}/${imageList[currentIdx]}`;
+        document.getElementById('ct-img').style.display = "block";
+        document.getElementById('cur-txt').innerText = currentIdx;
+        document.getElementById('sliceSlider').value = currentIdx;
+        applySettings();
+        drawFindings();
+    }
+
+    function drawFindings() {
+        const canvas = document.getElementById('draw-layer');
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, 512, 512);
+        findings.filter(f => {
+            const b = bboxForFinding(f);
+            return f.status !== "dismissed" && currentIdx >= Number(b.z1) && currentIdx <= Number(b.z2);
+        }).forEach(f => {
+            const b = bboxForFinding(f);
+            const color = colorForFinding(f);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = f.nodule_id === selectedId ? 4 : 2;
+            ctx.strokeRect(Number(b.x1), Number(b.y1), Number(b.x2) - Number(b.x1), Number(b.y2) - Number(b.y1));
+            ctx.fillStyle = color;
+            ctx.font = "13px Microsoft YaHei";
+            ctx.fillText(f.source === "doctor" ? "医生框选" : "AI", Number(b.x2) + 5, Number(b.y1) - 5);
+        });
+        if (dragPreview) {
+            ctx.strokeStyle = "#ffffff";
+            ctx.setLineDash([6, 4]);
+            ctx.lineWidth = 2;
+            ctx.strokeRect(dragPreview.x1, dragPreview.y1, dragPreview.x2 - dragPreview.x1, dragPreview.y2 - dragPreview.y1);
+            ctx.setLineDash([]);
+        }
+    }
+
+    function colorForFinding(f) {
+        if (f.status === "malignant") return "#fb7185";
+        if (f.status === "benign") return "#38bdf8";
+        if (f.source === "doctor") return "#34d399";
+        if (f.doctor_confirmed) return "#5eead4";
+        return "#facc15";
+    }
+
+    function applySettings() {
+        const ww = parseInt(document.getElementById('ww').value);
+        const wl = parseInt(document.getElementById('wl').value);
+        document.getElementById('ww-val').innerText = ww + " HU";
+        document.getElementById('wl-val').innerText = wl + " HU";
+        document.getElementById('zoom-txt').innerText = zoomLevel.toFixed(1);
+        document.getElementById('transform-layer').style.transform = `scale(${zoomLevel})`;
+        document.getElementById('ct-img').style.filter = `contrast(${(1500 / ww) * 100}%) brightness(${100 + (wl + 600) / 10}%)`;
+    }
+
+    async function runDetection() {
+        if (!currentPID) return;
+        const btn = document.getElementById('btn-detect');
+        btn.disabled = true;
+        btn.innerText = "模型正在检测...";
+        const res = await fetch(`/detect?patient_id=${currentPID}`);
+        const data = await res.json();
+        findings = (data.findings || []).map((item, idx) => normalizeFinding(item, idx, "model"));
+        btn.innerText = "模型检测完成";
+        document.getElementById('btn-identify').disabled = findings.length === 0;
+        document.getElementById('btn-followup').disabled = false;
+        document.getElementById('btn-save-review').disabled = false;
+        renderResults(`模型检出 ${findings.length} 个候选结节`);
+        updateView();
+    }
+
+    async function runIdentification() {
+        if (!currentPID) return;
+        const btn = document.getElementById('btn-identify');
+        btn.disabled = true;
+        btn.innerText = "正在识别性质...";
+        const res = await fetch('/identify', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ patient_id: currentPID, findings })
+        });
+        const data = await res.json();
+        findings = (data.findings || []).map((item, idx) => normalizeFinding({ ...(findings[idx] || {}), ...item }, idx, (findings[idx] || {}).source || "model"));
+        btn.innerText = "性质识别完成";
+        document.getElementById('btn-followup').disabled = false;
+        renderResults("性质识别完成，请医生复核。");
+        updateView();
+    }
+
+    function findFindingAtPoint(point) {
+        const visible = findings.filter(f => {
+            const b = bboxForFinding(f);
+            return f.status !== "dismissed" && currentIdx >= Number(b.z1) && currentIdx <= Number(b.z2);
+        });
+        for (let i = visible.length - 1; i >= 0; i--) {
+            const f = visible[i];
+            const b = bboxForFinding(f);
+            if (point.x >= Number(b.x1) && point.x <= Number(b.x2) && point.y >= Number(b.y1) && point.y <= Number(b.y2)) {
+                return f;
+            }
+        }
+        return null;
+    }
+
+    function selectFindingAtPoint(point) {
+        const f = findFindingAtPoint(point);
+        if (!f) return false;
+        selectFinding(f.nodule_id);
+        return true;
+    }
+
+    function toggleBoxMode() {
+        boxMode = !boxMode;
+        isDraggingBox = false;
+        dragStart = null;
+        dragPreview = null;
+        document.getElementById('mode-txt').innerText = boxMode ? "持续框选：拖拽新增，点击已有框可选中" : "浏览";
+        document.getElementById('btn-add').innerText = boxMode ? "手动取消框选模式" : "拖拽框选新增结节";
+        drawFindings();
+    }
+
+    function onCanvasMouseDown(event) {
+        if (!currentPID) return;
+        event.preventDefault();
+        const point = canvasPoint(event);
+        if (!boxMode) {
+            selectFindingAtPoint(point);
+            return;
+        }
+        dragStart = point;
+        dragPreview = bboxFromCorners(dragStart, dragStart);
+        isDraggingBox = true;
+        drawFindings();
+    }
+
+    function onCanvasMouseMove(event) {
+        if (!boxMode || !isDraggingBox || !dragStart) return;
+        dragPreview = bboxFromCorners(dragStart, canvasPoint(event));
+        drawFindings();
+    }
+
+    function onCanvasMouseUp(event) {
+        if (!boxMode || !isDraggingBox || !dragStart) return;
+        const endPoint = canvasPoint(event);
+        const bbox = bboxFromCorners(dragStart, endPoint);
+        isDraggingBox = false;
+        dragStart = null;
+        dragPreview = null;
+
+        if (Math.abs(bbox.x2 - bbox.x1) < 6 || Math.abs(bbox.y2 - bbox.y1) < 6) {
+            selectFindingAtPoint(endPoint);
+            drawFindings();
+            return;
+        }
+
+        const center = centerFromBbox(bbox);
+        const nodule = normalizeFinding({
+            nodule_id: uid("doctor_box"),
+            source: "doctor",
+            doctor_confirmed: true,
+            slice_idx: center.slice_idx,
+            x: center.x,
+            y: center.y,
+            bbox_3d: bbox,
+            status: "confirmed",
+            doctor_assessment: "医生拖拽框选新增结节，请结合原始CT复核。"
+        }, findings.length, "doctor");
+        findings.push(nodule);
+        selectedId = nodule.nodule_id;
+
+        document.getElementById('mode-txt').innerText = "持续框选：拖拽新增，点击已有框可选中";
+        document.getElementById('btn-add').innerText = "手动取消框选模式";
+        loadSelectedIntoEditor();
+        renderResults("已新增医生框选结节，可继续拖拽新增下一个结节。");
+        updateView();
+    }
+
+    function onCanvasMouseLeave() {
+        if (!isDraggingBox) return;
+        isDraggingBox = false;
+        dragStart = null;
+        dragPreview = null;
+        drawFindings();
+    }
+    function renderResults(title) {
+        const area = document.getElementById('results-area');
+        area.innerHTML = `<h4>${escapeHtml(title)}</h4>`;
+        if (!findings.length) {
+            area.innerHTML += `<div class="status-line">暂无结节。医生可开启框选模式，在 CT 层面拖拽新增。</div>`;
+            return;
+        }
+        findings.forEach(f => {
+            const b = bboxForFinding(f);
+            const div = document.createElement('div');
+            div.className = `finding-card ${f.nodule_id === selectedId ? "active" : ""}`;
+            div.style.borderLeftColor = colorForFinding(f);
+            const source = f.source === "doctor" ? "医生框选" : "模型候选";
+            const status = { pending: "待复核", confirmed: "医生确认", benign: "良性倾向", malignant: "恶性倾向", dismissed: "已排除" }[f.status] || f.status;
+            div.innerHTML = `
+                <span class="tag">${escapeHtml(source)}</span><span class="tag">${escapeHtml(status)}</span>
+                <small>层范围 ${escapeHtml(b.z1)}-${escapeHtml(b.z2)} | 中心 (${escapeHtml(f.x)}, ${escapeHtml(f.y)})</small>
+                <small>框选范围 X:${escapeHtml(b.x1)}-${escapeHtml(b.x2)} Y:${escapeHtml(b.y1)}-${escapeHtml(b.y2)}</small>
+                <small>检测概率 ${escapeHtml(f.prob || "N/A")} | 恶性概率 ${escapeHtml(f.malignancy_prob || "N/A")} | 最大径 ${escapeHtml(f.diameter_mm || "未填")} mm</small>
+                ${f.doctor_assessment ? `<small>医生意见：${escapeHtml(f.doctor_assessment)}</small>` : ""}
+            `;
+            div.onclick = () => selectFinding(f.nodule_id);
+            area.appendChild(div);
+        });
+        document.getElementById('editor-block').style.display = selectedId ? "block" : "none";
+    }
+
+    function selectFinding(id) {
+        selectedId = id;
+        const f = findings.find(item => item.nodule_id === id);
+        if (f) {
+            const center = centerFromBbox(bboxForFinding(f));
+            currentIdx = clamp(Number(center.slice_idx || f.slice_idx || currentIdx), 0, Math.max(imageList.length - 1, 0));
+        }
+        loadSelectedIntoEditor();
+        renderResults("已定位到当前选中结节。");
+        updateView();
+    }
+
+    function loadSelectedIntoEditor() {
+        const f = findings.find(item => item.nodule_id === selectedId);
+        const block = document.getElementById('editor-block');
+        if (!f) {
+            block.style.display = "none";
+            return;
+        }
+        const b = bboxForFinding(f);
+        block.style.display = "block";
+        document.getElementById('edit-source').value = f.source === "doctor" ? "医生框选" : "模型候选";
+        document.getElementById('edit-slice').value = f.slice_idx ?? "";
+        document.getElementById('edit-z1').value = b.z1 ?? currentIdx;
+        document.getElementById('edit-z2').value = b.z2 ?? currentIdx;
+        document.getElementById('edit-x1').value = b.x1 ?? "";
+        document.getElementById('edit-y1').value = b.y1 ?? "";
+        document.getElementById('edit-x2').value = b.x2 ?? "";
+        document.getElementById('edit-y2').value = b.y2 ?? "";
+        document.getElementById('edit-diameter').value = f.diameter_mm ?? "";
+        document.getElementById('edit-status').value = f.status || "confirmed";
+        document.getElementById('edit-note').value = f.doctor_assessment || "";
+        const features = f.imaging_features || {};
+        document.getElementById('edit-spiculation').value = features.spiculation || "";
+        document.getElementById('edit-lobulation').value = features.lobulation || "";
+        document.getElementById('edit-pleural').value = features.pleural_indentation || "";
+        document.getElementById('edit-solid').value = features.solid_type || "";
+    }
+
+    function updateSelectedFromEditor() {
+        const f = findings.find(item => item.nodule_id === selectedId);
+        if (!f) return;
+        const bbox = {
+            x1: clamp(Number(document.getElementById('edit-x1').value || 0), 0, 511),
+            y1: clamp(Number(document.getElementById('edit-y1').value || 0), 0, 511),
+            x2: clamp(Number(document.getElementById('edit-x2').value || 0), 0, 511),
+            y2: clamp(Number(document.getElementById('edit-y2').value || 0), 0, 511),
+            z1: clamp(Number(document.getElementById('edit-z1').value || currentIdx), 0, Math.max(imageList.length - 1, 0)),
+            z2: clamp(Number(document.getElementById('edit-z2').value || currentIdx), 0, Math.max(imageList.length - 1, 0))
+        };
+        const normalized = bboxFromCorners({ x: bbox.x1, y: bbox.y1 }, { x: bbox.x2, y: bbox.y2 }, bbox.z1, bbox.z2);
+        const center = centerFromBbox(normalized);
+        f.bbox_3d = normalized;
+        f.slice_idx = Number(document.getElementById('edit-slice').value || center.slice_idx);
+        f.x = center.x;
+        f.y = center.y;
+        f.diameter_mm = document.getElementById('edit-diameter').value;
+        f.status = document.getElementById('edit-status').value;
+        f.doctor_confirmed = f.status !== "dismissed";
+        f.doctor_assessment = document.getElementById('edit-note').value;
+        f.imaging_features = {
+            spiculation: document.getElementById('edit-spiculation').value,
+            lobulation: document.getElementById('edit-lobulation').value,
+            pleural_indentation: document.getElementById('edit-pleural').value,
+            solid_type: document.getElementById('edit-solid').value
+        };
+        renderResults("医生复核信息已更新，记得保存。");
+        updateView();
+    }
+
+    function confirmSelected() {
+        const f = findings.find(item => item.nodule_id === selectedId);
+        if (!f) return;
+        f.status = f.status === "malignant" || f.status === "benign" ? f.status : "confirmed";
+        f.doctor_confirmed = true;
+        loadSelectedIntoEditor();
+        renderResults("已确认当前结节。");
+        updateView();
+    }
+
+    function dismissSelected() {
+        const f = findings.find(item => item.nodule_id === selectedId);
+        if (!f) return;
+        f.status = "dismissed";
+        f.doctor_confirmed = false;
+        loadSelectedIntoEditor();
+        renderResults("已排除当前结节。");
+        updateView();
+    }
+
+    function deleteSelected() {
+        if (!selectedId) return;
+        const f = findings.find(item => item.nodule_id === selectedId);
+        if (!f) return;
+        const ok = window.confirm("确认删除当前结节及其所有复核信息？删除后需要保存医生复核才会写入病例记录。");
+        if (!ok) return;
+        findings = findings.filter(item => item.nodule_id !== selectedId);
+        selectedId = "";
+        document.getElementById('editor-block').style.display = "none";
+        renderResults("已删除当前结节，请保存医生复核。");
+        updateView();
+    }
+
+    function collectClinicalContext() {
+        return {
+            age: document.getElementById('ctx-age').value,
+            sex: document.getElementById('ctx-sex').value,
+            smoking_history: document.getElementById('ctx-smoking').value,
+            previous_ct: document.getElementById('ctx-previous').value,
+            tumor_history: document.getElementById('ctx-tumor').value,
+            symptoms: document.getElementById('ctx-symptoms').value,
+            doctor_notes: document.getElementById('ctx-notes').value
+        };
+    }
+
+    function fillClinicalContext(ctx) {
+        document.getElementById('ctx-age').value = ctx.age || "";
+        document.getElementById('ctx-sex').value = ctx.sex || "";
+        document.getElementById('ctx-smoking').value = ctx.smoking_history || "";
+        document.getElementById('ctx-previous').value = ctx.previous_ct || "";
+        document.getElementById('ctx-tumor').value = ctx.tumor_history || "";
+        document.getElementById('ctx-symptoms').value = ctx.symptoms || "";
+        document.getElementById('ctx-notes').value = ctx.doctor_notes || "";
+    }
+
+    function splitFindingsForSave() {
+        return {
+            model: findings.filter(f => f.source !== "doctor"),
+            doctor: findings.filter(f => f.source === "doctor")
+        };
+    }
+
+    async function saveDoctorReview() {
+        if (!currentPID) return null;
+        const { model, doctor } = splitFindingsForSave();
+        const res = await fetch('/doctor/review/save', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                patient_id: currentPID,
+                findings: model,
+                doctor_nodules: doctor,
+                clinical_context: collectClinicalContext()
+            })
+        });
+        const data = await res.json();
+        if (data.status === "success") {
+            renderResults("医生复核已保存。");
+            document.getElementById('btn-followup').disabled = false;
+        }
+        return data.review || null;
+    }
+
+    async function runFollowup() {
+        if (!currentPID) return;
+        const btn = document.getElementById('btn-followup');
+        btn.disabled = true;
+        btn.innerText = "Agent 正在生成建议...";
+        const review = await saveDoctorReview();
+        const res = await fetch('/agent/followup', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ patient_id: currentPID, findings, doctor_review: review, clinical_context: collectClinicalContext() })
+        });
+        const data = await res.json();
+        followupResult = data.followup;
+        renderFollowup(followupResult);
+        btn.innerText = "基于复核生成随访建议";
+        btn.disabled = false;
+    }
+
+    function renderFollowup(result) {
+        const block = document.getElementById('followup-block');
+        const area = document.getElementById('followup-area');
+        block.style.display = "block";
+        const stats = result.statistics || {};
+        const missing = (result.missing_information || []).map(item => `<li>${escapeHtml(item)}</li>`).join('');
+        const llmStatus = result.llm_metadata && result.llm_metadata.available
+            ? `本地 ${escapeHtml(result.llm_metadata.model || "Qwen")} 已参与生成`
+            : "本地 Qwen 未连接，当前为规则版建议";
+
+        const sectionLabel = { high: "高风险", medium: "中等风险", low: "低风险" };
+        const riskSections = result.risk_sections || {};
+        const riskHtml = ["high", "medium", "low"].map(level => {
+            const rows = riskSections[level] || [];
+            if (!rows.length) return "";
+            const items = rows.map(item => {
+                const basis = (item.basis || []).slice(0, 3).map(text => `<small>${escapeHtml(text)}</small>`).join("");
+                return `
+                    <div class="risk-row" style="border-left-color:${level === "high" ? "#fb7185" : level === "medium" ? "#facc15" : "#38bdf8"}">
+                        <b>${escapeHtml(item.nodule_id || "结节")}</b>
+                        <small>层面 ${escapeHtml(item.slice_idx ?? "N/A")} | 位置 (${escapeHtml(item.x ?? "N/A")}, ${escapeHtml(item.y ?? "N/A")}) | ${escapeHtml(item.risk_label || "")}</small>
+                        ${basis}
+                    </div>
+                `;
+            }).join("");
+            return `<div class="agent-section"><h4>${sectionLabel[level]}</h4>${items}</div>`;
+        }).join("");
+
+        area.innerHTML = `
+            <b>总体风险：</b>${escapeHtml(result.risk_label || "待评估")}<br>
+            <b>病例概述：</b>${escapeHtml(result.case_summary || "")}
+            <div class="metric-grid">
+                <div class="metric"><strong>${escapeHtml(stats.total_nodules ?? 0)}</strong>最终结节</div>
+                <div class="metric"><strong>${escapeHtml(stats.doctor_added_count ?? 0)}</strong>医生新增</div>
+                <div class="metric"><strong>${escapeHtml(stats.high_count ?? 0)}</strong>高风险</div>
+            </div>
+            ${riskHtml}
+            <div class="agent-section">
+                <h4>辅助建议</h4>
+                ${escapeHtml(result.followup_suggestion || "")}
+            </div>
+            ${result.llm_summary ? `<div class="agent-section"><h4>大模型总结</h4>${escapeHtml(result.llm_summary)}</div>` : ""}
+            <div class="agent-section">
+                <h4>仍需补充</h4>
+                <ul class="missing-list">${missing}</ul>
+            </div>
+            <div class="agent-section">
+                <h4>汇报亮点</h4>
+                ${escapeHtml(result.presentation_highlight || "")}
+            </div>
+            <div class="status-line">${escapeHtml(result.safety_note || "")}<br>${llmStatus}</div>
+        `;
+    }
+
+    function changeZoom(delta) { zoomLevel = Math.min(Math.max(zoomLevel + delta, 0.5), 4.0); applySettings(); }
+    function resetZoom() { zoomLevel = 1.0; applySettings(); }
+    function onScroll(event) { event.preventDefault(); event.deltaY > 0 ? nextSlice() : prevSlice(); }
+    function prevSlice() { if (currentIdx > 0) { currentIdx--; updateView(); } }
+    function nextSlice() { if (currentIdx < imageList.length - 1) { currentIdx++; updateView(); } }
+    function onSliderMove(value) { currentIdx = Number(value); updateView(); }
+</script>
+</body>
+</html>
+
+

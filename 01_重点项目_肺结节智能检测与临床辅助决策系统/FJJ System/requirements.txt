@@ -1,0 +1,11 @@
+flask>=2.2
+flask-cors>=4.0
+torch>=2.1
+numpy>=1.24
+SimpleITK>=2.3
+Pillow>=10.0
+scipy>=1.10
+scikit-image>=0.21
+psutil>=5.9
+pandas>=2.0
+matplotlib>=3.7

@@ -1,0 +1,319 @@
+{"kind":"deck","id":"pr/r1wxdd","name":"Deck"}
+{"kind":"layout","layoutId":"93b4b8a3-2d47-49f2-9a85-7450dadbf2dd","name":"Master","type":"master"}
+{"kind":"layout","layoutId":"7a9c65b9-4e12-4406-b6d9-2141cb73b1c7","name":"Title Slide","type":"title"}
+{"kind":"slide","id":"sl/6zbg7x","slide":1,"title":"肺结节检测/标注与随访 Agent 系统","textShapes":14}
+{"kind":"textbox","id":"sh/ed8v6psf","slide":1,"text":"肺结节检测/标注与随访 Agent 系统","textPreview":"肺结节检测/标注与随访 Agent 系统","textChars":20,"textLines":1,"bbox":[70,92,980,80]}
+{"kind":"textbox","id":"sh/p4r65wju","slide":1,"text":"大创结题答辩材料｜基于本地系统闭环与 LUNA16 subset0 公开数据验证","textPreview":"大创结题答辩材料｜基于本地系统闭环与 LUNA16 subset0 公开数据验证","textChars":40,"textLines":1,"bbox":[74,182,1000,44]}
+{"kind":"shape","id":"sh/wjudg7ad","slide":1,"bbox":[78,330,320,118]}
+{"kind":"shape","id":"sh/7qpg3ex0","slide":1,"bbox":[78,330,7,118]}
+{"kind":"textbox","id":"sh/i5sneloj","slide":1,"text":"CPM 0.6888","textPreview":"CPM 0.6888","textChars":10,"textLines":1,"bbox":[100,348,284,42]}
+{"kind":"textbox","id":"sh/pwb2hwfy","slide":1,"text":"subset0 evaluation fixed 10 mm NMS","textPreview":"subset0 evaluation fixed 10 mm NMS","textChars":34,"textLines":1,"bbox":[100,392,284,24]}
+{"kind":"textbox","id":"sh/0bi9s36h","slide":1,"text":"95% CI 0.6026-0.7804","textPreview":"95% CI 0.6026-0.7804","textChars":20,"textLines":1,"bbox":[100,418,284,20]}
+{"kind":"shape","id":"sh/7ed8bat4","slide":1,"bbox":[430,330,320,118]}
+{"kind":"shape","id":"sh/itgfmlkj","slide":1,"bbox":[430,330,7,118]}
+{"kind":"textbox","id":"sh/cvixczed","slide":1,"text":"AUC 0.9926","textPreview":"AUC 0.9926","textChars":10,"textLines":1,"bbox":[452,348,284,42]}
+{"kind":"textbox","id":"sh/5gbq1ory","slide":1,"text":"独立候选分类测试","textPreview":"独立候选分类测试","textChars":8,"textLines":1,"bbox":[452,392,284,24]}
+{"kind":"textbox","id":"sh/upwb2hwf","slide":1,"text":"series-level bootstrap CI 0.9731-1.0000","textPreview":"series-level bootstrap CI 0.9731-1.0000","textChars":39,"textLines":1,"bbox":[452,418,284,20]}
+{"kind":"shape","id":"sh/nap4r65w","slide":1,"bbox":[782,330,320,118]}
+{"kind":"shape","id":"sh/cj6tovah","slide":1,"bbox":[782,330,7,118]}
+{"kind":"textbox","id":"sh/54zidony","slide":1,"text":"79,135","textPreview":"79,135","textChars":6,"textLines":1,"bbox":[804,348,284,42]}
+{"kind":"textbox","id":"sh/udg7adsj","slide":1,"text":"完整 candidates_V2 桥接","textPreview":"完整 candidates_V2 桥接","textChars":19,"textLines":1,"bbox":[804,392,284,24]}
+{"kind":"textbox","id":"sh/nyd0z610","slide":1,"text":"89 series / 112 annotations","textPreview":"89 series / 112 annotations","textChars":27,"textLines":1,"bbox":[804,418,284,20]}
+{"kind":"textbox","id":"sh/cfa9w3m9","slide":1,"text":"项目成员/指导教师/学院信息：待按学校模板补充","textPreview":"项目成员/指导教师/学院信息：待按学校模板补充","textChars":23,"textLines":1,"bbox":[76,630,840,24]}
+{"kind":"textbox","id":"sh/1032lszq","slide":1,"text":"本页指标来自工作区 docs/world_frontier 系列实验报告；未写入未确认团队信息","textPreview":"本页指标来自工作区 docs/world_frontier 系列实验报告；未写入未确认团队信息","textChars":47,"textLines":1,"bbox":[62,684,980,18]}
+{"kind":"textbox","id":"sh/5sneloj2","slide":1,"text":"01","textPreview":"01","textChars":2,"textLines":1,"bbox":[1170,680,44,22]}
+{"kind":"notes","id":"nt/6zbg7x","slide":1,"text":"开场强调：本材料不是堆文字，而是把已有系统、实验、统计验证和结题提交物组织成可答辩的证据链。\n主动声明边界：当前公共验证为 LUNA16 subset0 内分区验证，不宣称完整 LUNA16 官方领先。"}
+{"kind":"slide","id":"sl/tmfju8","slide":2,"title":"01 项目定位","textShapes":14}
+{"kind":"textbox","id":"sh/g3ex0nux","slide":2,"text":"01 项目定位","textPreview":"01 项目定位","textChars":7,"textLines":1,"bbox":[62,30,420,26]}
+{"kind":"textbox","id":"sh/nih4byhg","slide":2,"text":"项目从“演示系统”升级为可复现实验闭环","textPreview":"项目从“演示系统”升级为可复现实验闭环","textChars":19,"textLines":1,"bbox":[62,62,880,55]}
+{"kind":"shape","id":"sh/yxobm58z","slide":2,"bbox":[62,126,74,5]}
+{"kind":"textbox","id":"sh/9cvixcze","slide":2,"text":"数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI","textPreview":"数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI","textChars":52,"textLines":1,"bbox":[62,684,980,18]}
+{"kind":"textbox","id":"sh/gr2p8nqx","slide":2,"text":"02","textPreview":"02","textChars":2,"textLines":1,"bbox":[1170,680,44,22]}
+{"kind":"textbox","id":"sh/r65wjudg","slide":2,"text":"• 临床场景：胸部 CT 中肺结节候选点多，低假阳性区间的检出稳定性是关键。\n• 工程场景：需要把检测、标注、医生复核、随访建议和实验记录接成闭环。\n• 结题策略：用本地病例证明系统链路，用 LUNA16 subset0 证明公开数据上的可复现实验能力。\n• 科研边界：所有性能结论绑定数据分区、候选池和评估脚本，不把阶段性结果包装成临床结论。","textPreview":"• 临床场景：胸部 CT 中肺结节候选点多，低假阳性区间的检出稳定性是关键。 | • 工程场景：需要把检测、标注、医生复核、随访建议和实验记录接成闭环。 | • 结题策略：用本地病例证明系统链路，用 LUNA16 subset0 证明公开数据上的可复现实验能力。 | • 科...","textChars":172,"textLines":4,"bbox":[62,168,690,280]}
+{"kind":"shape","id":"sh/ylc7u54z","slide":2,"bbox":[805,166,320,118]}
+{"kind":"shape","id":"sh/90je9cvi","slide":2,"bbox":[805,166,7,118]}
+{"kind":"textbox","id":"sh/gfmlkjm1","slide":2,"text":"3 cases","textPreview":"3 cases","textChars":7,"textLines":1,"bbox":[827,184,284,42]}
+{"kind":"textbox","id":"sh/65wjudg7","slide":2,"text":"本地病例闭环","textPreview":"本地病例闭环","textChars":6,"textLines":1,"bbox":[827,228,284,24]}
+{"kind":"textbox","id":"sh/zqtcj6to","slide":2,"text":"607 DICOM slices","textPreview":"607 DICOM slices","textChars":16,"textLines":1,"bbox":[827,254,284,20]}
+{"kind":"shape","id":"sh/obm58z25","slide":2,"bbox":[805,300,320,118]}
+{"kind":"shape","id":"sh/hwfyxobm","slide":2,"bbox":[805,300,7,118]}
+{"kind":"textbox","id":"sh/6xkf6dcb","slide":2,"text":"11 nodules","textPreview":"11 nodules","textChars":10,"textLines":1,"bbox":[827,318,284,42]}
+{"kind":"textbox","id":"sh/zed8v6ps","slide":2,"text":"医生复核代理参考","textPreview":"医生复核代理参考","textChars":8,"textLines":1,"bbox":[827,362,284,24]}
+{"kind":"textbox","id":"sh/oza1gvy9","slide":2,"text":"7 model + 4 doctor-added","textPreview":"7 model + 4 doctor-added","textChars":24,"textLines":1,"bbox":[827,388,284,20]}
+{"kind":"shape","id":"sh/hk3q5o7q","slide":2,"bbox":[805,434,320,118]}
+{"kind":"shape","id":"sh/al87ed8b","slide":2,"bbox":[805,434,7,118]}
+{"kind":"textbox","id":"sh/z61032ls","slide":2,"text":"89 CT","textPreview":"89 CT","textChars":5,"textLines":1,"bbox":[827,452,284,42]}
+{"kind":"textbox","id":"sh/bi9s36hc","slide":2,"text":"公开 benchmark 子集","textPreview":"公开 benchmark 子集","textChars":15,"textLines":1,"bbox":[827,496,284,24]}
+{"kind":"textbox","id":"sh/ixczed8v","slide":2,"text":"LUNA16 subset0","textPreview":"LUNA16 subset0","textChars":14,"textLines":1,"bbox":[827,522,284,20]}
+{"kind":"notes","id":"nt/tmfju8","slide":2,"text":"这一页给评委建立判断框架：不是只讲模型，而是讲可落地系统加可复现实验。"}
+{"kind":"slide","id":"sl/4sm2jp","slide":3,"title":"02 系统闭环","textShapes":17}
+{"kind":"textbox","id":"sh/u9knih4b","slide":3,"text":"02 系统闭环","textPreview":"02 系统闭环","textChars":7,"textLines":1,"bbox":[62,30,420,26]}
+{"kind":"textbox","id":"sh/1032lszq","slide":3,"text":"系统架构：检测模型、人工复核与随访 Agent 进入同一工作流","textPreview":"系统架构：检测模型、人工复核与随访 Agent 进入同一工作流","textChars":31,"textLines":1,"bbox":[62,62,880,55]}
+{"kind":"shape","id":"sh/cfa9w3m9","slide":3,"bbox":[62,126,74,5]}
+{"kind":"textbox","id":"sh/jm1cfa9w","slide":3,"text":"数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI","textPreview":"数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI","textChars":52,"textLines":1,"bbox":[62,684,980,18]}
+{"kind":"textbox","id":"sh/u18jqh0f","slide":3,"text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[1170,680,44,22]}
+{"kind":"shape","id":"sh/1orytsvu","slide":3,"bbox":[88,176,300,112]}
+{"kind":"textbox","id":"sh/c7u54zid","slide":3,"text":"CT/DICOM","textPreview":"CT/DICOM","textChars":8,"textLines":1,"bbox":[110,196,240,34]}
+{"kind":"textbox","id":"sh/nap4r65w","slide":3,"text":"病例导入与切片管理","textPreview":"病例导入与切片管理","textChars":9,"textLines":1,"bbox":[110,238,250,30]}
+{"kind":"shape","id":"sh/upwb2hwf","slide":3,"bbox":[460,176,300,112]}
+{"kind":"textbox","id":"sh/orytsvu9","slide":3,"text":"候选检测","textPreview":"候选检测","textChars":4,"textLines":1,"bbox":[482,196,240,34]}
+{"kind":"textbox","id":"sh/hcrmhk3q","slide":3,"text":"3D VNet 候选生成","textPreview":"3D VNet 候选生成","textChars":12,"textLines":1,"bbox":[482,238,250,30]}
+{"kind":"shape","id":"sh/al87ed8b","slide":3,"bbox":[832,176,300,112]}
+{"kind":"textbox","id":"sh/z61032ls","slide":3,"text":"FPRED","textPreview":"FPRED","textChars":5,"textLines":1,"bbox":[854,196,240,34]}
+{"kind":"textbox","id":"sh/sfil0rqd","slide":3,"text":"ResNet-CBAM 假阳性抑制","textPreview":"ResNet-CBAM 假阳性抑制","textChars":17,"textLines":1,"bbox":[854,238,250,30]}
+{"kind":"shape","id":"sh/h0fepkzu","slide":3,"bbox":[88,361,300,112]}
+{"kind":"textbox","id":"sh/a9w3m94f","slide":3,"text":"人工复核","textPreview":"人工复核","textChars":4,"textLines":1,"bbox":[110,381,240,34]}
+{"kind":"textbox","id":"sh/zupwb2hw","slide":3,"text":"医生新增/确认/修正","textPreview":"医生新增/确认/修正","textChars":10,"textLines":1,"bbox":[110,423,250,30]}
+{"kind":"shape","id":"sh/obm58z25","slide":3,"bbox":[460,361,300,112]}
+{"kind":"textbox","id":"sh/hwfyxobm","slide":3,"text":"随访 Agent","textPreview":"随访 Agent","textChars":8,"textLines":1,"bbox":[482,381,240,34]}
+{"kind":"textbox","id":"sh/18jqh0fe","slide":3,"text":"风险字段检查与建议生成","textPreview":"风险字段检查与建议生成","textChars":11,"textLines":1,"bbox":[482,423,250,30]}
+{"kind":"shape","id":"sh/8nqxs72x","slide":3,"bbox":[832,361,300,112]}
+{"kind":"textbox","id":"sh/j2t83itg","slide":3,"text":"科研闭环","textPreview":"科研闭环","textChars":4,"textLines":1,"bbox":[854,381,240,34]}
+{"kind":"textbox","id":"sh/qh0fepkz","slide":3,"text":"FROC/CPM、CI、报告/PPT","textPreview":"FROC/CPM、CI、报告/PPT","textChars":18,"textLines":1,"bbox":[854,423,250,30]}
+{"kind":"textbox","id":"sh/1w7mp0bi","slide":3,"text":"核心升级不是单点模型，而是“检测-复核-建议-评估-材料化”的闭环能力。","textPreview":"核心升级不是单点模型，而是“检测-复核-建议-评估-材料化”的闭环能力。","textChars":36,"textLines":1,"bbox":[94,566,960,36]}
+{"kind":"notes","id":"nt/4sm2jp","slide":3,"text":"把技术路线说成闭环：每一步都有输入、输出和可审计文件。"}
+{"kind":"slide","id":"sl/ohej4o","slide":4,"title":"03 本地证据","textShapes":8}
+{"kind":"textbox","id":"sh/lszqtcj6","slide":4,"text":"03 本地证据","textPreview":"03 本地证据","textChars":7,"textLines":1,"bbox":[62,30,420,26]}
+{"kind":"textbox","id":"sh/a5gbq1or","slide":4,"text":"本地病例闭环用于证明系统能运行，但不冒充临床验证","textPreview":"本地病例闭环用于证明系统能运行，但不冒充临床验证","textChars":24,"textLines":1,"bbox":[62,62,880,55]}
+{"kind":"shape","id":"sh/3m94fu18","slide":4,"bbox":[62,126,74,5]}
+{"kind":"textbox","id":"sh/sji5snel","slide":4,"text":"数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI","textPreview":"数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI","textChars":52,"textLines":1,"bbox":[62,684,980,18]}
+{"kind":"textbox","id":"sh/h4byhgn2","slide":4,"text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[1170,680,44,22]}
+{"kind":"textbox","id":"sh/3ylc7u54","slide":4,"text":"• 已有本地 3 例病例、607 张 DICOM 切片纳入研究闭环。\n• 以医生复核代理参考进行系统链路检查：11 个参考结节，模型 7 个预测，医生补充 4 个。\n• proxy precision = 1.0000，proxy recall = 0.6364；该指标用于系统调试，不作为真实临床性能声明。","textPreview":"• 已有本地 3 例病例、607 张 DICOM 切片纳入研究闭环。 | • 以医生复核代理参考进行系统链路检查：11 个参考结节，模型 7 个预测，医生补充 4 个。 | • proxy precision = 1.0000，proxy recall = 0.6364；该...","textChars":154,"textLines":3,"bbox":[740,174,420,230]}
+{"kind":"shape","id":"sh/svu9knih","slide":4,"bbox":[748,430,330,118]}
+{"kind":"shape","id":"sh/hgn29gr2","slide":4,"bbox":[748,430,7,118]}
+{"kind":"textbox","id":"sh/tgfmlkjm","slide":4,"text":"0.6364","textPreview":"0.6364","textChars":6,"textLines":1,"bbox":[770,448,294,42]}
+{"kind":"textbox","id":"sh/4vmtwra5","slide":4,"text":"review-proxy CPM","textPreview":"review-proxy CPM","textChars":16,"textLines":1,"bbox":[770,492,294,24]}
+{"kind":"textbox","id":"sh/bat47y1k","slide":4,"text":"本地闭环调试指标","textPreview":"本地闭环调试指标","textChars":8,"textLines":1,"bbox":[770,518,294,20]}
+{"kind":"image","id":"im/72x4nap4","slide":4,"name":"","geometry":"roundRect","alt":"本地病例清单图","bbox":[74,162,620,392]}
+{"kind":"notes","id":"nt/ohej4o","slide":4,"text":"强调审慎：本地病例是演示和工作流证据，真实泛化看公开数据。"}
+{"kind":"slide","id":"sl/fiqw1e","slide":5,"title":"04 Agent 升级","textShapes":14}
+{"kind":"textbox","id":"sh/nqxs72x4","slide":5,"text":"04 Agent 升级","textPreview":"04 Agent 升级","textChars":11,"textLines":1,"bbox":[62,30,420,26]}
+{"kind":"textbox","id":"sh/cbulwval","slide":5,"text":"随访 Agent 的价值在于结构化补全和安全审计","textPreview":"随访 Agent 的价值在于结构化补全和安全审计","textChars":24,"textLines":1,"bbox":[62,62,880,55]}
+{"kind":"shape","id":"sh/5sneloj2","slide":5,"bbox":[62,126,74,5]}
+{"kind":"textbox","id":"sh/ytsvu9kn","slide":5,"text":"数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI","textPreview":"数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI","textChars":52,"textLines":1,"bbox":[62,684,980,18]}
+{"kind":"textbox","id":"sh/neloj2t8","slide":5,"text":"05","textPreview":"05","textChars":2,"textLines":1,"bbox":[1170,680,44,22]}
+{"kind":"textbox","id":"sh/czed8v6p","slide":5,"text":"• 输入端检查结节大小、密度、数量、风险因素、既往影像等随访关键字段。\n• 输出端生成可解释随访建议，同时保留缺失字段提示，避免过度确定。\n• 安全审计按病例运行，当前工作区记录显示 3 例审计无 failed 项。\n• 定位为医生辅助与科研材料自动化，不替代临床诊断。","textPreview":"• 输入端检查结节大小、密度、数量、风险因素、既往影像等随访关键字段。 | • 输出端生成可解释随访建议，同时保留缺失字段提示，避免过度确定。 | • 安全审计按病例运行，当前工作区记录显示 3 例审计无 failed 项。 | • 定位为医生辅助与科研材料自动化，不替代临...","textChars":135,"textLines":4,"bbox":[86,174,545,290]}
+{"kind":"shape","id":"sh/5kb6xkf6","slide":5,"bbox":[696,168,410,118]}
+{"kind":"shape","id":"sh/yhgn29gr","slide":5,"bbox":[696,168,7,118]}
+{"kind":"textbox","id":"sh/n29gr2p8","slide":5,"text":"缺失风险字段时显式提示","textPreview":"缺失风险字段时显式提示","textChars":11,"textLines":1,"bbox":[718,186,374,42]}
+{"kind":"textbox","id":"sh/fyxobm58","slide":5,"text":"不编造","textPreview":"不编造","textChars":3,"textLines":1,"bbox":[718,230,374,24]}
+{"kind":"textbox","id":"sh/qd4vmtwr","slide":5,"text":"Agent 输出规则","textPreview":"Agent 输出规则","textChars":10,"textLines":1,"bbox":[718,256,374,20]}
+{"kind":"shape","id":"sh/x4nap4r6","slide":5,"bbox":[696,306,410,118]}
+{"kind":"shape","id":"sh/8jqh0fep","slide":5,"bbox":[696,306,7,118]}
+{"kind":"textbox","id":"sh/fa9w3m94","slide":5,"text":"建议与病例字段绑定","textPreview":"建议与病例字段绑定","textChars":9,"textLines":1,"bbox":[718,324,374,42]}
+{"kind":"textbox","id":"sh/qpg3ex0n","slide":5,"text":"可追溯","textPreview":"可追溯","textChars":3,"textLines":1,"bbox":[718,368,374,24]}
+{"kind":"textbox","id":"sh/xczed8v6","slide":5,"text":"Agent 输出规则","textPreview":"Agent 输出规则","textChars":10,"textLines":1,"bbox":[718,394,374,20]}
+{"kind":"shape","id":"sh/8v6psfil","slide":5,"bbox":[696,444,410,118]}
+{"kind":"shape","id":"sh/je9cvixc","slide":5,"bbox":[696,444,7,118]}
+{"kind":"textbox","id":"sh/qtcj6tov","slide":5,"text":"输出安全检查 JSON","textPreview":"输出安全检查 JSON","textChars":11,"textLines":1,"bbox":[718,462,374,42]}
+{"kind":"textbox","id":"sh/u54zidon","slide":5,"text":"可审计","textPreview":"可审计","textChars":3,"textLines":1,"bbox":[718,506,374,24]}
+{"kind":"textbox","id":"sh/nqxs72x4","slide":5,"text":"docs/world_frontier/agent_safety","textPreview":"docs/world_frontier/agent_safety","textChars":32,"textLines":1,"bbox":[718,532,374,20]}
+{"kind":"notes","id":"nt/fiqw1e","slide":5,"text":"这一页把 Agent 从聊天功能提升为医疗 AI 安全边界的一部分。"}
+{"kind":"slide","id":"sl/gltr0c","slide":6,"title":"05 公开数据","textShapes":14}
+{"kind":"textbox","id":"sh/al87ed8b","slide":6,"text":"05 公开数据","textPreview":"05 公开数据","textChars":7,"textLines":1,"bbox":[62,30,420,26]}
+{"kind":"textbox","id":"sh/hcrmhk3q","slide":6,"text":"公共数据验证以 LUNA16 subset0 为当前主线","textPreview":"公共数据验证以 LUNA16 subset0 为当前主线","textChars":28,"textLines":1,"bbox":[62,62,880,55]}
+{"kind":"shape","id":"sh/orytsvu9","slide":6,"bbox":[62,126,74,5]}
+{"kind":"textbox","id":"sh/zupwb2hw","slide":6,"text":"数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI","textPreview":"数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI","textChars":52,"textLines":1,"bbox":[62,684,980,18]}
+{"kind":"textbox","id":"sh/a9w3m94f","slide":6,"text":"06","textPreview":"06","textChars":2,"textLines":1,"bbox":[1170,680,44,22]}
+{"kind":"textbox","id":"sh/h0fepkzu","slide":6,"text":"• LUNA16 官方挑战聚焦 LIDC-IDRI 上的肺结节自动检测评估；官方数据页说明共 888 个 CT。\n• 当前工作区已完成 subset0 89 个 CT series 的完整 candidates_V2 候选池 FPRED 评分。\n• subset0 内含 112 个官方 annotations；全量候选池导出 79,135 条预测。\n• 结题表述坚持写“subset0 内分区验证”，不写成完整 LUNA16 官方成绩。","textPreview":"• LUNA16 官方挑战聚焦 LIDC-IDRI 上的肺结节自动检测评估；官方数据页说明共 888 个 CT。 | • 当前工作区已完成 subset0 89 个 CT series 的完整 candidates_V2 候选池 FPRED 评分。 | • subset0 ...","textChars":219,"textLines":4,"bbox":[80,166,670,310]}
+{"kind":"shape","id":"sh/sfil0rqd","slide":6,"bbox":[812,170,320,118]}
+{"kind":"shape","id":"sh/zqtcj6to","slide":6,"bbox":[812,170,7,118]}
+{"kind":"textbox","id":"sh/65wjudg7","slide":6,"text":"89 series","textPreview":"89 series","textChars":9,"textLines":1,"bbox":[834,188,284,42]}
+{"kind":"textbox","id":"sh/g3ex0nux","slide":6,"text":"LUNA16 subset0","textPreview":"LUNA16 subset0","textChars":14,"textLines":1,"bbox":[834,232,284,24]}
+{"kind":"textbox","id":"sh/5o7qpg3e","slide":6,"text":"公开 CT 子集","textPreview":"公开 CT 子集","textChars":8,"textLines":1,"bbox":[834,258,284,20]}
+{"kind":"shape","id":"sh/yxobm58z","slide":6,"bbox":[812,304,320,118]}
+{"kind":"shape","id":"sh/nih4byhg","slide":6,"bbox":[812,304,7,118]}
+{"kind":"textbox","id":"sh/gr2p8nqx","slide":6,"text":"112","textPreview":"112","textChars":3,"textLines":1,"bbox":[834,322,284,42]}
+{"kind":"textbox","id":"sh/9cvixcze","slide":6,"text":"官方 annotations","textPreview":"官方 annotations","textChars":14,"textLines":1,"bbox":[834,366,284,24]}
+{"kind":"textbox","id":"sh/ylc7u54z","slide":6,"text":"subset0 范围","textPreview":"subset0 范围","textChars":10,"textLines":1,"bbox":[834,392,284,20]}
+{"kind":"shape","id":"sh/r65wjudg","slide":6,"bbox":[812,438,320,118]}
+{"kind":"shape","id":"sh/gfmlkjm1","slide":6,"bbox":[812,438,7,118]}
+{"kind":"textbox","id":"sh/90je9cvi","slide":6,"text":"79,135","textPreview":"79,135","textChars":6,"textLines":1,"bbox":[834,456,284,42]}
+{"kind":"textbox","id":"sh/t83itgfm","slide":6,"text":"FPRED predictions","textPreview":"FPRED predictions","textChars":17,"textLines":1,"bbox":[834,500,284,24]}
+{"kind":"textbox","id":"sh/4nap4r65","slide":6,"text":"candidates_V2 全候选池","textPreview":"candidates_V2 全候选池","textChars":18,"textLines":1,"bbox":[834,526,284,20]}
+{"kind":"notes","id":"nt/gltr0c","slide":6,"text":"这页是评委最容易认可的外部基准入口：公开数据、公开评估逻辑、明确边界。"}
+{"kind":"slide","id":"sl/5ufe7o","slide":7,"title":"06 候选分类","textShapes":14}
+{"kind":"textbox","id":"sh/dsji5sne","slide":7,"text":"06 候选分类","textPreview":"06 候选分类","textChars":7,"textLines":1,"bbox":[62,30,420,26]}
+{"kind":"textbox","id":"sh/61032lsz","slide":7,"text":"FPRED 分支在独立候选测试上达到高区分度","textPreview":"FPRED 分支在独立候选测试上达到高区分度","textChars":22,"textLines":1,"bbox":[62,62,880,55]}
+{"kind":"shape","id":"sh/vmtwra5g","slide":7,"bbox":[62,126,74,5]}
+{"kind":"textbox","id":"sh/oj2t83it","slide":7,"text":"数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI","textPreview":"数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI","textChars":52,"textLines":1,"bbox":[62,684,980,18]}
+{"kind":"textbox","id":"sh/d4vmtwra","slide":7,"text":"07","textPreview":"07","textChars":2,"textLines":1,"bbox":[1170,680,44,22]}
+{"kind":"shape","id":"sh/vy90je9c","slide":7,"bbox":[805,160,315,118]}
+{"kind":"shape","id":"sh/onyd0z61","slide":7,"bbox":[805,160,7,118]}
+{"kind":"textbox","id":"sh/d8v6psfi","slide":7,"text":"0.9926","textPreview":"0.9926","textChars":6,"textLines":1,"bbox":[827,178,279,42]}
+{"kind":"textbox","id":"sh/twra5gbq","slide":7,"text":"AUC","textPreview":"AUC","textChars":3,"textLines":1,"bbox":[827,222,279,24]}
+{"kind":"textbox","id":"sh/4byhgn29","slide":7,"text":"95% CI 0.9731-1.0000","textPreview":"95% CI 0.9731-1.0000","textChars":20,"textLines":1,"bbox":[827,248,279,20]}
+{"kind":"shape","id":"sh/bq1oryts","slide":7,"bbox":[805,295,315,118]}
+{"kind":"shape","id":"sh/m58z25kb","slide":7,"bbox":[805,295,7,118]}
+{"kind":"textbox","id":"sh/t83itgfm","slide":7,"text":"0.8571","textPreview":"0.8571","textChars":6,"textLines":1,"bbox":[827,313,279,42]}
+{"kind":"textbox","id":"sh/4nap4r65","slide":7,"text":"Sensitivity","textPreview":"Sensitivity","textChars":11,"textLines":1,"bbox":[827,357,279,24]}
+{"kind":"textbox","id":"sh/b2hwfyxo","slide":7,"text":"threshold 0.30","textPreview":"threshold 0.30","textChars":14,"textLines":1,"bbox":[827,383,279,20]}
+{"kind":"shape","id":"sh/mhk3q5o7","slide":7,"bbox":[805,430,315,118]}
+{"kind":"shape","id":"sh/tgfmlkjm","slide":7,"bbox":[805,430,7,118]}
+{"kind":"textbox","id":"sh/4vmtwra5","slide":7,"text":"0.9792","textPreview":"0.9792","textChars":6,"textLines":1,"bbox":[827,448,279,42]}
+{"kind":"textbox","id":"sh/gr2p8nqx","slide":7,"text":"Specificity","textPreview":"Specificity","textChars":11,"textLines":1,"bbox":[827,492,279,24]}
+{"kind":"textbox","id":"sh/9cvixcze","slide":7,"text":"threshold 0.30","textPreview":"threshold 0.30","textChars":14,"textLines":1,"bbox":[827,518,279,20]}
+{"kind":"textbox","id":"sh/ylc7u54z","slide":7,"text":"独立测试：103 candidates，其中阳性 7、阴性 96；CI 使用 seriesuid 重采样。","textPreview":"独立测试：103 candidates，其中阳性 7、阴性 96；CI 使用 seriesuid 重采样。","textChars":53,"textLines":1,"bbox":[802,568,360,42]}
+{"kind":"image","id":"im/fepkzupw","slide":7,"name":"","geometry":"roundRect","alt":"FPRED validation and independent test figure","bbox":[62,150,690,445]}
+{"kind":"notes","id":"nt/5ufe7o","slide":7,"text":"注意解释：这个 AUC 是候选分类，不是端到端检测最终指标。"}
+{"kind":"slide","id":"sl/pg9prf","slide":8,"title":"07 FROC 桥接","textShapes":5}
+{"kind":"textbox","id":"sh/e1w7mp0b","slide":8,"text":"07 FROC 桥接","textPreview":"07 FROC 桥接","textChars":10,"textLines":1,"bbox":[62,30,420,26]}
+{"kind":"textbox","id":"sh/psfil0rq","slide":8,"text":"完整候选池 FROC 把模型从分类推向检测评估","textPreview":"完整候选池 FROC 把模型从分类推向检测评估","textChars":23,"textLines":1,"bbox":[62,62,880,55]}
+{"kind":"shape","id":"sh/w7mp0bi9","slide":8,"bbox":[62,126,74,5]}
+{"kind":"textbox","id":"sh/7adsji5s","slide":8,"text":"数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI","textPreview":"数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI","textChars":52,"textLines":1,"bbox":[62,684,980,18]}
+{"kind":"textbox","id":"sh/epkzupwb","slide":8,"text":"08","textPreview":"08","textChars":2,"textLines":1,"bbox":[1170,680,44,22]}
+{"kind":"textbox","id":"sh/wval87ed","slide":8,"text":"• raw bridge CPM = 0.6020。\n• 0.125 FP/scan sensitivity = 0.2143；0.25 FP/scan sensitivity = 0.2589。\n• 高 FP/scan 区间 sensitivity > 0.92，提示主要短板在低假阳性区间。\n• 该结论直接引出后处理和 hard negative mining 的必要性。","textPreview":"• raw bridge CPM = 0.6020。 | • 0.125 FP/scan sensitivity = 0.2143；0.25 FP/scan sensitivity = 0.2589。 | • 高 FP/scan 区间 sensitivity > 0.92，...","textChars":188,"textLines":4,"bbox":[824,166,348,330]}
+{"kind":"image","id":"im/kzupwb2h","slide":8,"name":"","geometry":"roundRect","alt":"subset0 candidates_V2 FROC","bbox":[72,150,710,444]}
+{"kind":"notes","id":"nt/pg9prf","slide":8,"text":"从这一页开始进入真正答辩核心：低 FP 区间是检测系统实用价值的关键。"}
+{"kind":"slide","id":"sl/jjrg57","slide":9,"title":"08 调参与验证分离","textShapes":13}
+{"kind":"textbox","id":"sh/b6xkf6dc","slide":9,"text":"08 调参与验证分离","textPreview":"08 调参与验证分离","textChars":10,"textLines":1,"bbox":[62,30,420,26]}
+{"kind":"textbox","id":"sh/0rqd4vmt","slide":9,"text":"NMS 半径只在 calibration 上选择，再固定到 evaluation 报告","textPreview":"NMS 半径只在 calibration 上选择，再固定到 evaluation 报告","textChars":43,"textLines":1,"bbox":[62,62,880,55]}
+{"kind":"shape","id":"sh/tcj6tova","slide":9,"bbox":[62,126,74,5]}
+{"kind":"textbox","id":"sh/idonyd0z","slide":9,"text":"数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI","textPreview":"数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI","textChars":52,"textLines":1,"bbox":[62,684,980,18]}
+{"kind":"textbox","id":"sh/byhgn29g","slide":9,"text":"09","textPreview":"09","textChars":2,"textLines":1,"bbox":[1170,680,44,22]}
+{"kind":"shape","id":"sh/t47y1kre","slide":9,"bbox":[805,158,315,118]}
+{"kind":"shape","id":"sh/i9s36hcr","slide":9,"bbox":[805,158,7,118]}
+{"kind":"textbox","id":"sh/bulwval8","slide":9,"text":"55 series","textPreview":"55 series","textChars":9,"textLines":1,"bbox":[827,176,279,42]}
+{"kind":"textbox","id":"sh/j6tovaho","slide":9,"text":"calibration","textPreview":"calibration","textChars":11,"textLines":1,"bbox":[827,220,279,24]}
+{"kind":"textbox","id":"sh/ulwval87","slide":9,"text":"56 annotations","textPreview":"56 annotations","textChars":14,"textLines":1,"bbox":[827,246,279,20]}
+{"kind":"shape","id":"sh/1cfa9w3m","slide":9,"bbox":[805,292,315,118]}
+{"kind":"shape","id":"sh/crmhk3q5","slide":9,"bbox":[805,292,7,118]}
+{"kind":"textbox","id":"sh/ji5snelo","slide":9,"text":"34 series","textPreview":"34 series","textChars":9,"textLines":1,"bbox":[827,310,279,42]}
+{"kind":"textbox","id":"sh/uxc3ylc7","slide":9,"text":"evaluation","textPreview":"evaluation","textChars":10,"textLines":1,"bbox":[827,354,279,24]}
+{"kind":"textbox","id":"sh/1kre1w7m","slide":9,"text":"56 annotations","textPreview":"56 annotations","textChars":14,"textLines":1,"bbox":[827,380,279,20]}
+{"kind":"shape","id":"sh/c3ylc7u5","slide":9,"bbox":[805,426,315,118]}
+{"kind":"shape","id":"sh/jqh0fepk","slide":9,"bbox":[805,426,7,118]}
+{"kind":"textbox","id":"sh/q5o7qpg3","slide":9,"text":"10 mm","textPreview":"10 mm","textChars":5,"textLines":1,"bbox":[827,444,279,42]}
+{"kind":"textbox","id":"sh/itgfmlkj","slide":9,"text":"selected radius","textPreview":"selected radius","textChars":15,"textLines":1,"bbox":[827,488,279,24]}
+{"kind":"textbox","id":"sh/7ed8bat4","slide":9,"text":"仅在 calibration 选择","textPreview":"仅在 calibration 选择","textChars":17,"textLines":1,"bbox":[827,514,279,20]}
+{"kind":"image","id":"im/lwval87e","slide":9,"name":"","geometry":"roundRect","alt":"split-valid NMS figure","bbox":[64,150,690,450]}
+{"kind":"notes","id":"nt/jjrg57","slide":9,"text":"主动说明为什么不用 evaluation 上事后更高的半径：防止调参乐观偏倚。"}
+{"kind":"slide","id":"sl/dhgsoq","slide":10,"title":"09 关键结果","textShapes":18}
+{"kind":"textbox","id":"sh/c7u54zid","slide":10,"text":"09 关键结果","textPreview":"09 关键结果","textChars":7,"textLines":1,"bbox":[62,30,420,26]}
+{"kind":"textbox","id":"sh/jm1cfa9w","slide":10,"text":"固定 10 mm NMS 在 evaluation split 上带来可量化提升","textPreview":"固定 10 mm NMS 在 evaluation split 上带来可量化提升","textChars":40,"textLines":1,"bbox":[62,62,880,55]}
+{"kind":"shape","id":"sh/u18jqh0f","slide":10,"bbox":[62,126,74,5]}
+{"kind":"textbox","id":"sh/1032lszq","slide":10,"text":"数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI","textPreview":"数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI","textChars":52,"textLines":1,"bbox":[62,684,980,18]}
+{"kind":"textbox","id":"sh/cfa9w3m9","slide":10,"text":"10","textPreview":"10","textChars":2,"textLines":1,"bbox":[1170,680,44,22]}
+{"kind":"shape","id":"sh/judg7ads","slide":10,"bbox":[84,170,230,118]}
+{"kind":"shape","id":"sh/u9knih4b","slide":10,"bbox":[84,170,7,118]}
+{"kind":"textbox","id":"sh/54zidony","slide":10,"text":"0.6199","textPreview":"0.6199","textChars":6,"textLines":1,"bbox":[106,188,194,42]}
+{"kind":"textbox","id":"sh/cj6tovah","slide":10,"text":"No NMS CPM","textPreview":"No NMS CPM","textChars":10,"textLines":1,"bbox":[106,232,194,24]}
+{"kind":"textbox","id":"sh/ex0nuxc3","slide":10,"text":"evaluation split","textPreview":"evaluation split","textChars":16,"textLines":1,"bbox":[106,258,194,20]}
+{"kind":"shape","id":"sh/3itgfmlk","slide":10,"bbox":[386,170,230,118]}
+{"kind":"shape","id":"sh/w3m94fu1","slide":10,"bbox":[386,170,7,118]}
+{"kind":"textbox","id":"sh/loj2t83i","slide":10,"text":"0.6888","textPreview":"0.6888","textChars":6,"textLines":1,"bbox":[408,188,194,42]}
+{"kind":"textbox","id":"sh/e9cvixcz","slide":10,"text":"10 mm NMS CPM","textPreview":"10 mm NMS CPM","textChars":13,"textLines":1,"bbox":[408,232,194,24]}
+{"kind":"textbox","id":"sh/3q5o7qpg","slide":10,"text":"+0.0689 absolute","textPreview":"+0.0689 absolute","textChars":16,"textLines":1,"bbox":[408,258,194,20]}
+{"kind":"shape","id":"sh/wb2hwfyx","slide":10,"bbox":[688,170,230,118]}
+{"kind":"shape","id":"sh/lwval87e","slide":10,"bbox":[688,170,7,118]}
+{"kind":"textbox","id":"sh/ahoza1gv","slide":10,"text":"0.3214","textPreview":"0.3214","textChars":6,"textLines":1,"bbox":[710,188,194,42]}
+{"kind":"textbox","id":"sh/32lszqtc","slide":10,"text":"No NMS Sens","textPreview":"No NMS Sens","textChars":11,"textLines":1,"bbox":[710,232,194,24]}
+{"kind":"textbox","id":"sh/v6psfil0","slide":10,"text":"@0.25 FP/scan","textPreview":"@0.25 FP/scan","textChars":13,"textLines":1,"bbox":[710,258,194,20]}
+{"kind":"shape","id":"sh/2lszqtcj","slide":10,"bbox":[990,170,230,118]}
+{"kind":"shape","id":"sh/d8bat47y","slide":10,"bbox":[990,170,7,118]}
+{"kind":"textbox","id":"sh/knih4byh","slide":10,"text":"0.4821","textPreview":"0.4821","textChars":6,"textLines":1,"bbox":[1012,188,194,42]}
+{"kind":"textbox","id":"sh/vu9knih4","slide":10,"text":"10 mm NMS Sens","textPreview":"10 mm NMS Sens","textChars":14,"textLines":1,"bbox":[1012,232,194,24]}
+{"kind":"textbox","id":"sh/29gr2p8n","slide":10,"text":"+0.1607 absolute","textPreview":"+0.1607 absolute","textChars":16,"textLines":1,"bbox":[1012,258,194,20]}
+{"kind":"shape","id":"sh/d0z61032","slide":10,"bbox":[112,365,1000,150]}
+{"kind":"textbox","id":"sh/kf6dcbul","slide":10,"text":"结题可讲的硬结论","textPreview":"结题可讲的硬结论","textChars":8,"textLines":1,"bbox":[145,392,260,32]}
+{"kind":"textbox","id":"sh/vixczed8","slide":10,"text":"在 subset0 内按 annotation 数平衡划分 calibration/evaluation 后，10 mm NMS 是预先从 calibration 选出的固定后处理；它在 evaluation 上提升 CPM 与低 FP/scan sensitivity。","textPreview":"在 subset0 内按 annotation 数平衡划分 calibration/evaluation 后，10 mm NMS 是预先从 calibration 选出的固定后处理；它在 evaluation 上提升 CPM 与低 FP/scan sensitivity。","textChars":136,"textLines":1,"bbox":[145,438,900,54]}
+{"kind":"notes","id":"nt/dhgsoq","slide":10,"text":"这一页可以作为汇报的中心页。说清楚分区、固定参数和提升幅度。"}
+{"kind":"slide","id":"sl/8ergif","slide":11,"title":"10 不确定性报告","textShapes":13}
+{"kind":"textbox","id":"sh/r2p8nqxs","slide":11,"text":"10 不确定性报告","textPreview":"10 不确定性报告","textChars":9,"textLines":1,"bbox":[62,30,420,26]}
+{"kind":"textbox","id":"sh/kjm1cfa9","slide":11,"text":"置信区间让结论更像科研，而不是单次跑分","textPreview":"置信区间让结论更像科研，而不是单次跑分","textChars":19,"textLines":1,"bbox":[62,62,880,55]}
+{"kind":"shape","id":"sh/94fu18jq","slide":11,"bbox":[62,126,74,5]}
+{"kind":"textbox","id":"sh/2p8nqxs7","slide":11,"text":"数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI","textPreview":"数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI","textChars":52,"textLines":1,"bbox":[62,684,980,18]}
+{"kind":"textbox","id":"sh/ra5gbq1o","slide":11,"text":"11","textPreview":"11","textChars":2,"textLines":1,"bbox":[1170,680,44,22]}
+{"kind":"shape","id":"sh/9gr2p8nq","slide":11,"bbox":[805,164,325,118]}
+{"kind":"shape","id":"sh/2t83itgf","slide":11,"bbox":[805,164,7,118]}
+{"kind":"textbox","id":"sh/re1w7mp0","slide":11,"text":"0.6888","textPreview":"0.6888","textChars":6,"textLines":1,"bbox":[827,182,289,42]}
+{"kind":"textbox","id":"sh/bulwval8","slide":11,"text":"CPM","textPreview":"CPM","textChars":3,"textLines":1,"bbox":[827,226,289,24]}
+{"kind":"textbox","id":"sh/i9s36hcr","slide":11,"text":"95% CI 0.6026-0.7804","textPreview":"95% CI 0.6026-0.7804","textChars":20,"textLines":1,"bbox":[827,252,289,20]}
+{"kind":"shape","id":"sh/p0bi9s36","slide":11,"bbox":[805,300,325,118]}
+{"kind":"shape","id":"sh/0fepkzup","slide":11,"bbox":[805,300,7,118]}
+{"kind":"textbox","id":"sh/bi9s36hc","slide":11,"text":"0.4821","textPreview":"0.4821","textChars":6,"textLines":1,"bbox":[827,318,289,42]}
+{"kind":"textbox","id":"sh/ixczed8v","slide":11,"text":"Sens @0.25","textPreview":"Sens @0.25","textChars":10,"textLines":1,"bbox":[827,362,289,24]}
+{"kind":"textbox","id":"sh/tovahoza","slide":11,"text":"95% CI 0.2833-0.6545","textPreview":"95% CI 0.2833-0.6545","textChars":20,"textLines":1,"bbox":[827,388,289,20]}
+{"kind":"shape","id":"sh/032lszqt","slide":11,"bbox":[805,436,325,118]}
+{"kind":"shape","id":"sh/b6xkf6dc","slide":11,"bbox":[805,436,7,118]}
+{"kind":"textbox","id":"sh/il0rqd4v","slide":11,"text":"1000","textPreview":"1000","textChars":4,"textLines":1,"bbox":[827,454,289,42]}
+{"kind":"textbox","id":"sh/ulwval87","slide":11,"text":"Bootstrap","textPreview":"Bootstrap","textChars":9,"textLines":1,"bbox":[827,498,289,24]}
+{"kind":"textbox","id":"sh/j6tovaho","slide":11,"text":"series-level resampling","textPreview":"series-level resampling","textChars":23,"textLines":1,"bbox":[827,524,289,20]}
+{"kind":"image","id":"im/9w3m94fu","slide":11,"name":"","geometry":"roundRect","alt":"FROC bootstrap confidence interval","bbox":[68,150,690,448]}
+{"kind":"notes","id":"nt/8ergif","slide":11,"text":"说明为什么按 series 重采样：同一 CT 内候选点不是独立样本。"}
+{"kind":"slide","id":"sl/e20v2l","slide":12,"title":"11 创新与贡献","textShapes":12}
+{"kind":"textbox","id":"sh/zupwb2hw","slide":12,"text":"11 创新与贡献","textPreview":"11 创新与贡献","textChars":8,"textLines":1,"bbox":[62,30,420,26]}
+{"kind":"textbox","id":"sh/sfil0rqd","slide":12,"text":"创新点集中在可复现闭环，而不是空泛地堆模型名","textPreview":"创新点集中在可复现闭环，而不是空泛地堆模型名","textChars":22,"textLines":1,"bbox":[62,62,880,55]}
+{"kind":"shape","id":"sh/h0fepkzu","slide":12,"bbox":[62,126,74,5]}
+{"kind":"textbox","id":"sh/al87ed8b","slide":12,"text":"数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI","textPreview":"数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI","textChars":52,"textLines":1,"bbox":[62,684,980,18]}
+{"kind":"textbox","id":"sh/z61032ls","slide":12,"text":"12","textPreview":"12","textChars":2,"textLines":1,"bbox":[1170,680,44,22]}
+{"kind":"shape","id":"sh/orytsvu9","slide":12,"bbox":[90,168,465,132]}
+{"kind":"textbox","id":"sh/hcrmhk3q","slide":12,"text":"闭环系统","textPreview":"闭环系统","textChars":4,"textLines":1,"bbox":[114,192,200,34]}
+{"kind":"textbox","id":"sh/6xkf6dcb","slide":12,"text":"检测、标注、复核、随访建议与实验记录贯通","textPreview":"检测、标注、复核、随访建议与实验记录贯通","textChars":20,"textLines":1,"bbox":[114,238,390,42]}
+{"kind":"shape","id":"sh/zed8v6ps","slide":12,"bbox":[640,168,465,132]}
+{"kind":"textbox","id":"sh/n29gr2p8","slide":12,"text":"科研评估","textPreview":"科研评估","textChars":4,"textLines":1,"bbox":[664,192,200,34]}
+{"kind":"textbox","id":"sh/yhgn29gr","slide":12,"text":"LUNA16-style FROC/CPM、分区验证、bootstrap CI","textPreview":"LUNA16-style FROC/CPM、分区验证、bootstrap CI","textChars":39,"textLines":1,"bbox":[664,238,390,42]}
+{"kind":"shape","id":"sh/58z25kb6","slide":12,"bbox":[90,358,465,132]}
+{"kind":"textbox","id":"sh/gn29gr2p","slide":12,"text":"工程能力","textPreview":"工程能力","textChars":4,"textLines":1,"bbox":[114,382,200,34]}
+{"kind":"textbox","id":"sh/nuxc3ylc","slide":12,"text":"流式 candidates_V2 评分、断点续跑、NMS sweep","textPreview":"流式 candidates_V2 评分、断点续跑、NMS sweep","textChars":34,"textLines":1,"bbox":[114,428,390,42]}
+{"kind":"shape","id":"sh/y90je9cv","slide":12,"bbox":[640,358,465,132]}
+{"kind":"textbox","id":"sh/5wjudg7a","slide":12,"text":"安全边界","textPreview":"安全边界","textChars":4,"textLines":1,"bbox":[664,382,200,34]}
+{"kind":"textbox","id":"sh/gbq1oryt","slide":12,"text":"Agent 输出缺失字段提示与审计记录","textPreview":"Agent 输出缺失字段提示与审计记录","textChars":19,"textLines":1,"bbox":[664,428,390,42]}
+{"kind":"notes","id":"nt/e20v2l","slide":12,"text":"这一页把创新点写成可验证产物，避免答辩时被问住。"}
+{"kind":"slide","id":"sl/xfa8b9","slide":13,"title":"12 局限与路线","textShapes":7}
+{"kind":"textbox","id":"sh/s72x4nap","slide":13,"text":"12 局限与路线","textPreview":"12 局限与路线","textChars":8,"textLines":1,"bbox":[62,30,420,26]}
+{"kind":"textbox","id":"sh/3m94fu18","slide":13,"text":"结题材料应主动承认边界，并给出下一步实验路线","textPreview":"结题材料应主动承认边界，并给出下一步实验路线","textChars":22,"textLines":1,"bbox":[62,62,880,55]}
+{"kind":"shape","id":"sh/a5gbq1or","slide":13,"bbox":[62,126,74,5]}
+{"kind":"textbox","id":"sh/h4byhgn2","slide":13,"text":"数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI","textPreview":"数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI","textChars":52,"textLines":1,"bbox":[62,684,980,18]}
+{"kind":"textbox","id":"sh/sji5snel","slide":13,"text":"13","textPreview":"13","textChars":2,"textLines":1,"bbox":[1170,680,44,22]}
+{"kind":"textbox","id":"sh/3ylc7u54","slide":13,"text":"• 当前公共验证为 LUNA16 subset0，不是完整 888 CT 官方提交成绩。\n• candidates_V2 桥接仍不等同于端到端 VNet+FPRED 全流程官方评估。\n• 低 FP/scan 区间 CI 较宽，需扩展到 subset1/subset2，并进行固定 10 mm 外部验证。\n• 下一步建议：hard negative mining、概率校准、更多子集验证、消融实验和最终论文格式化。","textPreview":"• 当前公共验证为 LUNA16 subset0，不是完整 888 CT 官方提交成绩。 | • candidates_V2 桥接仍不等同于端到端 VNet+FPRED 全流程官方评估。 | • 低 FP/scan 区间 CI 较宽，需扩展到 subset1/subset2...","textChars":206,"textLines":4,"bbox":[90,168,760,290]}
+{"kind":"shape","id":"sh/adsji5sn","slide":13,"bbox":[910,170,230,260]}
+{"kind":"textbox","id":"sh/hgn29gr2","slide":13,"text":"答辩口径","textPreview":"答辩口径","textChars":4,"textLines":1,"bbox":[938,200,170,34]}
+{"kind":"textbox","id":"sh/svu9knih","slide":13,"text":"我们已经完成可复现实验闭环，下一阶段目标是从 subset0 扩展到多子集固定验证。","textPreview":"我们已经完成可复现实验闭环，下一阶段目标是从 subset0 扩展到多子集固定验证。","textChars":42,"textLines":1,"bbox":[938,256,150,124]}
+{"kind":"notes","id":"nt/xfa8b9","slide":13,"text":"有边界反而更可信。把局限讲成路线，不讲成失败。"}
+{"kind":"slide","id":"sl/ml1esw","slide":14,"title":"13 汇报结构","textShapes":16}
+{"kind":"textbox","id":"sh/9gr2p8nq","slide":14,"text":"13 汇报结构","textPreview":"13 汇报结构","textChars":7,"textLines":1,"bbox":[62,30,420,26]}
+{"kind":"textbox","id":"sh/2p8nqxs7","slide":14,"text":"一周汇报建议：先展示系统，再用三张证据图压实结果","textPreview":"一周汇报建议：先展示系统，再用三张证据图压实结果","textChars":24,"textLines":1,"bbox":[62,62,880,55]}
+{"kind":"shape","id":"sh/ra5gbq1o","slide":14,"bbox":[62,126,74,5]}
+{"kind":"textbox","id":"sh/kjm1cfa9","slide":14,"text":"数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI","textPreview":"数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI","textChars":52,"textLines":1,"bbox":[62,684,980,18]}
+{"kind":"textbox","id":"sh/94fu18jq","slide":14,"text":"14","textPreview":"14","textChars":2,"textLines":1,"bbox":[1170,680,44,22]}
+{"kind":"shape","id":"sh/2hwfyxob","slide":14,"bbox":[96,160,960,78]}
+{"kind":"textbox","id":"sh/r2p8nqxs","slide":14,"text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[124,178,42,34]}
+{"kind":"textbox","id":"sh/kb6xkf6d","slide":14,"text":"系统演示","textPreview":"系统演示","textChars":4,"textLines":1,"bbox":[190,174,190,32]}
+{"kind":"textbox","id":"sh/9w3m94fu","slide":14,"text":"上传 CT、查看候选、医生复核、Agent 建议","textPreview":"上传 CT、查看候选、医生复核、Agent 建议","textChars":24,"textLines":1,"bbox":[410,178,560,30]}
+{"kind":"shape","id":"sh/xczed8v6","slide":14,"bbox":[96,264,960,78]}
+{"kind":"textbox","id":"sh/8v6psfil","slide":14,"text":"2","textPreview":"2","textChars":1,"textLines":1,"bbox":[124,282,42,34]}
+{"kind":"textbox","id":"sh/fa9w3m94","slide":14,"text":"本地闭环","textPreview":"本地闭环","textChars":4,"textLines":1,"bbox":[190,278,190,32]}
+{"kind":"textbox","id":"sh/qpg3ex0n","slide":14,"text":"3 cases / 607 slices / review-proxy evidence","textPreview":"3 cases / 607 slices / review-proxy evidence","textChars":44,"textLines":1,"bbox":[410,282,560,30]}
+{"kind":"shape","id":"sh/x4nap4r6","slide":14,"bbox":[96,368,960,78]}
+{"kind":"textbox","id":"sh/8jqh0fep","slide":14,"text":"3","textPreview":"3","textChars":1,"textLines":1,"bbox":[124,386,42,34]}
+{"kind":"textbox","id":"sh/fyxobm58","slide":14,"text":"公开验证","textPreview":"公开验证","textChars":4,"textLines":1,"bbox":[190,382,190,32]}
+{"kind":"textbox","id":"sh/qd4vmtwr","slide":14,"text":"FPRED AUC、subset0 FROC、split-valid NMS","textPreview":"FPRED AUC、subset0 FROC、split-valid NMS","textChars":38,"textLines":1,"bbox":[410,386,560,30]}
+{"kind":"shape","id":"sh/xs72x4na","slide":14,"bbox":[96,472,960,78]}
+{"kind":"textbox","id":"sh/87ed8bat","slide":14,"text":"4","textPreview":"4","textChars":1,"textLines":1,"bbox":[124,490,42,34]}
+{"kind":"textbox","id":"sh/4fu18jqh","slide":14,"text":"结题提交","textPreview":"结题提交","textChars":4,"textLines":1,"bbox":[190,486,190,32]}
+{"kind":"textbox","id":"sh/x0nuxc3y","slide":14,"text":"报告、PPT、实验索引、脚本、图表、系统说明","textPreview":"报告、PPT、实验索引、脚本、图表、系统说明","textChars":22,"textLines":1,"bbox":[410,490,560,30]}
+{"kind":"notes","id":"nt/ml1esw","slide":14,"text":"这页可以直接作为下周汇报排练提纲。"}
+{"kind":"slide","id":"sl/h9458w","slide":15,"title":"14 提交包","textShapes":14}
+{"kind":"textbox","id":"sh/5wjudg7a","slide":15,"text":"14 提交包","textPreview":"14 提交包","textChars":6,"textLines":1,"bbox":[62,30,420,26]}
+{"kind":"textbox","id":"sh/y90je9cv","slide":15,"text":"结题提交清单：先补齐可交付物，再继续冲论文","textPreview":"结题提交清单：先补齐可交付物，再继续冲论文","textChars":21,"textLines":1,"bbox":[62,62,880,55]}
+{"kind":"shape","id":"sh/nuxc3ylc","slide":15,"bbox":[62,126,74,5]}
+{"kind":"textbox","id":"sh/gn29gr2p","slide":15,"text":"数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI","textPreview":"数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI","textChars":52,"textLines":1,"bbox":[62,684,980,18]}
+{"kind":"textbox","id":"sh/58z25kb6","slide":15,"text":"15","textPreview":"15","textChars":2,"textLines":1,"bbox":[1170,680,44,22]}
+{"kind":"textbox","id":"sh/yhgn29gr","slide":15,"text":"• 结题报告：系统背景、方法、实验、创新点、贡献分工、局限与下一步。\n• 答辩 PPT：本文件，可按学校模板继续替换封面和页脚。\n• 演示材料：Flask 系统启动说明、病例演示流程、截图或录屏。\n• 实验附件：docs/world_frontier/experiment_index.md、核心 CSV/JSON、FROC 图、CI 图。\n• 论文预稿：现有中文投稿预稿继续按 CLAIM/TRIPOD+AI 补齐披露项。","textPreview":"• 结题报告：系统背景、方法、实验、创新点、贡献分工、局限与下一步。 | • 答辩 PPT：本文件，可按学校模板继续替换封面和页脚。 | • 演示材料：Flask 系统启动说明、病例演示流程、截图或录屏。 | • 实验附件：docs/world_frontier/exper...","textChars":212,"textLines":5,"bbox":[94,164,780,330]}
+{"kind":"shape","id":"sh/n29gr2p8","slide":15,"bbox":[928,174,260,118]}
+{"kind":"shape","id":"sh/czed8v6p","slide":15,"bbox":[928,174,7,118]}
+{"kind":"textbox","id":"sh/5kb6xkf6","slide":15,"text":"PPT + 报告","textPreview":"PPT + 报告","textChars":8,"textLines":1,"bbox":[950,192,224,42]}
+{"kind":"textbox","id":"sh/x4nap4r6","slide":15,"text":"当前优先级","textPreview":"当前优先级","textChars":5,"textLines":1,"bbox":[950,236,224,24]}
+{"kind":"textbox","id":"sh/8jqh0fep","slide":15,"text":"半个月截止","textPreview":"半个月截止","textChars":5,"textLines":1,"bbox":[950,262,224,20]}
+{"kind":"shape","id":"sh/fyxobm58","slide":15,"bbox":[928,310,260,118]}
+{"kind":"shape","id":"sh/qd4vmtwr","slide":15,"bbox":[928,310,7,118]}
+{"kind":"textbox","id":"sh/xczed8v6","slide":15,"text":"55 tests","textPreview":"55 tests","textChars":8,"textLines":1,"bbox":[950,328,224,42]}
+{"kind":"textbox","id":"sh/8v6psfil","slide":15,"text":"证据底座","textPreview":"证据底座","textChars":4,"textLines":1,"bbox":[950,372,224,24]}
+{"kind":"textbox","id":"sh/fa9w3m94","slide":15,"text":"最新测试全部通过","textPreview":"最新测试全部通过","textChars":8,"textLines":1,"bbox":[950,398,224,20]}
+{"kind":"shape","id":"sh/qpg3ex0n","slide":15,"bbox":[928,446,260,118]}
+{"kind":"shape","id":"sh/1gvy90je","slide":15,"bbox":[928,446,7,118]}
+{"kind":"textbox","id":"sh/8z25kb6x","slide":15,"text":"讲稿","textPreview":"讲稿","textChars":2,"textLines":1,"bbox":[950,464,224,42]}
+{"kind":"textbox","id":"sh/83itgfml","slide":15,"text":"下一产物","textPreview":"下一产物","textChars":4,"textLines":1,"bbox":[950,508,224,24]}
+{"kind":"textbox","id":"sh/xobm58z2","slide":15,"text":"按 8-10 分钟压缩","textPreview":"按 8-10 分钟压缩","textChars":11,"textLines":1,"bbox":[950,534,224,20]}
+{"kind":"notes","id":"nt/h9458w","slide":15,"text":"收尾要让评委感觉项目有交付、有实验、有边界、有下一步。"}

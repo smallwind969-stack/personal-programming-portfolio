@@ -1,0 +1,110 @@
+[
+  {
+    "resultId": "mock-result-001",
+    "recommendationType": "rd_experiment_suggestion",
+    "researchUseOnly": true,
+    "research_use_only": true,
+    "disclaimer": "内部研发实验建议。本方案用于商品概念、打样沟通和验证计划生成，不作为可直接上市的最终食品配方。",
+    "applicationName": "益生元营养粉",
+    "createdAt": "2026-06-07T00:00:00Z",
+    "sourceType": "mock",
+    "candidates": [
+      {
+        "candidateId": "candidate-001",
+        "candidateName": "AKK 纤维饱腹营养粉方案",
+        "composition": [
+          {
+            "productId": "akk-postbiotic-powder",
+            "productName": "AKK 后生元粉末",
+            "ratioPercent": 38,
+            "role": "后生元核心组分，用于 AKK 概念识别和标志物验证"
+          },
+          {
+            "productId": "akk-fiber-complex",
+            "productName": "AKK 纤维复配物",
+            "ratioPercent": 62,
+            "role": "粉体结构、饱腹感和复水口感支撑组分"
+          }
+        ],
+        "companionIngredients": [
+          {
+            "ingredientId": "oat-beta-glucan",
+            "ingredientName": "燕麦β-葡聚糖",
+            "category": "膳食纤维",
+            "suggestedUsage": "0.5%-3.0%",
+            "purpose": "增强饱腹感、复水口感和营养粉结构表达",
+            "riskNote": "高添加量可能影响复水速度和黏度"
+          }
+        ],
+        "predictions": [
+          {
+            "predictionId": "pred-gut-health-fit",
+            "targetName": "肠道健康概念适配性",
+            "predictedValue": "较高",
+            "confidenceScore": 0.74,
+            "explanation": "AKK 后生元与纤维复配方向匹配，适合作为营养粉肠道健康概念配方的起点。"
+          },
+          {
+            "predictionId": "pred-stability-risk",
+            "targetName": "粉体加工稳定性",
+            "predictedValue": "中",
+            "confidenceScore": 0.67,
+            "explanation": "建议重点开展复水性、黏度、粉体流动性和关键标志物保留验证。"
+          }
+        ],
+        "confidenceScore": 0.7,
+        "confidenceLevel": "medium",
+        "riskItems": [
+          {
+            "riskId": "sensory-impact",
+            "riskName": "感官影响",
+            "riskLevel": "medium",
+            "description": "AKK 原料和纤维体系可能影响底味、粉感或饮用口感。",
+            "mitigationSuggestion": "进行 0.5%-2.0% 梯度感官评估。"
+          },
+          {
+            "riskId": "viscosity-risk",
+            "riskName": "黏度风险",
+            "riskLevel": "medium",
+            "description": "较高纤维添加量可能影响饮用体验。",
+            "mitigationSuggestion": "控制添加比例并开展复水黏度测试。"
+          }
+        ],
+        "validationMetrics": [
+          {
+            "metricId": "active-marker-retention",
+            "metricName": "关键标志物保留率",
+            "methodSuggestion": "热处理或冲调前后对比检测标志物保留率。",
+            "expectedRange": "首轮记录基线",
+            "priority": "required"
+          },
+          {
+            "metricId": "rehydration-time",
+            "metricName": "复水时间",
+            "methodSuggestion": "记录标准搅拌条件下完全分散时间。",
+            "expectedRange": "<= 60s",
+            "priority": "recommended"
+          }
+        ],
+        "experimentSuggestions": [
+          "开展 100g 小样混合均匀性测试。",
+          "进行复水性、黏度和感官初筛。",
+          "记录标志物保留率并与空白样比较。"
+        ],
+        "productAdvantages": [
+          "适合营养粉和代餐方向的肠道健康概念表达。",
+          "纤维复配物可增强粉体结构和饱腹感卖点。",
+          "后生元粉末便于形成 AKK 差异化故事。"
+        ],
+        "upgradeSuggestions": [
+          "若复水速度偏慢，可优化粉体粒径和纤维比例。",
+          "若粉感偏重，可调整蛋白基底和风味遮蔽体系。",
+          "若成本偏高，可保留后生元主线并降低高成本协同辅料。"
+        ],
+        "knowledgeReferences": [],
+        "agentTrace": [],
+        "approvalStatus": "pending_research_review"
+      }
+    ]
+  }
+]

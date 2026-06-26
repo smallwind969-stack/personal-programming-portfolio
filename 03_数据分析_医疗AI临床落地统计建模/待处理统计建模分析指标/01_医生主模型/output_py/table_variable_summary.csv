@@ -1,0 +1,13 @@
+variable_name,mean,std,min,max,missing_n
+HospitalGrade,1.795,0.9039,1.0,4.0,0
+CaseVolume,2.97,0.9559,1.0,4.0,0
+AIExperience,3.05,1.0112,1.0,4.0,0
+PainIndex,4.088,0.4531,2.6,5.0,0
+ValueIndex,3.829,0.4905,2.6,5.0,0
+AdoptTop2,0.31,0.4637,0.0,1.0,0
+TrustGap,0.89,0.3137,0.0,1.0,0
+LiabilityGap,0.505,0.5012,0.0,1.0,0
+DataGap,0.745,0.437,0.0,1.0,0
+ManageGap,0.975,0.1565,0.0,1.0,0
+WorkflowGap,0.7,0.4594,0.0,1.0,0
+MAI_LGI_entropy,0.6384,0.26,0.0961,1.0,0

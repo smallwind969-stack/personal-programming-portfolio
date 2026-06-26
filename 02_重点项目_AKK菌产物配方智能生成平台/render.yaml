@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: akk-formula-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./apps/api/Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    envVars:
+      - key: API_PORT
+        value: 8000
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: CORS_ORIGIN_REGEX
+        value: "^(https://[a-z0-9-]+\\.vercel\\.app|http://localhost:3000|http://127\\.0\\.0\\.1:3000)$"
+      - key: LOCAL_LLM_ENABLED
+        value: "false"

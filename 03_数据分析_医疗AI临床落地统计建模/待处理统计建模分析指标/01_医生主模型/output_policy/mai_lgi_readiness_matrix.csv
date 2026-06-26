@@ -1,0 +1,5 @@
+组合类型,医生端判断,医院端判断,政策含义,推广策略
+Low MAI-LGI × High readiness,MAI-LGI <= 0.548 (落地阻力低),高准备度 (HAIRI >= p70),医生阻力低、医院条件好,优先示范试点，形成真实世界应用样板
+High MAI-LGI × High readiness,MAI-LGI > 0.548 (落地阻力高),高准备度 (HAIRI >= p70),医院条件好但医生阻力大,先治理责任边界、流程嵌入和培训机制，再推进常态化应用
+Low MAI-LGI × Low readiness,MAI-LGI <= 0.548 (落地阻力低),低准备度 (HAIRI < p30),医生阻力低但医院条件不足,补齐信息化接口、设备、培训和管理基础，开展轻量化试点
+High MAI-LGI × Low readiness,MAI-LGI > 0.548 (落地阻力高),低准备度 (HAIRI < p30),医生阻力大且医院条件不足,暂缓全面推广，以科普、培训和制度建设为主

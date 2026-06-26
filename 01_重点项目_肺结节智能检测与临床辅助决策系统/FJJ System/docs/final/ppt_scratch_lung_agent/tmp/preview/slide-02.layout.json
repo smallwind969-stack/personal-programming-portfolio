@@ -1,0 +1,1140 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/tmfju8",
+    "id": "tmfju8",
+    "slide": 2,
+    "layoutId": "7a9c65b9-4e12-4406-b6d9-2141cb73b1c7",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "93b4b8a3-2d47-49f2-9a85-7450dadbf2dd",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#F7FAFC",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "7a9c65b9-4e12-4406-b6d9-2141cb73b1c7",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "93b4b8a3-2d47-49f2-9a85-7450dadbf2dd",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "93b4b8a3-2d47-49f2-9a85-7450dadbf2dd",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/g3ex0nux",
+      "id": "1",
+      "bbox": [
+        62,
+        30,
+        420,
+        26
+      ],
+      "geometry": "rect",
+      "text": "01 项目定位",
+      "textPreview": "01 项目定位",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#0E766E",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "01 项目定位"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "01 项目定位",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#0E766E",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "01 项目定位",
+              "fontSize": 14,
+              "color": "#0E766E",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nih4byhg",
+      "id": "2",
+      "bbox": [
+        62,
+        62,
+        880,
+        55
+      ],
+      "geometry": "rect",
+      "text": "项目从“演示系统”升级为可复现实验闭环",
+      "textPreview": "项目从“演示系统”升级为可复现实验闭环",
+      "resolvedFontSize": 34,
+      "resolvedTextStyle": {
+        "fontSize": 34,
+        "typeface": "+mn-lt",
+        "color": "#12395A",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "项目从“演示系统”升级为可复现实验闭环"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "项目从“演示系统”升级为可复现实验闭环",
+          "resolvedTextStyle": {
+            "fontSize": 34,
+            "color": "#12395A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "项目从“演示系统”升级为可复现实验闭环",
+              "fontSize": 34,
+              "color": "#12395A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/yxobm58z",
+      "id": "3",
+      "bbox": [
+        62,
+        126,
+        74,
+        5
+      ],
+      "geometry": "rect",
+      "fillColor": "#D99027",
+      "lineColor": "#D99027",
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9cvixcze",
+      "id": "4",
+      "bbox": [
+        62,
+        684,
+        980,
+        18
+      ],
+      "geometry": "rect",
+      "text": "数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI",
+      "textPreview": "数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "+mn-lt",
+        "color": "#5B6975",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI",
+          "resolvedTextStyle": {
+            "fontSize": 10,
+            "color": "#5B6975",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI",
+              "fontSize": 10,
+              "color": "#5B6975",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gr2p8nqx",
+      "id": "5",
+      "bbox": [
+        1170,
+        680,
+        44,
+        22
+      ],
+      "geometry": "rect",
+      "text": "02",
+      "textPreview": "02",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "fontSize": 13,
+        "typeface": "+mn-lt",
+        "color": "#12395A",
+        "bold": true,
+        "alignment": "right",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "02"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "02",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "color": "#12395A",
+            "bold": true,
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "02",
+              "fontSize": 13,
+              "color": "#12395A",
+              "bold": true,
+              "alignment": "right"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/r65wjudg",
+      "id": "6",
+      "bbox": [
+        62,
+        168,
+        690,
+        280
+      ],
+      "geometry": "rect",
+      "text": "• 临床场景：胸部 CT 中肺结节候选点多，低假阳性区间的检出稳定性是关键。\n• 工程场景：需要把检测、标注、医生复核、随访建议和实验记录接成闭环。\n• 结题策略：用本地病例证明系统链路，用 LUNA16 subset0 证明公开数据上的可复现实验能力。\n• 科研边界：所有性能结论绑定数据分区、候选池和评估脚本，不把阶段性结果包装成临床结论。",
+      "textPreview": "• 临床场景：胸部 CT 中肺结节候选点多，低假阳性区间的检出稳定性是关键。 | • 工程场景：需要把检测、标注、医生复核、随访建议和实验记录接成闭环。 | • 结题策略：用本地病例证明系统链路，用 LUNA16 subset0 证明公开数据上的可复现实验能力。 | • 科...",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "+mn-lt",
+        "color": "#17212B",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 9,
+        "lines": [
+          {
+            "index": 1,
+            "text": "• 临床场景：胸部 CT"
+          },
+          {
+            "index": 2,
+            "text": "中肺结节候选点多，低假阳性区间的检出稳定性是关键。"
+          },
+          {
+            "index": 3,
+            "text": "•"
+          },
+          {
+            "index": 4,
+            "text": "工程场景：需要把检测、标注、医生复核、随访建议和实验记录接成闭环。"
+          },
+          {
+            "index": 5,
+            "text": "• 结题策略：用本地病例证明系统链路，用 LUNA16 subset0"
+          },
+          {
+            "index": 6,
+            "text": "证明公开数据上的可复现实验能力。"
+          },
+          {
+            "index": 7,
+            "text": "•"
+          },
+          {
+            "index": 8,
+            "text": "科研边界：所有性能结论绑定数据分区、候选池和评估脚本，不把阶段性结"
+          },
+          {
+            "index": 9,
+            "text": "果包装成临床结论。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "• 临床场景：胸部 CT 中肺结节候选点多，低假阳性区间的检出稳定性是关键。",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "color": "#17212B",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• 临床场景：胸部 CT 中肺结节候选点多，低假阳性区间的检出稳定性是关键。",
+              "fontSize": 20,
+              "color": "#17212B",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "• 工程场景：需要把检测、标注、医生复核、随访建议和实验记录接成闭环。",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "color": "#17212B",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• 工程场景：需要把检测、标注、医生复核、随访建议和实验记录接成闭环。",
+              "fontSize": 20,
+              "color": "#17212B",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 3,
+          "text": "• 结题策略：用本地病例证明系统链路，用 LUNA16 subset0 证明公开数据上的可复现实验能力。",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "color": "#17212B",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• 结题策略：用本地病例证明系统链路，用 LUNA16 subset0 证明公开数据上的可复现实验能力。",
+              "fontSize": 20,
+              "color": "#17212B",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 4,
+          "text": "• 科研边界：所有性能结论绑定数据分区、候选池和评估脚本，不把阶段性结果包装成临床结论。",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "color": "#17212B",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• 科研边界：所有性能结论绑定数据分区、候选池和评估脚本，不把阶段性结果包装成临床结论。",
+              "fontSize": 20,
+              "color": "#17212B",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ylc7u54z",
+      "id": "7",
+      "bbox": [
+        805,
+        166,
+        320,
+        118
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#DCE5EC",
+      "lineWidth": 1
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/90je9cvi",
+      "id": "8",
+      "bbox": [
+        805,
+        166,
+        7,
+        118
+      ],
+      "geometry": "rect",
+      "fillColor": "#0E766E",
+      "lineColor": "#0E766E",
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gfmlkjm1",
+      "id": "9",
+      "bbox": [
+        827,
+        184,
+        284,
+        42
+      ],
+      "geometry": "rect",
+      "text": "3 cases",
+      "textPreview": "3 cases",
+      "resolvedFontSize": 32,
+      "resolvedTextStyle": {
+        "fontSize": 32,
+        "typeface": "+mn-lt",
+        "color": "#12395A",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "3 cases"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "3 cases",
+          "resolvedTextStyle": {
+            "fontSize": 32,
+            "color": "#12395A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "3 cases",
+              "fontSize": 32,
+              "color": "#12395A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/65wjudg7",
+      "id": "10",
+      "bbox": [
+        827,
+        228,
+        284,
+        24
+      ],
+      "geometry": "rect",
+      "text": "本地病例闭环",
+      "textPreview": "本地病例闭环",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "fontSize": 17,
+        "typeface": "+mn-lt",
+        "color": "#17212B",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "本地病例闭环"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "本地病例闭环",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#17212B",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "本地病例闭环",
+              "fontSize": 17,
+              "color": "#17212B",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zqtcj6to",
+      "id": "11",
+      "bbox": [
+        827,
+        254,
+        284,
+        20
+      ],
+      "geometry": "rect",
+      "text": "607 DICOM slices",
+      "textPreview": "607 DICOM slices",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "+mn-lt",
+        "color": "#5B6975",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "607 DICOM slices"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "607 DICOM slices",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "color": "#5B6975",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "607 DICOM slices",
+              "fontSize": 12,
+              "color": "#5B6975",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/obm58z25",
+      "id": "12",
+      "bbox": [
+        805,
+        300,
+        320,
+        118
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#DCE5EC",
+      "lineWidth": 1
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hwfyxobm",
+      "id": "13",
+      "bbox": [
+        805,
+        300,
+        7,
+        118
+      ],
+      "geometry": "rect",
+      "fillColor": "#3AA7C7",
+      "lineColor": "#3AA7C7",
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/6xkf6dcb",
+      "id": "14",
+      "bbox": [
+        827,
+        318,
+        284,
+        42
+      ],
+      "geometry": "rect",
+      "text": "11 nodules",
+      "textPreview": "11 nodules",
+      "resolvedFontSize": 32,
+      "resolvedTextStyle": {
+        "fontSize": 32,
+        "typeface": "+mn-lt",
+        "color": "#12395A",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "11 nodules"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "11 nodules",
+          "resolvedTextStyle": {
+            "fontSize": 32,
+            "color": "#12395A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "11 nodules",
+              "fontSize": 32,
+              "color": "#12395A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zed8v6ps",
+      "id": "15",
+      "bbox": [
+        827,
+        362,
+        284,
+        24
+      ],
+      "geometry": "rect",
+      "text": "医生复核代理参考",
+      "textPreview": "医生复核代理参考",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "fontSize": 17,
+        "typeface": "+mn-lt",
+        "color": "#17212B",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "医生复核代理参考"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "医生复核代理参考",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#17212B",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "医生复核代理参考",
+              "fontSize": 17,
+              "color": "#17212B",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/oza1gvy9",
+      "id": "16",
+      "bbox": [
+        827,
+        388,
+        284,
+        20
+      ],
+      "geometry": "rect",
+      "text": "7 model + 4 doctor-added",
+      "textPreview": "7 model + 4 doctor-added",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "+mn-lt",
+        "color": "#5B6975",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "7 model + 4 doctor-added"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "7 model + 4 doctor-added",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "color": "#5B6975",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "7 model + 4 doctor-added",
+              "fontSize": 12,
+              "color": "#5B6975",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hk3q5o7q",
+      "id": "17",
+      "bbox": [
+        805,
+        434,
+        320,
+        118
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#DCE5EC",
+      "lineWidth": 1
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/al87ed8b",
+      "id": "18",
+      "bbox": [
+        805,
+        434,
+        7,
+        118
+      ],
+      "geometry": "rect",
+      "fillColor": "#D99027",
+      "lineColor": "#D99027",
+      "lineWidth": 0
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/z61032ls",
+      "id": "19",
+      "bbox": [
+        827,
+        452,
+        284,
+        42
+      ],
+      "geometry": "rect",
+      "text": "89 CT",
+      "textPreview": "89 CT",
+      "resolvedFontSize": 32,
+      "resolvedTextStyle": {
+        "fontSize": 32,
+        "typeface": "+mn-lt",
+        "color": "#12395A",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "89 CT"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "89 CT",
+          "resolvedTextStyle": {
+            "fontSize": 32,
+            "color": "#12395A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "89 CT",
+              "fontSize": 32,
+              "color": "#12395A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bi9s36hc",
+      "id": "20",
+      "bbox": [
+        827,
+        496,
+        284,
+        24
+      ],
+      "geometry": "rect",
+      "text": "公开 benchmark 子集",
+      "textPreview": "公开 benchmark 子集",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "fontSize": 17,
+        "typeface": "+mn-lt",
+        "color": "#17212B",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "公开 benchmark 子集"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "公开 benchmark 子集",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#17212B",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "公开 benchmark 子集",
+              "fontSize": 17,
+              "color": "#17212B",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ixczed8v",
+      "id": "21",
+      "bbox": [
+        827,
+        522,
+        284,
+        20
+      ],
+      "geometry": "rect",
+      "text": "LUNA16 subset0",
+      "textPreview": "LUNA16 subset0",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "+mn-lt",
+        "color": "#5B6975",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "LUNA16 subset0"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "LUNA16 subset0",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "color": "#5B6975",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "LUNA16 subset0",
+              "fontSize": 12,
+              "color": "#5B6975",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

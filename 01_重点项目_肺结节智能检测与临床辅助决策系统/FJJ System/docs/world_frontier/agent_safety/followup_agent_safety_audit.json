@@ -1,0 +1,94 @@
+[
+  {
+    "patient_id": "包书木",
+    "audit": {
+      "passed": true,
+      "violations": [],
+      "has_safety_note": true
+    },
+    "risk_level": "high",
+    "statistics": {
+      "total_nodules": 9,
+      "model_count": 6,
+      "doctor_added_count": 3,
+      "doctor_confirmed_count": 9,
+      "high_count": 1,
+      "medium_count": 8,
+      "low_count": 0
+    },
+    "missing_information": [
+      "患者年龄",
+      "患者性别",
+      "吸烟史",
+      "既往CT对比",
+      "既往肿瘤史",
+      "当前症状",
+      "毛刺、分叶、胸膜牵拉、空泡征、钙化等影像征象",
+      "既往CT对比及结节增长情况",
+      "医生对原始薄层CT的人工复核结论"
+    ],
+    "recommendation_count": 9,
+    "guideline_frameworks": [
+      "Fleischner 2017"
+    ]
+  },
+  {
+    "patient_id": "曾玉香",
+    "audit": {
+      "passed": true,
+      "violations": [],
+      "has_safety_note": true
+    },
+    "risk_level": "low",
+    "statistics": {
+      "total_nodules": 0,
+      "model_count": 0,
+      "doctor_added_count": 0,
+      "doctor_confirmed_count": 0,
+      "high_count": 0,
+      "medium_count": 0,
+      "low_count": 0
+    },
+    "missing_information": [
+      "患者年龄",
+      "患者性别",
+      "吸烟史",
+      "既往CT对比",
+      "既往肿瘤史",
+      "当前症状",
+      "医生对原始影像的人工复核结论",
+      "结节最大径、类型和既往CT对比"
+    ],
+    "recommendation_count": 0,
+    "guideline_frameworks": []
+  },
+  {
+    "patient_id": "蔡惠平",
+    "audit": {
+      "passed": true,
+      "violations": [],
+      "has_safety_note": true
+    },
+    "risk_level": "medium",
+    "statistics": {
+      "total_nodules": 2,
+      "model_count": 1,
+      "doctor_added_count": 1,
+      "doctor_confirmed_count": 2,
+      "high_count": 0,
+      "medium_count": 2,
+      "low_count": 0
+    },
+    "missing_information": [
+      "结节最大径",
+      "结节类型：实性、磨玻璃或部分实性",
+      "毛刺、分叶、胸膜牵拉、空泡征、钙化等影像征象",
+      "既往CT对比及结节增长情况",
+      "医生对原始薄层CT的人工复核结论"
+    ],
+    "recommendation_count": 2,
+    "guideline_frameworks": [
+      "Fleischner 2017"
+    ]
+  }
+]

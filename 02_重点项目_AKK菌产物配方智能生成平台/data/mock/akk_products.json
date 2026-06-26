@@ -1,0 +1,152 @@
+[
+  {
+    "productId": "akk-postbiotic-powder",
+    "productName": "AKK 后生元粉末",
+    "productCategory": "postbiotic",
+    "description": "巴氏灭活 AKK 菌体及相关结构组分，适合用于稳定性、基质兼容性和肠道健康概念方向的配方设计。",
+    "keyProperties": [
+      {
+        "propertyId": "heat-stability",
+        "propertyName": "热稳定性",
+        "propertyValue": "medium",
+        "description": "可作为热加工或巴氏处理体系中的首轮候选，但仍需确认关键标志物保留率。"
+      },
+      {
+        "propertyId": "dispersibility",
+        "propertyName": "分散性",
+        "propertyValue": "high",
+        "description": "适合粉体、乳基和轻度均质体系的初步分散假设。"
+      }
+    ],
+    "functionalAssumptions": [
+      "支持肠道屏障和后生元概念的研发验证",
+      "适合与膳食纤维、多糖或乳基产品组合评估"
+    ],
+    "recommendedApplications": ["yogurt", "nutrition_powder", "functional_beverage"],
+    "constraints": [
+      "不作为上市配方依据",
+      "需要验证热稳定性、酸性体系稳定性和感官影响"
+    ],
+    "riskItems": [
+      {
+        "riskId": "sensory-impact",
+        "riskName": "感官影响",
+        "riskLevel": "medium",
+        "description": "较高添加量可能带来底味或粉感变化。",
+        "mitigationSuggestion": "设置 0.5%-2.0% 梯度小试，记录风味、口感和外观。"
+      }
+    ],
+    "validationMetrics": [
+      {
+        "metricId": "active-marker-retention",
+        "metricName": "关键标志物保留率",
+        "methodSuggestion": "对比热处理、酸性体系或货架期前后的标志物保留。",
+        "expectedRange": "首轮记录基线，不低于内部设定阈值",
+        "priority": "required"
+      }
+    ],
+    "riskLevel": "medium",
+    "evidenceLevel": "B",
+    "sourceType": "mock"
+  },
+  {
+    "productId": "akk-metabolite-blend",
+    "productName": "AKK 代谢物组合",
+    "productCategory": "metabolite_blend",
+    "description": "AKK 相关代谢产物概念组合，适合功能饮料、乳基食品和风味协同方向的研发评估。",
+    "keyProperties": [
+      {
+        "propertyId": "water-solubility",
+        "propertyName": "水溶性",
+        "propertyValue": "high",
+        "description": "适合水相或低浊度体系的初步评估。"
+      },
+      {
+        "propertyId": "flavor-load",
+        "propertyName": "风味负载",
+        "propertyValue": "medium",
+        "description": "需要关注酸甜体系中的风味平衡和后味。"
+      }
+    ],
+    "functionalAssumptions": [
+      "适合轻负担功能饮料概念验证",
+      "可与益生元、低糖甜味体系协同评估"
+    ],
+    "recommendedApplications": ["functional_beverage", "yogurt"],
+    "constraints": [
+      "需要验证酸性体系稳定性",
+      "需要验证沉淀、浊度和风味变化"
+    ],
+    "riskItems": [
+      {
+        "riskId": "acid-stability",
+        "riskName": "酸性体系稳定性",
+        "riskLevel": "high",
+        "description": "酸性饮料或酸奶体系中可能出现稳定性下降。",
+        "mitigationSuggestion": "优先开展 pH 3.5-4.5 区间稳定性和浊度测试。"
+      }
+    ],
+    "validationMetrics": [
+      {
+        "metricId": "turbidity-change",
+        "metricName": "浊度变化",
+        "methodSuggestion": "加速条件下观察浊度、沉淀和分层变化。",
+        "expectedRange": "<= 10% change",
+        "priority": "required"
+      }
+    ],
+    "riskLevel": "high",
+    "evidenceLevel": "C",
+    "sourceType": "mock"
+  },
+  {
+    "productId": "akk-fiber-complex",
+    "productName": "AKK 纤维复配物",
+    "productCategory": "fiber_complex",
+    "description": "围绕 AKK 生长、代谢和肠道健康概念设计的膳食纤维复配物，适合营养粉、代餐和乳基质构支撑。",
+    "keyProperties": [
+      {
+        "propertyId": "matrix-support",
+        "propertyName": "基质支撑性",
+        "propertyValue": "high",
+        "description": "适合粉体、酸奶或代餐体系中的结构与口感支撑。"
+      },
+      {
+        "propertyId": "viscosity-impact",
+        "propertyName": "黏度影响",
+        "propertyValue": "medium",
+        "description": "复水或乳基体系中可能带来中等黏度变化。"
+      }
+    ],
+    "functionalAssumptions": [
+      "支持饱腹感、膳食纤维和肠道健康概念验证",
+      "适合与后生元粉末组合评估"
+    ],
+    "recommendedApplications": ["nutrition_powder", "meal_replacement", "yogurt"],
+    "constraints": [
+      "需要验证复水性",
+      "需要验证黏度、口感和胃肠耐受性"
+    ],
+    "riskItems": [
+      {
+        "riskId": "viscosity-risk",
+        "riskName": "黏度风险",
+        "riskLevel": "medium",
+        "description": "较高添加量可能影响饮用体验和灌装流动性。",
+        "mitigationSuggestion": "控制添加比例并开展复水黏度、流变和感官测试。"
+      }
+    ],
+    "validationMetrics": [
+      {
+        "metricId": "rehydration-time",
+        "metricName": "复水时间",
+        "methodSuggestion": "记录标准搅拌条件下完全分散时间。",
+        "expectedRange": "<= 60s",
+        "priority": "recommended"
+      }
+    ],
+    "riskLevel": "medium",
+    "evidenceLevel": "B",
+    "sourceType": "mock"
+  }
+]

@@ -1,0 +1,4 @@
+﻿patient_id,threshold,reference_nodules,model_predictions,tp_proxy,fp_proxy,fn_proxy,precision_proxy,recall_proxy
+包书木,0.0,9,6,6,0,3,1.0,0.6667
+曾玉香,0.0,0,0,0,0,0,0,0
+蔡惠平,0.0,2,1,1,0,1,1.0,0.5

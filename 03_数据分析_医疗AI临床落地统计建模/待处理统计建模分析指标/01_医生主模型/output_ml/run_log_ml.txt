@@ -1,0 +1,121 @@
+============================================================
+第六章：机器学习预测与医生分层画像
+运行时间: 2026-05-20 12:58:32
+定位: 探索性预测与推广分层（非临床级预测工具）
+随机种子: 42
+============================================================
+[读取成功] SPSS_MAI_LGI_entropy_dataset.csv, N=200, cols=13
+[检查通过] 全部12个变量均存在
+[数据准备] 原始N=200, 有效N=200, 阳性=62, 阴性=138, 阳性率=0.310
+
+综合指数口径 X_index: ['ValueIndex', 'PainIndex', 'AIExperience', 'CaseVolume', 'HospitalGrade', 'MAI_LGI_entropy']
+五维分解口径 X_gap: ['ValueIndex', 'PainIndex', 'AIExperience', 'CaseVolume', 'HospitalGrade', 'TrustGap', 'LiabilityGap', 'DataGap', 'ManageGap', 'WorkflowGap']
+交叉验证: RepeatedStratifiedKFold(n_splits=5, n_repeats=20)
+
+==================================================
+模型比较（综合指数口径 X_index）
+
+[交叉验证] LASSO_Logistic (特征: 6)
+  AUC=0.7499, Accuracy=0.6950, Sensitivity=0.7097, Specificity=0.6884
+  Precision=0.5057, F1=0.5906, Brier=0.2025
+
+[交叉验证] Random_Forest (特征: 6)
+  AUC=0.7683, Accuracy=0.7150, Sensitivity=0.6290, Specificity=0.7536
+  Precision=0.5342, F1=0.5778, Brier=0.1835
+
+[交叉验证] Gradient_Boosting (特征: 6)
+  AUC=0.7534, Accuracy=0.7400, Sensitivity=0.3871, Specificity=0.8986
+  Precision=0.6316, F1=0.4800, Brier=0.1794
+[输出] 01_model_comparison_metrics.csv
+[输出] fig_roc_curves.png
+[输出] fig_calibration.png
+
+==================================================
+变量重要性（全量训练）
+[输出] 02_variable_importance.csv
+[输出] fig_variable_importance.png
+
+==================================================
+SHAP分析（五维分解口径 X_gap）
+[SHAP] Gradient Boosting 已训练, 特征数=10
+[输出] fig_shap_summary.png
+[输出] fig_shap_bar.png
+[输出] 03_shap_importance.csv
+[输出] 04_shap_gap_importance.csv
+[SHAP鸿沟排序]
+  Rank 1: 责任治理鸿沟 (mean|SHAP|=0.3669)
+  Rank 2: 流程嵌入鸿沟 (mean|SHAP|=0.0999)
+  Rank 3: 数据安全鸿沟 (mean|SHAP|=0.0915)
+  Rank 4: 技术信任鸿沟 (mean|SHAP|=0.0251)
+  Rank 5: 医院管理鸿沟 (mean|SHAP|=0.0050)
+
+[补充] 完整变量SHAP重要性表
+[输出] shap_importance_full.csv
+[输出] table_shap_importance_full_cn.csv
+[补充] 五类鸿沟SHAP子表（含治理含义）
+[输出] shap_gap_importance.csv
+[输出] table_shap_gap_importance_cn.csv
+[输出] shap_summary_full_bar.png
+[输出] shap_summary_full_beeswarm.png
+[输出] shap_gap_importance_bar.png
+
+==================================================
+医生分层画像
+[分层] High=24, Medium=66, Low=110
+  [High] N=24, 实际阳性率=87.50%
+    技术信任鸿沟: 均值=0.917, 平均SHAP=-0.0016
+    责任治理鸿沟: 均值=0.042, 平均SHAP=0.4695
+    数据安全鸿沟: 均值=0.708, 平均SHAP=0.0173
+    医院管理鸿沟: 均值=1.000, 平均SHAP=-0.0019
+    流程嵌入鸿沟: 均值=0.875, 平均SHAP=0.0544
+  [Medium] N=66, 实际阳性率=51.52%
+    技术信任鸿沟: 均值=0.864, 平均SHAP=-0.0026
+    责任治理鸿沟: 均值=0.409, 平均SHAP=0.0139
+    数据安全鸿沟: 均值=0.712, 平均SHAP=0.0131
+    医院管理鸿沟: 均值=0.955, 平均SHAP=0.0053
+    流程嵌入鸿沟: 均值=0.742, 平均SHAP=0.0139
+  [Low] N=110, 实际阳性率=6.36%
+    技术信任鸿沟: 均值=0.900, 平均SHAP=-0.0027
+    责任治理鸿沟: 均值=0.664, 平均SHAP=-0.1250
+    数据安全鸿沟: 均值=0.773, 平均SHAP=-0.0073
+    医院管理鸿沟: 均值=0.982, 平均SHAP=-0.0013
+    流程嵌入鸿沟: 均值=0.636, 平均SHAP=-0.0159
+[输出] 05_segment_profile.csv
+[输出] table_segment_summary.csv
+[输出] fig_segment_distribution.png
+[输出] fig_segment_gap_means.png
+[输出] fig_shap_dependence_topgap.png (变量: 责任治理鸿沟)
+[输出] 06_predictions_with_segment.csv
+[输出] table_promotion_strategy.csv
+
+============================================================
+全部完成！输出文件列表：
+  01_model_comparison_metrics.csv
+  02_variable_importance.csv
+  03_shap_importance.csv
+  04_shap_gap_importance.csv
+  05_segment_profile.csv
+  06_predictions_with_segment.csv
+  fig_calibration.png
+  fig_roc_curves.png
+  fig_segment_distribution.png
+  fig_segment_gap_means.png
+  fig_shap_bar.png
+  fig_shap_dependence_topgap.png
+  fig_shap_summary.png
+  fig_variable_importance.png
+  shap_gap_importance.csv
+  shap_gap_importance_bar.png
+  shap_importance_full.csv
+  shap_summary_full_bar.png
+  shap_summary_full_beeswarm.png
+  table_promotion_strategy.csv
+  table_segment_summary.csv
+  table_shap_gap_importance_cn.csv
+  table_shap_importance_full_cn.csv
+
+注意事项：
+1. 本研究N≈200，结论定位为'探索性预测与推广分层'，不得作为临床级预测工具
+2. 机器学习模型用于预测和分层，不替代Logistic解释模型的机制检验
+3. MAI_LGI_entropy与五类Gap变量未同时入模，避免重复计量
+4. 交叉验证采用RepeatedStratifiedKFold(5-fold × 20 repeats)，结果更稳定

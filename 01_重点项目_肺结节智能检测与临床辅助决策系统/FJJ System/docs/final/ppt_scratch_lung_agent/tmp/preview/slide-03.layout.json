@@ -1,0 +1,1238 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/4sm2jp",
+    "id": "4sm2jp",
+    "slide": 3,
+    "layoutId": "7a9c65b9-4e12-4406-b6d9-2141cb73b1c7",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "93b4b8a3-2d47-49f2-9a85-7450dadbf2dd",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#F7FAFC",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "7a9c65b9-4e12-4406-b6d9-2141cb73b1c7",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "93b4b8a3-2d47-49f2-9a85-7450dadbf2dd",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "93b4b8a3-2d47-49f2-9a85-7450dadbf2dd",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/u9knih4b",
+      "id": "1",
+      "bbox": [
+        62,
+        30,
+        420,
+        26
+      ],
+      "geometry": "rect",
+      "text": "02 系统闭环",
+      "textPreview": "02 系统闭环",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#0E766E",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "02 系统闭环"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "02 系统闭环",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#0E766E",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "02 系统闭环",
+              "fontSize": 14,
+              "color": "#0E766E",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1032lszq",
+      "id": "2",
+      "bbox": [
+        62,
+        62,
+        880,
+        55
+      ],
+      "geometry": "rect",
+      "text": "系统架构：检测模型、人工复核与随访 Agent 进入同一工作流",
+      "textPreview": "系统架构：检测模型、人工复核与随访 Agent 进入同一工作流",
+      "resolvedFontSize": 34,
+      "resolvedTextStyle": {
+        "fontSize": 34,
+        "typeface": "+mn-lt",
+        "color": "#12395A",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "系统架构：检测模型、人工复核与随访 Agent"
+          },
+          {
+            "index": 2,
+            "text": "进入同一工作流"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "系统架构：检测模型、人工复核与随访 Agent 进入同一工作流",
+          "resolvedTextStyle": {
+            "fontSize": 34,
+            "color": "#12395A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "系统架构：检测模型、人工复核与随访 Agent 进入同一工作流",
+              "fontSize": 34,
+              "color": "#12395A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cfa9w3m9",
+      "id": "3",
+      "bbox": [
+        62,
+        126,
+        74,
+        5
+      ],
+      "geometry": "rect",
+      "fillColor": "#D99027",
+      "lineColor": "#D99027",
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/jm1cfa9w",
+      "id": "4",
+      "bbox": [
+        62,
+        684,
+        980,
+        18
+      ],
+      "geometry": "rect",
+      "text": "数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI",
+      "textPreview": "数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "+mn-lt",
+        "color": "#5B6975",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI",
+          "resolvedTextStyle": {
+            "fontSize": 10,
+            "color": "#5B6975",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI",
+              "fontSize": 10,
+              "color": "#5B6975",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/u18jqh0f",
+      "id": "5",
+      "bbox": [
+        1170,
+        680,
+        44,
+        22
+      ],
+      "geometry": "rect",
+      "text": "03",
+      "textPreview": "03",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "fontSize": 13,
+        "typeface": "+mn-lt",
+        "color": "#12395A",
+        "bold": true,
+        "alignment": "right",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "03"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "03",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "color": "#12395A",
+            "bold": true,
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "03",
+              "fontSize": 13,
+              "color": "#12395A",
+              "bold": true,
+              "alignment": "right"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1orytsvu",
+      "id": "6",
+      "bbox": [
+        88,
+        176,
+        300,
+        112
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#DCE5EC",
+      "lineWidth": 1
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/c7u54zid",
+      "id": "7",
+      "bbox": [
+        110,
+        196,
+        240,
+        34
+      ],
+      "geometry": "rect",
+      "text": "CT/DICOM",
+      "textPreview": "CT/DICOM",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "color": "#12395A",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "CT/DICOM"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "CT/DICOM",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "color": "#12395A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "CT/DICOM",
+              "fontSize": 24,
+              "color": "#12395A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nap4r65w",
+      "id": "8",
+      "bbox": [
+        110,
+        238,
+        250,
+        30
+      ],
+      "geometry": "rect",
+      "text": "病例导入与切片管理",
+      "textPreview": "病例导入与切片管理",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "fontSize": 17,
+        "typeface": "+mn-lt",
+        "color": "#5B6975",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "病例导入与切片管理"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "病例导入与切片管理",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#5B6975",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "病例导入与切片管理",
+              "fontSize": 17,
+              "color": "#5B6975",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/upwb2hwf",
+      "id": "9",
+      "bbox": [
+        460,
+        176,
+        300,
+        112
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#DCE5EC",
+      "lineWidth": 1
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/orytsvu9",
+      "id": "10",
+      "bbox": [
+        482,
+        196,
+        240,
+        34
+      ],
+      "geometry": "rect",
+      "text": "候选检测",
+      "textPreview": "候选检测",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "color": "#12395A",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "候选检测"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "候选检测",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "color": "#12395A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "候选检测",
+              "fontSize": 24,
+              "color": "#12395A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hcrmhk3q",
+      "id": "11",
+      "bbox": [
+        482,
+        238,
+        250,
+        30
+      ],
+      "geometry": "rect",
+      "text": "3D VNet 候选生成",
+      "textPreview": "3D VNet 候选生成",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "fontSize": 17,
+        "typeface": "+mn-lt",
+        "color": "#5B6975",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "3D VNet 候选生成"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "3D VNet 候选生成",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#5B6975",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "3D VNet 候选生成",
+              "fontSize": 17,
+              "color": "#5B6975",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/al87ed8b",
+      "id": "12",
+      "bbox": [
+        832,
+        176,
+        300,
+        112
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#DCE5EC",
+      "lineWidth": 1
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/z61032ls",
+      "id": "13",
+      "bbox": [
+        854,
+        196,
+        240,
+        34
+      ],
+      "geometry": "rect",
+      "text": "FPRED",
+      "textPreview": "FPRED",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "color": "#12395A",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "FPRED"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "FPRED",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "color": "#12395A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "FPRED",
+              "fontSize": 24,
+              "color": "#12395A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/sfil0rqd",
+      "id": "14",
+      "bbox": [
+        854,
+        238,
+        250,
+        30
+      ],
+      "geometry": "rect",
+      "text": "ResNet-CBAM 假阳性抑制",
+      "textPreview": "ResNet-CBAM 假阳性抑制",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "fontSize": 17,
+        "typeface": "+mn-lt",
+        "color": "#5B6975",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "ResNet-CBAM 假阳性抑制"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "ResNet-CBAM 假阳性抑制",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#5B6975",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "ResNet-CBAM 假阳性抑制",
+              "fontSize": 17,
+              "color": "#5B6975",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/h0fepkzu",
+      "id": "15",
+      "bbox": [
+        88,
+        361,
+        300,
+        112
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#DCE5EC",
+      "lineWidth": 1
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/a9w3m94f",
+      "id": "16",
+      "bbox": [
+        110,
+        381,
+        240,
+        34
+      ],
+      "geometry": "rect",
+      "text": "人工复核",
+      "textPreview": "人工复核",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "color": "#12395A",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "人工复核"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "人工复核",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "color": "#12395A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "人工复核",
+              "fontSize": 24,
+              "color": "#12395A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zupwb2hw",
+      "id": "17",
+      "bbox": [
+        110,
+        423,
+        250,
+        30
+      ],
+      "geometry": "rect",
+      "text": "医生新增/确认/修正",
+      "textPreview": "医生新增/确认/修正",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "fontSize": 17,
+        "typeface": "+mn-lt",
+        "color": "#5B6975",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "医生新增/确认/修正"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "医生新增/确认/修正",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#5B6975",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "医生新增/确认/修正",
+              "fontSize": 17,
+              "color": "#5B6975",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/obm58z25",
+      "id": "18",
+      "bbox": [
+        460,
+        361,
+        300,
+        112
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#DCE5EC",
+      "lineWidth": 1
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hwfyxobm",
+      "id": "19",
+      "bbox": [
+        482,
+        381,
+        240,
+        34
+      ],
+      "geometry": "rect",
+      "text": "随访 Agent",
+      "textPreview": "随访 Agent",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "color": "#12395A",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "随访 Agent"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "随访 Agent",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "color": "#12395A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "随访 Agent",
+              "fontSize": 24,
+              "color": "#12395A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/18jqh0fe",
+      "id": "20",
+      "bbox": [
+        482,
+        423,
+        250,
+        30
+      ],
+      "geometry": "rect",
+      "text": "风险字段检查与建议生成",
+      "textPreview": "风险字段检查与建议生成",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "fontSize": 17,
+        "typeface": "+mn-lt",
+        "color": "#5B6975",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "风险字段检查与建议生成"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "风险字段检查与建议生成",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#5B6975",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "风险字段检查与建议生成",
+              "fontSize": 17,
+              "color": "#5B6975",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8nqxs72x",
+      "id": "21",
+      "bbox": [
+        832,
+        361,
+        300,
+        112
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#DCE5EC",
+      "lineWidth": 1
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/j2t83itg",
+      "id": "22",
+      "bbox": [
+        854,
+        381,
+        240,
+        34
+      ],
+      "geometry": "rect",
+      "text": "科研闭环",
+      "textPreview": "科研闭环",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "color": "#12395A",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "科研闭环"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "科研闭环",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "color": "#12395A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "科研闭环",
+              "fontSize": 24,
+              "color": "#12395A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qh0fepkz",
+      "id": "23",
+      "bbox": [
+        854,
+        423,
+        250,
+        30
+      ],
+      "geometry": "rect",
+      "text": "FROC/CPM、CI、报告/PPT",
+      "textPreview": "FROC/CPM、CI、报告/PPT",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "fontSize": 17,
+        "typeface": "+mn-lt",
+        "color": "#5B6975",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "FROC/CPM、CI、报告/PPT"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "FROC/CPM、CI、报告/PPT",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#5B6975",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "FROC/CPM、CI、报告/PPT",
+              "fontSize": 17,
+              "color": "#5B6975",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1w7mp0bi",
+      "id": "24",
+      "bbox": [
+        94,
+        566,
+        960,
+        36
+      ],
+      "geometry": "rect",
+      "text": "核心升级不是单点模型，而是“检测-复核-建议-评估-材料化”的闭环能力。",
+      "textPreview": "核心升级不是单点模型，而是“检测-复核-建议-评估-材料化”的闭环能力。",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "color": "#0E766E",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "核心升级不是单点模型，而是“检测-复核-建议-评估-材料化”的闭环能力。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "核心升级不是单点模型，而是“检测-复核-建议-评估-材料化”的闭环能力。",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "color": "#0E766E",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "核心升级不是单点模型，而是“检测-复核-建议-评估-材料化”的闭环能力。",
+              "fontSize": 24,
+              "color": "#0E766E",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

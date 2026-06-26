@@ -1,0 +1,5 @@
+﻿timestamp,patient_id,prob_threshold,resnet_threshold,patch_size,stride,return_all_candidates,finding_count,candidate_count_before_filter,candidate_count_after_filter,http_elapsed_sec,load_itk_sec,engine_detect_sec,total_detect_sec
+2026-06-14 02:38:21,蔡惠平,0.1,0.4,64,32,True,7,7,7,313.7084,1.5865,312.082,313.6686
+2026-06-14 02:43:37,蔡惠平,0.15,0.4,64,32,True,5,5,5,315.7949,0.5752,315.2026,315.778
+2026-06-14 02:48:52,蔡惠平,0.2,0.4,64,32,True,5,5,5,314.5545,0.5566,313.9762,314.5329
+2026-06-14 02:53:31,包书木,0.15,0.4,64,32,True,6,6,6,229.2225,3.8813,225.3065,229.1879

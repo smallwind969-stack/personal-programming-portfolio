@@ -1,0 +1,6 @@
+variable,gap_name_cn,mean_abs_shap,rank
+LiabilityGap,责任治理鸿沟,0.366922,1
+WorkflowGap,流程嵌入鸿沟,0.099929,2
+DataGap,数据安全鸿沟,0.091474,3
+TrustGap,技术信任鸿沟,0.02511,4
+ManageGap,医院管理鸿沟,0.004973,5

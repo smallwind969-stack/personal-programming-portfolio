@@ -1,0 +1,6 @@
+gap_variable,gap_name_cn,coverage_n,total_n,coverage_pct
+TrustGap,技术信任鸿沟,178,200,0.89
+LiabilityGap,责任治理鸿沟,101,200,0.505
+DataGap,数据安全鸿沟,149,200,0.745
+ManageGap,医院管理鸿沟,195,200,0.975
+WorkflowGap,流程嵌入鸿沟,140,200,0.7

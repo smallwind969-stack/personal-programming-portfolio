@@ -1,0 +1,82 @@
+============================================================
+第八章：政策情景仿真与分层推广决策
+运行时间: 2026-05-20 13:44:36
+============================================================
+[读取成功] SPSS_MAI_LGI_entropy_dataset.csv, N=200
+样本量: 200, 阳性率: 0.3100
+
+==================================================
+政策情景仿真
+实际阳性率: 0.3100
+基准预测概率: 0.3104
+  baseline: mean_P=0.3104, gain=+0.0000 (+0.0%), MAI-LGI=0.6384
+  liability_governance: mean_P=0.3786, gain=+0.0682 (+22.0%), MAI-LGI=0.4045
+  data_security: mean_P=0.3554, gain=+0.0450 (+14.5%), MAI-LGI=0.4901
+  workflow_integration: mean_P=0.3616, gain=+0.0512 (+16.5%), MAI-LGI=0.4690
+  technical_trust: mean_P=0.3318, gain=+0.0214 (+6.9%), MAI-LGI=0.5680
+  hospital_management: mean_P=0.3154, gain=+0.0050 (+1.6%), MAI-LGI=0.6218
+  comprehensive_package: mean_P=0.5093, gain=+0.1989 (+64.1%), MAI-LGI=0.0166
+  sensitivity_all_zero: mean_P=0.5150, gain=+0.2046 (+65.9%), MAI-LGI=0.0000
+[输出] policy_scenario_results.csv
+[输出] table_policy_scenario_results_cn.csv
+[输出] policy_scenario_bar.png
+
+==================================================
+医院资源库读取与准备度评分
+[读取] 0516 50 hospitals.xlsx, sheets=['医院资源采集表', '全国医院筛选清单', '目标医院短名单', '评分说明', '来源索引', '2024后来源检查']
+[选择sheet] 全国医院筛选清单, N=50, cols=24
+[识别] 医院名称列: 医院名称
+[识别] 评分列: ['CRC相关性分', '医疗资源分', 'CRC/专科分', '数字化AI分', '区域落地分', '来源分', 'HAIRI初筛分']
+
+==================================================
+医院AI落地准备度评分
+[使用] 已有准备度列: HAIRI初筛分
+[输出] hospital_readiness_hairi.csv
+[输出] hospital_readiness_summary.csv
+[输出] table_hospital_readiness_summary_cn.csv
+[输出] hospital_readiness_bar.png
+[分层结果] High=15, Medium=24, Low=11
+  p30=0.5091, p70=0.7382
+
+==================================================
+MAI-LGI × 医院准备度矩阵
+MAI-LGI中位数: 0.5480
+  Low MAI-LGI: 100, High MAI-LGI: 100
+[输出] mai_lgi_readiness_matrix.csv
+[输出] table_mai_lgi_readiness_matrix_cn.csv
+[重要说明] 医院准备度不进入医生采纳意愿回归模型，仅作为外部证据和政策决策模块使用。
+[输出] fig_mai_lgi_readiness_matrix.png
+[输出] policy_chapter_results_summary.txt
+
+============================================================
+全部完成！输出文件列表：
+  fig_mai_lgi_readiness_matrix.png
+  hospital_readiness_bar.png
+  hospital_readiness_hairi.csv
+  hospital_readiness_summary.csv
+  mai_lgi_readiness_matrix.csv
+  policy_chapter_results_summary.txt
+  policy_scenario_bar.png
+  policy_scenario_results.csv
+  table_hospital_readiness_summary_cn.csv
+  table_mai_lgi_readiness_matrix_cn.csv
+  table_policy_scenario_results_cn.csv
+
+[Logistic系数]
+  Intercept: -9.2
+  ValueIndex: 1.394
+  MAI_LGI_entropy: -1.787
+  PainIndex: 0.574
+  AIExperience: 0.485
+  CaseVolume: 0.116
+  HospitalGrade: -0.153
+
+[熵权]
+  TrustGap: 0.079
+  LiabilityGap: 0.463
+  DataGap: 0.199
+  ManageGap: 0.017
+  WorkflowGap: 0.242
+
+[数据来源] 医生: C:\Users\LSY\Desktop\统计建模大赛修正\待处理统计建模分析指标\01_医生主模型\output_py\SPSS_MAI_LGI_entropy_dataset.csv
+[数据来源] 医院: 0516 50 hospitals.xlsx, sheet=全国医院筛选清单

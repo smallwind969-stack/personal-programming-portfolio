@@ -1,0 +1,704 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/ohej4o",
+    "id": "ohej4o",
+    "slide": 4,
+    "layoutId": "7a9c65b9-4e12-4406-b6d9-2141cb73b1c7",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "93b4b8a3-2d47-49f2-9a85-7450dadbf2dd",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#F7FAFC",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "7a9c65b9-4e12-4406-b6d9-2141cb73b1c7",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "93b4b8a3-2d47-49f2-9a85-7450dadbf2dd",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "93b4b8a3-2d47-49f2-9a85-7450dadbf2dd",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lszqtcj6",
+      "id": "1",
+      "bbox": [
+        62,
+        30,
+        420,
+        26
+      ],
+      "geometry": "rect",
+      "text": "03 本地证据",
+      "textPreview": "03 本地证据",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#0E766E",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "03 本地证据"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "03 本地证据",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#0E766E",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "03 本地证据",
+              "fontSize": 14,
+              "color": "#0E766E",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/a5gbq1or",
+      "id": "2",
+      "bbox": [
+        62,
+        62,
+        880,
+        55
+      ],
+      "geometry": "rect",
+      "text": "本地病例闭环用于证明系统能运行，但不冒充临床验证",
+      "textPreview": "本地病例闭环用于证明系统能运行，但不冒充临床验证",
+      "resolvedFontSize": 34,
+      "resolvedTextStyle": {
+        "fontSize": 34,
+        "typeface": "+mn-lt",
+        "color": "#12395A",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "本地病例闭环用于证明系统能运行，但不冒充临床验证"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "本地病例闭环用于证明系统能运行，但不冒充临床验证",
+          "resolvedTextStyle": {
+            "fontSize": 34,
+            "color": "#12395A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "本地病例闭环用于证明系统能运行，但不冒充临床验证",
+              "fontSize": 34,
+              "color": "#12395A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3m94fu18",
+      "id": "3",
+      "bbox": [
+        62,
+        126,
+        74,
+        5
+      ],
+      "geometry": "rect",
+      "fillColor": "#D99027",
+      "lineColor": "#D99027",
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/sji5snel",
+      "id": "4",
+      "bbox": [
+        62,
+        684,
+        980,
+        18
+      ],
+      "geometry": "rect",
+      "text": "数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI",
+      "textPreview": "数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "+mn-lt",
+        "color": "#5B6975",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI",
+          "resolvedTextStyle": {
+            "fontSize": 10,
+            "color": "#5B6975",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI",
+              "fontSize": 10,
+              "color": "#5B6975",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/h4byhgn2",
+      "id": "5",
+      "bbox": [
+        1170,
+        680,
+        44,
+        22
+      ],
+      "geometry": "rect",
+      "text": "04",
+      "textPreview": "04",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "fontSize": 13,
+        "typeface": "+mn-lt",
+        "color": "#12395A",
+        "bold": true,
+        "alignment": "right",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "04"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "04",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "color": "#12395A",
+            "bold": true,
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "04",
+              "fontSize": 13,
+              "color": "#12395A",
+              "bold": true,
+              "alignment": "right"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/72x4nap4",
+      "id": "6",
+      "bbox": [
+        74,
+        162,
+        620,
+        392
+      ],
+      "geometry": "roundRect",
+      "alt": "本地病例清单图",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "imageMask": {
+        "geometry": "roundRect",
+        "adjustmentList": [
+          {
+            "name": "adj",
+            "formula": "val 2041"
+          }
+        ]
+      },
+      "asset": {
+        "assetId": "8bbfd202-2d2e-461b-86ca-245dd138df83",
+        "contentType": "image/png",
+        "byteLength": 182985
+      }
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3ylc7u54",
+      "id": "7",
+      "bbox": [
+        740,
+        174,
+        420,
+        230
+      ],
+      "geometry": "rect",
+      "text": "• 已有本地 3 例病例、607 张 DICOM 切片纳入研究闭环。\n• 以医生复核代理参考进行系统链路检查：11 个参考结节，模型 7 个预测，医生补充 4 个。\n• proxy precision = 1.0000，proxy recall = 0.6364；该指标用于系统调试，不作为真实临床性能声明。",
+      "textPreview": "• 已有本地 3 例病例、607 张 DICOM 切片纳入研究闭环。 | • 以医生复核代理参考进行系统链路检查：11 个参考结节，模型 7 个预测，医生补充 4 个。 | • proxy precision = 1.0000，proxy recall = 0.6364；该...",
+      "resolvedFontSize": 19,
+      "resolvedTextStyle": {
+        "fontSize": 19,
+        "typeface": "+mn-lt",
+        "color": "#17212B",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 7,
+        "lines": [
+          {
+            "index": 1,
+            "text": "• 已有本地 3 例病例、607 张 DICOM"
+          },
+          {
+            "index": 2,
+            "text": "切片纳入研究闭环。"
+          },
+          {
+            "index": 3,
+            "text": "• 以医生复核代理参考进行系统链路检查：11"
+          },
+          {
+            "index": 4,
+            "text": "个参考结节，模型 7 个预测，医生补充 4 个。"
+          },
+          {
+            "index": 5,
+            "text": "• proxy precision = 1.0000，proxy recall ="
+          },
+          {
+            "index": 6,
+            "text": "0.6364；该指标用于系统调试，不作为真实临床"
+          },
+          {
+            "index": 7,
+            "text": "性能声明。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "• 已有本地 3 例病例、607 张 DICOM 切片纳入研究闭环。",
+          "resolvedTextStyle": {
+            "fontSize": 19,
+            "color": "#17212B",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• 已有本地 3 例病例、607 张 DICOM 切片纳入研究闭环。",
+              "fontSize": 19,
+              "color": "#17212B",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "• 以医生复核代理参考进行系统链路检查：11 个参考结节，模型 7 个预测，医生补充 4 个。",
+          "resolvedTextStyle": {
+            "fontSize": 19,
+            "color": "#17212B",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• 以医生复核代理参考进行系统链路检查：11 个参考结节，模型 7 个预测，医生补充 4 个。",
+              "fontSize": 19,
+              "color": "#17212B",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 3,
+          "text": "• proxy precision = 1.0000，proxy recall = 0.6364；该指标用于系统调试，不作为真实临床性能声明。",
+          "resolvedTextStyle": {
+            "fontSize": 19,
+            "color": "#17212B",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• proxy precision = 1.0000，proxy recall = 0.6364；该指标用于系统调试，不作为真实临床性能声明。",
+              "fontSize": 19,
+              "color": "#17212B",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/svu9knih",
+      "id": "8",
+      "bbox": [
+        748,
+        430,
+        330,
+        118
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#DCE5EC",
+      "lineWidth": 1
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hgn29gr2",
+      "id": "9",
+      "bbox": [
+        748,
+        430,
+        7,
+        118
+      ],
+      "geometry": "rect",
+      "fillColor": "#0E766E",
+      "lineColor": "#0E766E",
+      "lineWidth": 0
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/tgfmlkjm",
+      "id": "10",
+      "bbox": [
+        770,
+        448,
+        294,
+        42
+      ],
+      "geometry": "rect",
+      "text": "0.6364",
+      "textPreview": "0.6364",
+      "resolvedFontSize": 32,
+      "resolvedTextStyle": {
+        "fontSize": 32,
+        "typeface": "+mn-lt",
+        "color": "#12395A",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "0.6364"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "0.6364",
+          "resolvedTextStyle": {
+            "fontSize": 32,
+            "color": "#12395A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "0.6364",
+              "fontSize": 32,
+              "color": "#12395A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4vmtwra5",
+      "id": "11",
+      "bbox": [
+        770,
+        492,
+        294,
+        24
+      ],
+      "geometry": "rect",
+      "text": "review-proxy CPM",
+      "textPreview": "review-proxy CPM",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "fontSize": 17,
+        "typeface": "+mn-lt",
+        "color": "#17212B",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "review-proxy CPM"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "review-proxy CPM",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#17212B",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "review-proxy CPM",
+              "fontSize": 17,
+              "color": "#17212B",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bat47y1k",
+      "id": "12",
+      "bbox": [
+        770,
+        518,
+        294,
+        20
+      ],
+      "geometry": "rect",
+      "text": "本地闭环调试指标",
+      "textPreview": "本地闭环调试指标",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "+mn-lt",
+        "color": "#5B6975",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "本地闭环调试指标"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "本地闭环调试指标",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "color": "#5B6975",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "本地闭环调试指标",
+              "fontSize": 12,
+              "color": "#5B6975",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

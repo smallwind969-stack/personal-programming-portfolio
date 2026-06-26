@@ -1,0 +1,6 @@
+gap_type_cn,variable_name,coverage_pct,entropy_weight,interpretation
+技术信任鸿沟,TrustGap,0.89,0.078946,低覆盖低区分约束
+责任治理鸿沟,LiabilityGap,0.505,0.462842,区分性约束（覆盖率不高但区分度高）
+数据安全鸿沟,DataGap,0.745,0.199425,低覆盖低区分约束
+医院管理鸿沟,ManageGap,0.975,0.01715,普遍性约束（覆盖率高但区分度低）
+流程嵌入鸿沟,WorkflowGap,0.7,0.241637,区分性约束（覆盖率不高但区分度高）

@@ -1,0 +1,11 @@
+variable,mean_abs_shap,rank
+ValueIndex,0.522608,1
+AIExperience,0.395654,2
+LiabilityGap,0.366922,3
+HospitalGrade,0.20593,4
+PainIndex,0.194931,5
+CaseVolume,0.155749,6
+WorkflowGap,0.099929,7
+DataGap,0.091474,8
+TrustGap,0.02511,9
+ManageGap,0.004973,10

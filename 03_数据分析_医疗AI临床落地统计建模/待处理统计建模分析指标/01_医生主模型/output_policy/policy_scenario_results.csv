@@ -1,0 +1,9 @@
+scenario,mean_predicted_probability,probability_gain,relative_gain_pct,mean_MAI_LGI,policy_meaning
+baseline,0.3104,0.0,0.0,0.6384,保持当前样本状态
+liability_governance,0.3786,0.0682,21.97,0.4045,将责任治理鸿沟设为已解决
+data_security,0.3554,0.045,14.49,0.4901,将数据安全鸿沟设为已解决
+workflow_integration,0.3616,0.0512,16.51,0.469,将流程嵌入鸿沟设为已解决
+technical_trust,0.3318,0.0214,6.88,0.568,将技术信任鸿沟设为已解决
+hospital_management,0.3154,0.005,1.6,0.6218,将医院管理鸿沟设为已解决
+comprehensive_package,0.5093,0.1989,64.08,0.0166,同步改善技术信任、责任、数据安全与流程嵌入鸿沟
+sensitivity_all_zero,0.515,0.2046,65.9,0.0,五类鸿沟全部设为0，敏感性上界

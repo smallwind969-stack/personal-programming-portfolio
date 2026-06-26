@@ -1,0 +1,12 @@
+﻿metric,value
+scan_count,2
+annotation_count,11
+prediction_count,7
+sensitivity_at_0.125_fp_per_scan,0.636364
+sensitivity_at_0.25_fp_per_scan,0.636364
+sensitivity_at_0.5_fp_per_scan,0.636364
+sensitivity_at_1.0_fp_per_scan,0.636364
+sensitivity_at_2.0_fp_per_scan,0.636364
+sensitivity_at_4.0_fp_per_scan,0.636364
+sensitivity_at_8.0_fp_per_scan,0.636364
+cpm,0.636364

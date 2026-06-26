@@ -1,0 +1,44 @@
+============================================================
+第六章 机器学习预测与医生分层画像 — 结果摘要
+生成时间: 2026-05-20 12:59:11
+============================================================
+
+一、模型比较（综合指数口径 X_index, RepeatedStratifiedKFold 5×20）
+            model feature_set  n_features    AUC  Accuracy  Sensitivity  Specificity  Precision     F1  Brier
+   LASSO_Logistic     X_index           6 0.7499     0.695       0.7097       0.6884     0.5057 0.5906 0.2025
+    Random_Forest     X_index           6 0.7683     0.715       0.6290       0.7536     0.5342 0.5778 0.1835
+Gradient_Boosting     X_index           6 0.7534     0.740       0.3871       0.8986     0.6316 0.4800 0.1794
+
+二、SHAP完整变量重要性
+  Rank 1: ValueIndex (AI综合价值感知指数) — mean|SHAP|=0.5226
+  Rank 2: AIExperience (AI接触经验) — mean|SHAP|=0.3957
+  Rank 3: LiabilityGap (责任治理鸿沟) — mean|SHAP|=0.3669
+  Rank 4: HospitalGrade (医院等级) — mean|SHAP|=0.2059
+  Rank 5: PainIndex (流程痛点指数) — mean|SHAP|=0.1949
+  Rank 6: CaseVolume (病例量) — mean|SHAP|=0.1557
+  Rank 7: WorkflowGap (流程嵌入鸿沟) — mean|SHAP|=0.0999
+  Rank 8: DataGap (数据安全鸿沟) — mean|SHAP|=0.0915
+  Rank 9: TrustGap (技术信任鸿沟) — mean|SHAP|=0.0251
+  Rank 10: ManageGap (医院管理鸿沟) — mean|SHAP|=0.0050
+
+三、五类鸿沟SHAP排序
+  Rank 1: LiabilityGap (责任治理鸿沟) — mean|SHAP|=0.3669 — 责任治理鸿沟，若排名靠前，解释为最强区分性约束
+  Rank 2: WorkflowGap (流程嵌入鸿沟) — mean|SHAP|=0.0999 — 流程嵌入鸿沟，工作流适配和操作负担影响采用转化
+  Rank 3: DataGap (数据安全鸿沟) — mean|SHAP|=0.0915 — 数据安全鸿沟，隐私与合规约束
+  Rank 4: TrustGap (技术信任鸿沟) — mean|SHAP|=0.0251 — 技术信任鸿沟，准确率和稳定性顾虑
+  Rank 5: ManageGap (医院管理鸿沟) — mean|SHAP|=0.0050 — 医院管理鸿沟，若SHAP值较低，解释为普遍性背景约束而非强区分变量
+
+四、医生分层
+segment segment_cn   n  pct  actual_positive_rate  mean_predict_prob  mean_AI综合价值感知指数  mean_流程痛点指数  mean_AI接触经验  mean_病例量  mean_医院等级  mean_技术信任鸿沟  mean_责任治理鸿沟  mean_数据安全鸿沟  mean_医院管理鸿沟  mean_流程嵌入鸿沟
+   High     高采用意愿层  24 0.12                0.8750             0.7416           4.4167        4.275       3.7083    3.7917     1.1250       0.9167       0.0417       0.7083       1.0000       0.8750
+ Medium     中采用意愿层  66 0.33                0.5152             0.4287           4.0455        4.200       3.6061    3.3788     1.5455       0.8636       0.4091       0.7121       0.9545       0.7424
+    Low     低采用意愿层 110 0.55                0.0636             0.1450           3.5709        3.980       2.5727    2.5455     2.0909       0.9000       0.6636       0.7727       0.9818       0.6364
+
+五、SHAP变量解释摘要
+SHAP完整变量重要性显示，预测模型能够同时识别价值感知、AI接触经验和落地鸿沟变量的贡献。进一步对五类鸿沟变量进行拆解后，责任治理鸿沟和流程嵌入鸿沟表现出更强区分能力，而医院管理鸿沟的SHAP贡献较低，说明其更多体现普遍性背景约束。
+
+六、注意事项
+1. 本研究N≈200，结论定位为'探索性预测与推广分层'，不得作为临床级预测工具
+2. 机器学习模型用于预测和分层，不替代Logistic解释模型的机制检验
+3. MAI_LGI_entropy与五类Gap变量未同时入模，避免重复计量
+4. 交叉验证采用RepeatedStratifiedKFold(5-fold × 20 repeats)，结果更稳定

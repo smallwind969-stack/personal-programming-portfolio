@@ -1,0 +1,1128 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/gltr0c",
+    "id": "gltr0c",
+    "slide": 6,
+    "layoutId": "7a9c65b9-4e12-4406-b6d9-2141cb73b1c7",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "93b4b8a3-2d47-49f2-9a85-7450dadbf2dd",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#F7FAFC",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "7a9c65b9-4e12-4406-b6d9-2141cb73b1c7",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "93b4b8a3-2d47-49f2-9a85-7450dadbf2dd",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "93b4b8a3-2d47-49f2-9a85-7450dadbf2dd",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/al87ed8b",
+      "id": "1",
+      "bbox": [
+        62,
+        30,
+        420,
+        26
+      ],
+      "geometry": "rect",
+      "text": "05 公开数据",
+      "textPreview": "05 公开数据",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#0E766E",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "05 公开数据"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "05 公开数据",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#0E766E",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "05 公开数据",
+              "fontSize": 14,
+              "color": "#0E766E",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hcrmhk3q",
+      "id": "2",
+      "bbox": [
+        62,
+        62,
+        880,
+        55
+      ],
+      "geometry": "rect",
+      "text": "公共数据验证以 LUNA16 subset0 为当前主线",
+      "textPreview": "公共数据验证以 LUNA16 subset0 为当前主线",
+      "resolvedFontSize": 34,
+      "resolvedTextStyle": {
+        "fontSize": 34,
+        "typeface": "+mn-lt",
+        "color": "#12395A",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "公共数据验证以 LUNA16 subset0 为当前主线"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "公共数据验证以 LUNA16 subset0 为当前主线",
+          "resolvedTextStyle": {
+            "fontSize": 34,
+            "color": "#12395A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "公共数据验证以 LUNA16 subset0 为当前主线",
+              "fontSize": 34,
+              "color": "#12395A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/orytsvu9",
+      "id": "3",
+      "bbox": [
+        62,
+        126,
+        74,
+        5
+      ],
+      "geometry": "rect",
+      "fillColor": "#D99027",
+      "lineColor": "#D99027",
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zupwb2hw",
+      "id": "4",
+      "bbox": [
+        62,
+        684,
+        980,
+        18
+      ],
+      "geometry": "rect",
+      "text": "数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI",
+      "textPreview": "数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "+mn-lt",
+        "color": "#5B6975",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI",
+          "resolvedTextStyle": {
+            "fontSize": 10,
+            "color": "#5B6975",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI",
+              "fontSize": 10,
+              "color": "#5B6975",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/a9w3m94f",
+      "id": "5",
+      "bbox": [
+        1170,
+        680,
+        44,
+        22
+      ],
+      "geometry": "rect",
+      "text": "06",
+      "textPreview": "06",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "fontSize": 13,
+        "typeface": "+mn-lt",
+        "color": "#12395A",
+        "bold": true,
+        "alignment": "right",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "06"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "06",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "color": "#12395A",
+            "bold": true,
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "06",
+              "fontSize": 13,
+              "color": "#12395A",
+              "bold": true,
+              "alignment": "right"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/h0fepkzu",
+      "id": "6",
+      "bbox": [
+        80,
+        166,
+        670,
+        310
+      ],
+      "geometry": "rect",
+      "text": "• LUNA16 官方挑战聚焦 LIDC-IDRI 上的肺结节自动检测评估；官方数据页说明共 888 个 CT。\n• 当前工作区已完成 subset0 89 个 CT series 的完整 candidates_V2 候选池 FPRED 评分。\n• subset0 内含 112 个官方 annotations；全量候选池导出 79,135 条预测。\n• 结题表述坚持写“subset0 内分区验证”，不写成完整 LUNA16 官方成绩。",
+      "textPreview": "• LUNA16 官方挑战聚焦 LIDC-IDRI 上的肺结节自动检测评估；官方数据页说明共 888 个 CT。 | • 当前工作区已完成 subset0 89 个 CT series 的完整 candidates_V2 候选池 FPRED 评分。 | • subset0 ...",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "+mn-lt",
+        "color": "#17212B",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 6,
+        "lines": [
+          {
+            "index": 1,
+            "text": "• LUNA16 官方挑战聚焦 LIDC-IDRI"
+          },
+          {
+            "index": 2,
+            "text": "上的肺结节自动检测评估；官方数据页说明共 888 个 CT。"
+          },
+          {
+            "index": 3,
+            "text": "• 当前工作区已完成 subset0 89 个 CT series 的完整 candidates_V2 候选池"
+          },
+          {
+            "index": 4,
+            "text": "FPRED 评分。"
+          },
+          {
+            "index": 5,
+            "text": "• subset0 内含 112 个官方 annotations；全量候选池导出 79,135 条预测。"
+          },
+          {
+            "index": 6,
+            "text": "• 结题表述坚持写“subset0 内分区验证”，不写成完整 LUNA16 官方成绩。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "• LUNA16 官方挑战聚焦 LIDC-IDRI 上的肺结节自动检测评估；官方数据页说明共 888 个 CT。",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "color": "#17212B",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• LUNA16 官方挑战聚焦 LIDC-IDRI 上的肺结节自动检测评估；官方数据页说明共 888 个 CT。",
+              "fontSize": 20,
+              "color": "#17212B",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "• 当前工作区已完成 subset0 89 个 CT series 的完整 candidates_V2 候选池 FPRED 评分。",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "color": "#17212B",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• 当前工作区已完成 subset0 89 个 CT series 的完整 candidates_V2 候选池 FPRED 评分。",
+              "fontSize": 20,
+              "color": "#17212B",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 3,
+          "text": "• subset0 内含 112 个官方 annotations；全量候选池导出 79,135 条预测。",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "color": "#17212B",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• subset0 内含 112 个官方 annotations；全量候选池导出 79,135 条预测。",
+              "fontSize": 20,
+              "color": "#17212B",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 4,
+          "text": "• 结题表述坚持写“subset0 内分区验证”，不写成完整 LUNA16 官方成绩。",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "color": "#17212B",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• 结题表述坚持写“subset0 内分区验证”，不写成完整 LUNA16 官方成绩。",
+              "fontSize": 20,
+              "color": "#17212B",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/sfil0rqd",
+      "id": "7",
+      "bbox": [
+        812,
+        170,
+        320,
+        118
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#DCE5EC",
+      "lineWidth": 1
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zqtcj6to",
+      "id": "8",
+      "bbox": [
+        812,
+        170,
+        7,
+        118
+      ],
+      "geometry": "rect",
+      "fillColor": "#0E766E",
+      "lineColor": "#0E766E",
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/65wjudg7",
+      "id": "9",
+      "bbox": [
+        834,
+        188,
+        284,
+        42
+      ],
+      "geometry": "rect",
+      "text": "89 series",
+      "textPreview": "89 series",
+      "resolvedFontSize": 32,
+      "resolvedTextStyle": {
+        "fontSize": 32,
+        "typeface": "+mn-lt",
+        "color": "#12395A",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "89 series"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "89 series",
+          "resolvedTextStyle": {
+            "fontSize": 32,
+            "color": "#12395A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "89 series",
+              "fontSize": 32,
+              "color": "#12395A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/g3ex0nux",
+      "id": "10",
+      "bbox": [
+        834,
+        232,
+        284,
+        24
+      ],
+      "geometry": "rect",
+      "text": "LUNA16 subset0",
+      "textPreview": "LUNA16 subset0",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "fontSize": 17,
+        "typeface": "+mn-lt",
+        "color": "#17212B",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "LUNA16 subset0"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "LUNA16 subset0",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#17212B",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "LUNA16 subset0",
+              "fontSize": 17,
+              "color": "#17212B",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5o7qpg3e",
+      "id": "11",
+      "bbox": [
+        834,
+        258,
+        284,
+        20
+      ],
+      "geometry": "rect",
+      "text": "公开 CT 子集",
+      "textPreview": "公开 CT 子集",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "+mn-lt",
+        "color": "#5B6975",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "公开 CT 子集"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "公开 CT 子集",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "color": "#5B6975",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "公开 CT 子集",
+              "fontSize": 12,
+              "color": "#5B6975",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/yxobm58z",
+      "id": "12",
+      "bbox": [
+        812,
+        304,
+        320,
+        118
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#DCE5EC",
+      "lineWidth": 1
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nih4byhg",
+      "id": "13",
+      "bbox": [
+        812,
+        304,
+        7,
+        118
+      ],
+      "geometry": "rect",
+      "fillColor": "#3AA7C7",
+      "lineColor": "#3AA7C7",
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gr2p8nqx",
+      "id": "14",
+      "bbox": [
+        834,
+        322,
+        284,
+        42
+      ],
+      "geometry": "rect",
+      "text": "112",
+      "textPreview": "112",
+      "resolvedFontSize": 32,
+      "resolvedTextStyle": {
+        "fontSize": 32,
+        "typeface": "+mn-lt",
+        "color": "#12395A",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "112"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "112",
+          "resolvedTextStyle": {
+            "fontSize": 32,
+            "color": "#12395A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "112",
+              "fontSize": 32,
+              "color": "#12395A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9cvixcze",
+      "id": "15",
+      "bbox": [
+        834,
+        366,
+        284,
+        24
+      ],
+      "geometry": "rect",
+      "text": "官方 annotations",
+      "textPreview": "官方 annotations",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "fontSize": 17,
+        "typeface": "+mn-lt",
+        "color": "#17212B",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "官方 annotations"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "官方 annotations",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#17212B",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "官方 annotations",
+              "fontSize": 17,
+              "color": "#17212B",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ylc7u54z",
+      "id": "16",
+      "bbox": [
+        834,
+        392,
+        284,
+        20
+      ],
+      "geometry": "rect",
+      "text": "subset0 范围",
+      "textPreview": "subset0 范围",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "+mn-lt",
+        "color": "#5B6975",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "subset0 范围"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "subset0 范围",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "color": "#5B6975",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "subset0 范围",
+              "fontSize": 12,
+              "color": "#5B6975",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/r65wjudg",
+      "id": "17",
+      "bbox": [
+        812,
+        438,
+        320,
+        118
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#DCE5EC",
+      "lineWidth": 1
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gfmlkjm1",
+      "id": "18",
+      "bbox": [
+        812,
+        438,
+        7,
+        118
+      ],
+      "geometry": "rect",
+      "fillColor": "#D99027",
+      "lineColor": "#D99027",
+      "lineWidth": 0
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/90je9cvi",
+      "id": "19",
+      "bbox": [
+        834,
+        456,
+        284,
+        42
+      ],
+      "geometry": "rect",
+      "text": "79,135",
+      "textPreview": "79,135",
+      "resolvedFontSize": 32,
+      "resolvedTextStyle": {
+        "fontSize": 32,
+        "typeface": "+mn-lt",
+        "color": "#12395A",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "79,135"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "79,135",
+          "resolvedTextStyle": {
+            "fontSize": 32,
+            "color": "#12395A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "79,135",
+              "fontSize": 32,
+              "color": "#12395A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/t83itgfm",
+      "id": "20",
+      "bbox": [
+        834,
+        500,
+        284,
+        24
+      ],
+      "geometry": "rect",
+      "text": "FPRED predictions",
+      "textPreview": "FPRED predictions",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "fontSize": 17,
+        "typeface": "+mn-lt",
+        "color": "#17212B",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "FPRED predictions"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "FPRED predictions",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#17212B",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "FPRED predictions",
+              "fontSize": 17,
+              "color": "#17212B",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4nap4r65",
+      "id": "21",
+      "bbox": [
+        834,
+        526,
+        284,
+        20
+      ],
+      "geometry": "rect",
+      "text": "candidates_V2 全候选池",
+      "textPreview": "candidates_V2 全候选池",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "+mn-lt",
+        "color": "#5B6975",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "candidates_V2 全候选池"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "candidates_V2 全候选池",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "color": "#5B6975",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "candidates_V2 全候选池",
+              "fontSize": 12,
+              "color": "#5B6975",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

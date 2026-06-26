@@ -1,0 +1,77 @@
+[
+  {
+    "knowledgeId": "kb-akk-safety-001",
+    "title": "巴氏灭活 Akkermansia muciniphila 的安全性评估",
+    "sourceName": "EFSA / Food and Chemical Toxicology safety evidence",
+    "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8409316/",
+    "evidenceLevel": "A",
+    "topics": ["safety", "pasteurized_akk", "novel_food"],
+    "summary": "巴氏灭活 AKK 作为新食品原料需要安全评估。公开安全意见与毒理研究为后生元方向提供了较强依据，但实际商品仍需按目标市场法规复核。",
+    "usableInsights": [
+      "优先把巴氏灭活 AKK 定位为后生元原料，而不是活菌益生菌。",
+      "上市表达需要区分研发验证结论和合规允许的宣称。",
+      "客户方案应保留安全性、标志物和批次一致性检测。"
+    ],
+    "riskNotes": ["不同国家和地区对新食品、后生元、功能宣称要求不同。"]
+  },
+  {
+    "knowledgeId": "kb-amuc-1100-001",
+    "title": "Amuc_1100 外膜蛋白与肠道屏障概念",
+    "sourceName": "Nature Medicine, Amuc_1100 mechanism study",
+    "sourceUrl": "https://www.nature.com/articles/nm.4236",
+    "evidenceLevel": "B",
+    "topics": ["amuc_1100", "gut_barrier", "pasteurized_akk"],
+    "summary": "研究显示 AKK 外膜蛋白 Amuc_1100 与巴氏灭活菌体在动物模型中与肠道屏障、代谢相关指标有关，可作为研发端卖点假设来源。",
+    "usableInsights": [
+      "适合支持肠道屏障、热稳定后生元、代谢健康概念方向。",
+      "更适合做研发依据，不应直接写成疾病治疗宣称。",
+      "酸奶、营养粉、代餐等场景可用作概念强化。"
+    ],
+    "riskNotes": ["人体商品宣称需要进一步验证和合规审查。"]
+  },
+  {
+    "knowledgeId": "kb-human-study-001",
+    "title": "AKK 补充在超重/肥胖志愿者中的探索性研究",
+    "sourceName": "Nature Medicine human proof-of-concept study",
+    "sourceUrl": "https://www.nature.com/articles/s41591-019-0495-2",
+    "evidenceLevel": "B",
+    "topics": ["human_study", "metabolic_health", "pasteurized_akk"],
+    "summary": "人体探索性研究以安全性和耐受性为主要终点，并观察到部分代谢相关指标趋势。适合用于研发策略参考，而非直接商品功效承诺。",
+    "usableInsights": [
+      "体重管理、代餐、营养粉方向可以作为概念探索场景。",
+      "方案报告中应显示置信度和实验验证要求。",
+      "推荐把结论表述为内部研发假设。"
+    ],
+    "riskNotes": ["样本规模和研究终点限制决定其不能替代商品临床验证。"]
+  },
+  {
+    "knowledgeId": "kb-ev-001",
+    "title": "AKK 胞外囊泡与后生元递送潜力",
+    "sourceName": "Frontiers / extracellular vesicle reviews",
+    "sourceUrl": "https://www.frontiersin.org/journals/microbiology/articles/10.3389/fmicb.2023.1258860/full",
+    "evidenceLevel": "C",
+    "topics": ["extracellular_vesicles", "postbiotic", "mechanism"],
+    "summary": "细菌胞外囊泡被认为可携带多类生物活性组分并参与宿主互作。AKK 相关 EV 仍以机制和前临床研究为主，适合作为高创新概念储备。",
+    "usableInsights": [
+      "适合做高端概念产品的创新依据。",
+      "在饮料和低温后添加体系中需要关注稳定性。",
+      "建议单独设置粒径、浊度、沉淀和标志物检测。"
+    ],
+    "riskNotes": ["证据成熟度低于巴氏灭活 AKK，需谨慎对外表达。"]
+  },
+  {
+    "knowledgeId": "kb-food-matrix-001",
+    "title": "AKK 产物与食品基质融合的配方规则",
+    "sourceName": "Internal formulation rule template",
+    "sourceUrl": "internal://mock-formulation-rules",
+    "evidenceLevel": "C",
+    "topics": ["food_matrix", "stability", "sensory"],
+    "summary": "酸性乳基体系优先关注酸稳定和风味遮蔽；粉体体系优先关注复水、流动性和均匀性；即饮饮料优先关注浊度、沉淀和热处理影响。",
+    "usableInsights": [
+      "酸奶方向可考虑菊粉、柑橘纤维、果胶和天然风味遮蔽。",
+      "营养粉方向可考虑菊粉、低聚果糖、燕麦β-葡聚糖和乳清蛋白。",
+      "即饮饮料方向可考虑果胶、赤藓糖醇、柠檬酸体系和天然香气。"
+    ],
+    "riskNotes": ["该条为规则模板，需要用小试数据不断校准。"]
+  }
+]

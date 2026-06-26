@@ -1,0 +1,62 @@
+============================================================
+MAI-LGI 熵权法构建 运行日志
+运行时间: 2026-05-20 11:27:59
+============================================================
+
+数据来源: CSV (utf-8-sig): 原始医生问卷数据.csv
+样本量: 200
+
+=== 核心变量构造来源 ===
+  HospitalGrade ← Q03_HospitalLevel
+  CaseVolume ← Q04_CaseVolume
+  AIExperience ← Q05_AIExposure
+  PainIndex ← mean(['Q06', 'Q07', 'Q08', 'Q09', 'Q10'])
+  ValueIndex ← mean(['Q13_1', 'Q13_2', 'Q13_3', 'Q13_4', 'Q13_5'])
+  AdoptTop2 ← Q14_AdoptIntent >= 4
+
+=== 五类鸿沟命中规则 ===
+  TrustGap(技术信任鸿沟) = OR(['Q18_2', 'Q19_1'])
+  LiabilityGap(责任治理鸿沟) = OR(['Q19_3'])
+  DataGap(数据安全鸿沟) = OR(['Q18_6', 'Q19_6'])
+  ManageGap(医院管理鸿沟) = OR(['Q18_1', 'Q18_3', 'Q18_4', 'Q18_5', 'Q19_4', 'Q19_5'])
+  WorkflowGap(流程嵌入鸿沟) = OR(['Q19_2', 'Q19_4', 'Q19_5'])
+
+=== 熵权法 ===
+  使用熵权法，非等权法
+  eps = 1e-12
+
+=== 缺失值 ===
+  总缺失数: 0
+
+=== 输出文件 ===
+  00_column_profile.xlsx
+  01_reliability_alpha.csv
+  02_gap_coverage.csv
+  03_entropy_weights.csv
+  04_python_logistic_check.csv
+  SPSS_MAI_LGI_entropy_dataset.csv
+  SPSS_variable_dictionary.csv
+  table_gap_coverage_entropy.csv
+  table_gap_mapping.csv
+  table_variable_summary.csv
+
+=== 详细日志 ===
+列名档案已保存: 00_column_profile.xlsx (41列)
+column_map中所有列名均已验证通过
+PainIndex: items=['Q06', 'Q07', 'Q08', 'Q09', 'Q10'], alpha=0.7669, n_valid=200
+ValueIndex: items=['Q13_1', 'Q13_2', 'Q13_3', 'Q13_4', 'Q13_5'], alpha=0.8362, n_valid=200
+AdoptTop2: Q14_AdoptIntent(1-5) → >=4为1, N1=62
+信度表已保存: 01_reliability_alpha.csv
+TrustGap(技术信任鸿沟): items=['Q18_2', 'Q19_1'], coverage=178/200=89.00%
+LiabilityGap(责任治理鸿沟): items=['Q19_3'], coverage=101/200=50.50%
+DataGap(数据安全鸿沟): items=['Q18_6', 'Q19_6'], coverage=149/200=74.50%
+ManageGap(医院管理鸿沟): items=['Q18_1', 'Q18_3', 'Q18_4', 'Q18_5', 'Q19_4', 'Q19_5'], coverage=195/200=97.50%
+WorkflowGap(流程嵌入鸿沟): items=['Q19_2', 'Q19_4', 'Q19_5'], coverage=140/200=70.00%
+鸿沟覆盖率表已保存: 02_gap_coverage.csv
+熵权结果: [{'gap_variable': 'TrustGap', 'gap_name_cn': '技术信任鸿沟', 'coverage_pct': np.float64(0.89), 'entropy': np.float64(0.978006), 'diversity_coefficient': np.float64(0.021994), 'entropy_weight': np.float64(0.078946)}, {'gap_variable': 'LiabilityGap', 'gap_name_cn': '责任治理鸿沟', 'coverage_pct': np.float64(0.505), 'entropy': np.float64(0.871054), 'diversity_coefficient': np.float64(0.128946), 'entropy_weight': np.float64(0.462842)}, {'gap_variable': 'DataGap', 'gap_name_cn': '数据安全鸿沟', 'coverage_pct': np.float64(0.745), 'entropy': np.float64(0.944441), 'diversity_coefficient': np.float64(0.055559), 'entropy_weight': np.float64(0.199425)}, {'gap_variable': 'ManageGap', 'gap_name_cn': '医院管理鸿沟', 'coverage_pct': np.float64(0.975), 'entropy': np.float64(0.995222), 'diversity_coefficient': np.float64(0.004778), 'entropy_weight': np.float64(0.01715)}, {'gap_variable': 'WorkflowGap', 'gap_name_cn': '流程嵌入鸿沟', 'coverage_pct': np.float64(0.7), 'entropy': np.float64(0.932681), 'diversity_coefficient': np.float64(0.067319), 'entropy_weight': np.float64(0.241637)}]
+熵权表已保存: 03_entropy_weights.csv
+SPSS数据集已保存
+变量字典已保存
+论文展示表全部输出完成
+Python核验Logistic回归完成
+注意: 正式论文结果以SPSS为准

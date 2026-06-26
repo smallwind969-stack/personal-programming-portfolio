@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+apps/web/node_modules/
+
+# Next.js
+.next/
+apps/web/.next/
+apps/web/out/
+apps/web/next-env.d.ts
+apps/web/tsconfig.tsbuildinfo
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# Local environment
+.env
+.env.local
+apps/web/.env.local
+
+# Runtime data and logs
+logs/
+tools/
+data/*.sqlite3
+*.log
+
+# Local literature source files
+akk菌资料/
+Akk 菌的安全性评价、人体临床研究、毒理数据、法规状态、专利、产品案例和商业化资料/
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

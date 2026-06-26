@@ -1,0 +1,6 @@
+variable,mean_abs_shap,rank
+LiabilityGap,0.366922,1
+WorkflowGap,0.099929,2
+DataGap,0.091474,3
+TrustGap,0.02511,4
+ManageGap,0.004973,5

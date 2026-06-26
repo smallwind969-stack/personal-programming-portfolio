@@ -1,0 +1,131 @@
+{
+  "generated_at": "2026-06-14T02:27:57",
+  "scope": "review-proxy evaluation from current local cases and doctor_review.json files",
+  "warning": "These are NOT clinical validation metrics. They use physician review records in this workspace as a small reference set to build an experiment loop and identify evidence gaps.",
+  "inventory": {
+    "case_count": 3,
+    "reviewed_case_count": 2,
+    "dicom_count_total": 607,
+    "model_finding_count_total": 7,
+    "doctor_added_count_total": 4
+  },
+  "evaluation_at_threshold_0": {
+    "threshold": 0.0,
+    "patient_count": 3,
+    "reference_nodules": 11,
+    "model_predictions": 7,
+    "tp_proxy": 7,
+    "fp_proxy": 0,
+    "fn_proxy": 4,
+    "precision_proxy": 1.0,
+    "recall_proxy": 0.6364
+  },
+  "threshold_sweep": [
+    {
+      "threshold": 0.0,
+      "patient_count": 3,
+      "reference_nodules": 11,
+      "model_predictions": 7,
+      "tp_proxy": 7,
+      "fp_proxy": 0,
+      "fn_proxy": 4,
+      "precision_proxy": 1.0,
+      "recall_proxy": 0.6364
+    },
+    {
+      "threshold": 0.4,
+      "patient_count": 3,
+      "reference_nodules": 11,
+      "model_predictions": 7,
+      "tp_proxy": 7,
+      "fp_proxy": 0,
+      "fn_proxy": 4,
+      "precision_proxy": 1.0,
+      "recall_proxy": 0.6364
+    },
+    {
+      "threshold": 0.6,
+      "patient_count": 3,
+      "reference_nodules": 11,
+      "model_predictions": 7,
+      "tp_proxy": 7,
+      "fp_proxy": 0,
+      "fn_proxy": 4,
+      "precision_proxy": 1.0,
+      "recall_proxy": 0.6364
+    },
+    {
+      "threshold": 0.75,
+      "patient_count": 3,
+      "reference_nodules": 11,
+      "model_predictions": 7,
+      "tp_proxy": 7,
+      "fp_proxy": 0,
+      "fn_proxy": 4,
+      "precision_proxy": 1.0,
+      "recall_proxy": 0.6364
+    },
+    {
+      "threshold": 0.85,
+      "patient_count": 3,
+      "reference_nodules": 11,
+      "model_predictions": 7,
+      "tp_proxy": 7,
+      "fp_proxy": 0,
+      "fn_proxy": 4,
+      "precision_proxy": 1.0,
+      "recall_proxy": 0.6364
+    },
+    {
+      "threshold": 0.9,
+      "patient_count": 3,
+      "reference_nodules": 11,
+      "model_predictions": 7,
+      "tp_proxy": 7,
+      "fp_proxy": 0,
+      "fn_proxy": 4,
+      "precision_proxy": 1.0,
+      "recall_proxy": 0.6364
+    },
+    {
+      "threshold": 0.95,
+      "patient_count": 3,
+      "reference_nodules": 11,
+      "model_predictions": 5,
+      "tp_proxy": 5,
+      "fp_proxy": 0,
+      "fn_proxy": 6,
+      "precision_proxy": 1.0,
+      "recall_proxy": 0.4545
+    },
+    {
+      "threshold": 0.98,
+      "patient_count": 3,
+      "reference_nodules": 11,
+      "model_predictions": 4,
+      "tp_proxy": 4,
+      "fp_proxy": 0,
+      "fn_proxy": 7,
+      "precision_proxy": 1.0,
+      "recall_proxy": 0.3636
+    },
+    {
+      "threshold": 0.99,
+      "patient_count": 3,
+      "reference_nodules": 11,
+      "model_predictions": 3,
+      "tp_proxy": 3,
+      "fp_proxy": 0,
+      "fn_proxy": 8,
+      "precision_proxy": 1.0,
+      "recall_proxy": 0.2727
+    }
+  ],
+  "next_experiments": [
+    "Freeze a case list and export all predictions to immutable JSON.",
+    "Ask a reviewer to correct every case in the workstation, then rerun review-proxy evaluation.",
+    "Expose VNet probability threshold and ResNet filter threshold as experiment parameters.",
+    "Run FROC-like analysis after a real nodule-level reference set is available.",
+    "Add ablations: no CBAM, no dual-branch context, no Agent safety rule layer."
+  ]
+}

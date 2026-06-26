@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #f7faf9;
+  color: #10201f;
+  font-family: Arial, "Microsoft YaHei", "PingFang SC", sans-serif;
+  font-size: 14px;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.focus-ring:focus-visible {
+  outline: 2px solid #287c73;
+  outline-offset: 2px;
+}

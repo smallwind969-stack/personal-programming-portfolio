@@ -1,0 +1,632 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/xfa8b9",
+    "id": "xfa8b9",
+    "slide": 13,
+    "layoutId": "7a9c65b9-4e12-4406-b6d9-2141cb73b1c7",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "93b4b8a3-2d47-49f2-9a85-7450dadbf2dd",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#F7FAFC",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "7a9c65b9-4e12-4406-b6d9-2141cb73b1c7",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "93b4b8a3-2d47-49f2-9a85-7450dadbf2dd",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "93b4b8a3-2d47-49f2-9a85-7450dadbf2dd",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/s72x4nap",
+      "id": "1",
+      "bbox": [
+        62,
+        30,
+        420,
+        26
+      ],
+      "geometry": "rect",
+      "text": "12 局限与路线",
+      "textPreview": "12 局限与路线",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#0E766E",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "12 局限与路线"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "12 局限与路线",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#0E766E",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "12 局限与路线",
+              "fontSize": 14,
+              "color": "#0E766E",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3m94fu18",
+      "id": "2",
+      "bbox": [
+        62,
+        62,
+        880,
+        55
+      ],
+      "geometry": "rect",
+      "text": "结题材料应主动承认边界，并给出下一步实验路线",
+      "textPreview": "结题材料应主动承认边界，并给出下一步实验路线",
+      "resolvedFontSize": 34,
+      "resolvedTextStyle": {
+        "fontSize": 34,
+        "typeface": "+mn-lt",
+        "color": "#12395A",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "结题材料应主动承认边界，并给出下一步实验路线"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "结题材料应主动承认边界，并给出下一步实验路线",
+          "resolvedTextStyle": {
+            "fontSize": 34,
+            "color": "#12395A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "结题材料应主动承认边界，并给出下一步实验路线",
+              "fontSize": 34,
+              "color": "#12395A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/a5gbq1or",
+      "id": "3",
+      "bbox": [
+        62,
+        126,
+        74,
+        5
+      ],
+      "geometry": "rect",
+      "fillColor": "#D99027",
+      "lineColor": "#D99027",
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/h4byhgn2",
+      "id": "4",
+      "bbox": [
+        62,
+        684,
+        980,
+        18
+      ],
+      "geometry": "rect",
+      "text": "数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI",
+      "textPreview": "数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "+mn-lt",
+        "color": "#5B6975",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI",
+          "resolvedTextStyle": {
+            "fontSize": 10,
+            "color": "#5B6975",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "数据来源：本项目工作区实验文件；公开规范：LUNA16 / CLAIM 2024 / TRIPOD+AI",
+              "fontSize": 10,
+              "color": "#5B6975",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/sji5snel",
+      "id": "5",
+      "bbox": [
+        1170,
+        680,
+        44,
+        22
+      ],
+      "geometry": "rect",
+      "text": "13",
+      "textPreview": "13",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "fontSize": 13,
+        "typeface": "+mn-lt",
+        "color": "#12395A",
+        "bold": true,
+        "alignment": "right",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "13"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "13",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "color": "#12395A",
+            "bold": true,
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "13",
+              "fontSize": 13,
+              "color": "#12395A",
+              "bold": true,
+              "alignment": "right"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3ylc7u54",
+      "id": "6",
+      "bbox": [
+        90,
+        168,
+        760,
+        290
+      ],
+      "geometry": "rect",
+      "text": "• 当前公共验证为 LUNA16 subset0，不是完整 888 CT 官方提交成绩。\n• candidates_V2 桥接仍不等同于端到端 VNet+FPRED 全流程官方评估。\n• 低 FP/scan 区间 CI 较宽，需扩展到 subset1/subset2，并进行固定 10 mm 外部验证。\n• 下一步建议：hard negative mining、概率校准、更多子集验证、消融实验和最终论文格式化。",
+      "textPreview": "• 当前公共验证为 LUNA16 subset0，不是完整 888 CT 官方提交成绩。 | • candidates_V2 桥接仍不等同于端到端 VNet+FPRED 全流程官方评估。 | • 低 FP/scan 区间 CI 较宽，需扩展到 subset1/subset2...",
+      "resolvedFontSize": 21,
+      "resolvedTextStyle": {
+        "fontSize": 21,
+        "typeface": "+mn-lt",
+        "color": "#17212B",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 6,
+        "lines": [
+          {
+            "index": 1,
+            "text": "• 当前公共验证为 LUNA16 subset0，不是完整 888 CT 官方提交成绩。"
+          },
+          {
+            "index": 2,
+            "text": "• candidates_V2 桥接仍不等同于端到端 VNet+FPRED 全流程官方评估。"
+          },
+          {
+            "index": 3,
+            "text": "• 低 FP/scan 区间 CI 较宽，需扩展到 subset1/subset2，并进行固定 10 mm"
+          },
+          {
+            "index": 4,
+            "text": "外部验证。"
+          },
+          {
+            "index": 5,
+            "text": "• 下一步建议：hard negative"
+          },
+          {
+            "index": 6,
+            "text": "mining、概率校准、更多子集验证、消融实验和最终论文格式化。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "• 当前公共验证为 LUNA16 subset0，不是完整 888 CT 官方提交成绩。",
+          "resolvedTextStyle": {
+            "fontSize": 21,
+            "color": "#17212B",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• 当前公共验证为 LUNA16 subset0，不是完整 888 CT 官方提交成绩。",
+              "fontSize": 21,
+              "color": "#17212B",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "• candidates_V2 桥接仍不等同于端到端 VNet+FPRED 全流程官方评估。",
+          "resolvedTextStyle": {
+            "fontSize": 21,
+            "color": "#17212B",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• candidates_V2 桥接仍不等同于端到端 VNet+FPRED 全流程官方评估。",
+              "fontSize": 21,
+              "color": "#17212B",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 3,
+          "text": "• 低 FP/scan 区间 CI 较宽，需扩展到 subset1/subset2，并进行固定 10 mm 外部验证。",
+          "resolvedTextStyle": {
+            "fontSize": 21,
+            "color": "#17212B",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• 低 FP/scan 区间 CI 较宽，需扩展到 subset1/subset2，并进行固定 10 mm 外部验证。",
+              "fontSize": 21,
+              "color": "#17212B",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 4,
+          "text": "• 下一步建议：hard negative mining、概率校准、更多子集验证、消融实验和最终论文格式化。",
+          "resolvedTextStyle": {
+            "fontSize": 21,
+            "color": "#17212B",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• 下一步建议：hard negative mining、概率校准、更多子集验证、消融实验和最终论文格式化。",
+              "fontSize": 21,
+              "color": "#17212B",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/adsji5sn",
+      "id": "7",
+      "bbox": [
+        910,
+        170,
+        230,
+        260
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFF7E8",
+      "lineColor": "#EDC98F",
+      "lineWidth": 1
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hgn29gr2",
+      "id": "8",
+      "bbox": [
+        938,
+        200,
+        170,
+        34
+      ],
+      "geometry": "rect",
+      "text": "答辩口径",
+      "textPreview": "答辩口径",
+      "resolvedFontSize": 25,
+      "resolvedTextStyle": {
+        "fontSize": 25,
+        "typeface": "+mn-lt",
+        "color": "#12395A",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "答辩口径"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "答辩口径",
+          "resolvedTextStyle": {
+            "fontSize": 25,
+            "color": "#12395A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "答辩口径",
+              "fontSize": 25,
+              "color": "#12395A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/svu9knih",
+      "id": "9",
+      "bbox": [
+        938,
+        256,
+        150,
+        124
+      ],
+      "geometry": "rect",
+      "text": "我们已经完成可复现实验闭环，下一阶段目标是从 subset0 扩展到多子集固定验证。",
+      "textPreview": "我们已经完成可复现实验闭环，下一阶段目标是从 subset0 扩展到多子集固定验证。",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "+mn-lt",
+        "color": "#17212B",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 7,
+        "lines": [
+          {
+            "index": 1,
+            "text": "我们已经完成"
+          },
+          {
+            "index": 2,
+            "text": "可复现实验闭"
+          },
+          {
+            "index": 3,
+            "text": "环，下一阶段"
+          },
+          {
+            "index": 4,
+            "text": "目标是从"
+          },
+          {
+            "index": 5,
+            "text": "subset0"
+          },
+          {
+            "index": 6,
+            "text": "扩展到多子集"
+          },
+          {
+            "index": 7,
+            "text": "固定验证。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "我们已经完成可复现实验闭环，下一阶段目标是从 subset0 扩展到多子集固定验证。",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "color": "#17212B",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "我们已经完成可复现实验闭环，下一阶段目标是从 subset0 扩展到多子集固定验证。",
+              "fontSize": 20,
+              "color": "#17212B",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

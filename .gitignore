@@ -1,0 +1,78 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+
+# Build artifacts
+dist/
+build/
+*.log
+*.spec
+*.pkg
+*.pyz
+
+# Model weights and large binary artifacts
+*.pt
+*.pth
+*.onnx
+*.engine
+*.dll
+*.lib
+*.exe
+*.whl
+*.zip
+
+# Medical / raw data
+*.dcm
+*.mhd
+*.raw
+*.nii
+*.nrrd
+luna16/
+uploads/
+processed/
+
+# Databases and credentials
+*.sqlite3
+*.db
+*.sql
+users.txt
+.env
+.env.*
+
+# Generated media and office submissions
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.docx
+*.pdf
+*.pptx
+*.xlsx
+*.xls
+*.tif
+*.tiff
+*.whl
+*.ipynb
+*.sav
+
+# Local raw/sensitive project folders kept out of portfolio commits
+01_重点项目_肺结节智能检测与临床辅助决策系统/张东晓/transformed/
+01_重点项目_肺结节智能检测与临床辅助决策系统/FJJ System/case_context/
+01_重点项目_肺结节智能检测与临床辅助决策系统/FJJ System/data/
+01_重点项目_肺结节智能检测与临床辅助决策系统/FJJ System/static/
+01_重点项目_肺结节智能检测与临床辅助决策系统/FJJ System/vendor/
+03_数据分析_医疗AI临床落地统计建模/医疗AI统计建模_支撑材料包（已有）/
+04_计算机视觉_YOLOv7车辆检测与视频管理系统/deploy/
+04_计算机视觉_YOLOv7车辆检测与视频管理系统/figure/
+
+# IDE
+.idea/
+.vscode/

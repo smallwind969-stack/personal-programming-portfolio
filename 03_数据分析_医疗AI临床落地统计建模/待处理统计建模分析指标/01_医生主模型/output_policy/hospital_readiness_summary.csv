@@ -1,0 +1,4 @@
+readiness_level,n,pct,mean_score
+High,15,0.3,0.8206
+Medium,24,0.48,0.5712
+Low,11,0.22,0.357
