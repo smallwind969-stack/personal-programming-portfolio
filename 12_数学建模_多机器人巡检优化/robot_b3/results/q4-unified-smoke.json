@@ -1,0 +1,41 @@
+{
+  "scenes": 1,
+  "start_seed": 28630,
+  "route_budget_s": 0.05,
+  "modes": {
+    "q4_routefirst": {
+      "full_clear_runs": 1,
+      "total_sources": 15,
+      "total_cleared": 15,
+      "mean_total_s": 7167.400013811932,
+      "mean_oracle_lower_bound_s": 2122.5654919046638,
+      "mean_oracle_regret_s": 5044.834521907268,
+      "mean_excess_move_s": 3081.834521907268,
+      "mean_measurement_regret_s": 1660.0,
+      "mean_per_source_s": 477.8266675874621,
+      "mean_move_s": 5129.400013811932,
+      "mean_measures": 332,
+      "mean_switches": 291,
+      "failed_clears": 4,
+      "max_real_s": 28.956782500012196,
+      "errors": []
+    },
+    "q4_unified": {
+      "full_clear_runs": 1,
+      "total_sources": 15,
+      "total_cleared": 15,
+      "mean_total_s": 6885.077625607136,
+      "mean_oracle_lower_bound_s": 2122.5654919046638,
+      "mean_oracle_regret_s": 4762.512133702472,
+      "mean_excess_move_s": 2941.512133702472,
+      "mean_measurement_regret_s": 1535.0,
+      "mean_per_source_s": 459.0051750404757,
+      "mean_move_s": 4989.077625607136,
+      "mean_measures": 307,
+      "mean_switches": 283,
+      "failed_clears": 1,
+      "max_real_s": 40.905655900001875,
+      "errors": []
+    }
+  }
+}

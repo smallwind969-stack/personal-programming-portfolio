@@ -26,7 +26,7 @@ def main():
         db_config = {
             'host': 'localhost',
             'user': 'root',
-            'password': os.getenv('MYSQL_PASSWORD', ''),
+            'password': '12345678',
             'database': 'ai250317',
             'port': 3306,
             'charset': 'utf8mb4'

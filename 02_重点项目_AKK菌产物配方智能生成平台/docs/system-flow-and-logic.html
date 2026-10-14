@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>菌藻启元·智能产线控制终端 — 系统流程图与业务逻辑</title>
+<style>
+  :root {
+    --bg: #0a0f0d;
+    --surface: #111916;
+    --surface2: #172019;
+    --border: #1e2e25;
+    --border-light: #2a3f32;
+    --text: #e8f0eb;
+    --text-dim: #8fa898;
+    --text-muted: #5a7565;
+    --accent: #4ade80;
+    --accent2: #22d3ee;
+    --accent3: #f59e0b;
+    --accent4: #f472b6;
+    --accent5: #a78bfa;
+    --accent6: #fb923c;
+    --agent1: #4ade80;
+    --agent2: #22d3ee;
+    --agent3: #f59e0b;
+    --agent4: #f472b6;
+    --agent5: #a78bfa;
+    --agent6: #fb923c;
+    --agent7: #ef4444;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, 'SF Pro Text', 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page { max-width: 1400px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  /* ── Header ── */
+  .header {
+    text-align: center;
+    padding: 60px 0 40px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 60px;
+  }
+  .header .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .header .logo-icon {
+    width: 48px; height: 48px;
+    background: linear-gradient(135deg, var(--accent), #166534);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 800; color: #fff;
+    box-shadow: 0 0 24px rgba(74,222,128,0.2);
+  }
+  .header h1 {
+    font-size: 28px; font-weight: 700;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .header p { color: var(--text-dim); font-size: 15px; margin-top: 8px; }
+
+  /* ── Section ── */
+  .section {
+    margin-bottom: 64px;
+    scroll-margin-top: 20px;
+  }
+  .section-title {
+    font-size: 20px; font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: 24px;
+    padding-left: 14px;
+    border-left: 3px solid var(--accent);
+  }
+  .section-title .badge {
+    display: inline-block;
+    font-size: 11px; font-weight: 600;
+    padding: 2px 8px; border-radius: 4px;
+    margin-left: 10px;
+    background: rgba(74,222,128,0.12);
+    color: var(--accent);
+    vertical-align: middle;
+  }
+
+  /* ── Flow Diagram ── */
+  .flow-container {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 40px 32px;
+    overflow-x: auto;
+  }
+
+  .flow-row {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    margin-bottom: 0;
+  }
+
+  .flow-stage {
+    flex: 1;
+    position: relative;
+  }
+
+  .flow-stage-box {
+    background: var(--surface2);
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 0 8px;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+  .flow-stage-box:hover { border-color: var(--accent); }
+
+  .flow-stage-box .stage-label {
+    font-size: 11px; font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .flow-stage-box .stage-name {
+    font-size: 15px; font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .flow-stage-box .stage-desc {
+    font-size: 12px; color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  /* Stage colors */
+  .stage-intake .stage-label { color: var(--agent1); }
+  .stage-schema .stage-label { color: var(--agent2); }
+  .stage-clean .stage-label { color: var(--agent3); }
+  .stage-feature .stage-label { color: var(--agent4); }
+  .stage-model .stage-label { color: var(--agent5); }
+  .stage-eval .stage-label { color: var(--agent6); }
+  .stage-human .stage-label { color: var(--agent7); }
+
+  .stage-intake .flow-stage-box { border-top: 3px solid var(--agent1); }
+  .stage-schema .flow-stage-box { border-top: 3px solid var(--agent2); }
+  .stage-clean .flow-stage-box { border-top: 3px solid var(--agent3); }
+  .stage-feature .flow-stage-box { border-top: 3px solid var(--agent4); }
+  .stage-model .flow-stage-box { border-top: 3px solid var(--agent5); }
+  .stage-eval .flow-stage-box { border-top: 3px solid var(--agent6); }
+  .stage-human .flow-stage-box { border-top: 3px solid var(--agent7); }
+
+  /* Arrow connector */
+  .flow-arrow {
+    display: flex; align-items: center; justify-content: center;
+    width: 40px; min-width: 40px;
+    color: var(--text-muted);
+    font-size: 18px;
+  }
+
+  /* ── Agent Cards ── */
+  .agent-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 16px;
+  }
+
+  .agent-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .agent-card:hover {
+    border-color: var(--border-light);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  }
+  .agent-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .agent-card.ac1::before { background: var(--agent1); }
+  .agent-card.ac2::before { background: var(--agent2); }
+  .agent-card.ac3::before { background: var(--agent3); }
+  .agent-card.ac4::before { background: var(--agent4); }
+  .agent-card.ac5::before { background: var(--agent5); }
+  .agent-card.ac6::before { background: var(--agent6); }
+  .agent-card.ac7::before { background: var(--agent7); }
+
+  .agent-card .agent-num {
+    position: absolute;
+    top: 12px; right: 16px;
+    font-size: 40px; font-weight: 800;
+    opacity: 0.06;
+    line-height: 1;
+  }
+  .agent-card .agent-header {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 12px;
+  }
+  .agent-card .agent-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 700;
+    color: #fff;
+  }
+  .ac1 .agent-icon { background: var(--agent1); }
+  .ac2 .agent-icon { background: var(--agent2); }
+  .ac3 .agent-icon { background: var(--agent3); }
+  .ac4 .agent-icon { background: var(--agent4); }
+  .ac5 .agent-icon { background: var(--agent5); }
+  .ac6 .agent-icon { background: var(--agent6); }
+  .ac7 .agent-icon { background: var(--agent7); }
+
+  .agent-card .agent-title {
+    font-size: 15px; font-weight: 600;
+  }
+  .agent-card .agent-subtitle {
+    font-size: 11px; color: var(--text-dim);
+  }
+  .agent-card .agent-desc {
+    font-size: 13px; color: var(--text-dim);
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+
+  .agent-card .io-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .agent-card .io-box {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px;
+  }
+  .agent-card .io-label {
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+  .agent-card .io-items {
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  .agent-card .cap-tags {
+    display: flex; flex-wrap: wrap; gap: 4px;
+  }
+  .agent-card .cap-tag {
+    font-size: 10px; font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: rgba(74,222,128,0.08);
+    color: var(--accent);
+    border: 1px solid rgba(74,222,128,0.15);
+  }
+
+  /* ── Full Pipeline SVG ── */
+  .pipeline-svg-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    overflow-x: auto;
+    text-align: center;
+  }
+  .pipeline-svg-wrap svg text {
+    font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+  }
+
+  /* ── Architecture Diagram ── */
+  .arch-grid {
+    display: grid;
+    grid-template-columns: 1fr 60px 1fr 60px 1fr;
+    gap: 0;
+    align-items: stretch;
+  }
+  .arch-layer {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .arch-layer-title {
+    font-size: 12px; font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  .arch-layer-items {
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .arch-item {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 12px;
+    text-align: center;
+    color: var(--text-dim);
+  }
+  .arch-connector {
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-muted); font-size: 24px;
+  }
+
+  /* ── Data Flow ── */
+  .dataflow-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .dataflow-table th {
+    text-align: left;
+    padding: 10px 14px;
+    font-size: 11px; font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border-light);
+    background: var(--surface2);
+  }
+  .dataflow-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-dim);
+    vertical-align: top;
+  }
+  .dataflow-table tr:hover td { background: rgba(74,222,128,0.03); }
+  .dataflow-table .mono {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 12px;
+    color: var(--accent);
+  }
+
+  /* ── Route Tree ── */
+  .route-tree {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 32px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 2;
+    color: var(--text-dim);
+    overflow-x: auto;
+  }
+  .route-tree .route-path { color: var(--accent2); }
+  .route-tree .route-desc { color: var(--text-muted); font-family: -apple-system, system-ui, sans-serif; font-size: 12px; }
+  .route-tree .route-page { color: var(--accent); }
+
+  /* ── Lifecycle ── */
+  .lifecycle-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 40px 32px;
+  }
+  .lifecycle-stages {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    position: relative;
+  }
+  .lifecycle-stage {
+    flex: 1;
+    text-align: center;
+    position: relative;
+  }
+  .lifecycle-node {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    margin: 0 auto 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    position: relative;
+    z-index: 1;
+  }
+  .lifecycle-node.ln-1 { background: linear-gradient(135deg, #166534, #4ade80); box-shadow: 0 0 20px rgba(74,222,128,0.3); }
+  .lifecycle-node.ln-2 { background: linear-gradient(135deg, #0e7490, #22d3ee); box-shadow: 0 0 20px rgba(34,211,238,0.3); }
+  .lifecycle-node.ln-3 { background: linear-gradient(135deg, #92400e, #f59e0b); box-shadow: 0 0 20px rgba(245,158,11,0.3); }
+  .lifecycle-node.ln-4 { background: linear-gradient(135deg, #9d174d, #f472b6); box-shadow: 0 0 20px rgba(244,114,182,0.3); }
+
+  .lifecycle-stage .ls-title {
+    font-size: 14px; font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .lifecycle-stage .ls-sub {
+    font-size: 11px; color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .lifecycle-connector {
+    position: absolute;
+    top: 32px;
+    left: calc(50% + 32px);
+    right: calc(-50% + 32px);
+    height: 2px;
+    background: var(--border-light);
+  }
+  .lifecycle-connector::after {
+    content: '▸';
+    position: absolute;
+    right: -2px; top: -8px;
+    color: var(--text-muted);
+    font-size: 14px;
+  }
+
+  /* ── Command Queue Flow ── */
+  .queue-flow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+  }
+  .queue-node {
+    background: var(--surface2);
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    min-width: 100px;
+  }
+  .queue-node.qn-accent {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .queue-arrow {
+    color: var(--text-muted);
+    font-size: 16px;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .agent-grid { grid-template-columns: 1fr; }
+    .arch-grid { grid-template-columns: 1fr; gap: 12px; }
+    .arch-connector { transform: rotate(90deg); }
+    .lifecycle-stages { flex-direction: column; gap: 24px; }
+    .lifecycle-connector { display: none; }
+    .flow-row { flex-direction: column; }
+    .flow-arrow { transform: rotate(90deg); width: auto; min-width: 0; height: 32px; }
+  }
+
+  /* ── Nav ── */
+  .toc {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 48px;
+  }
+  .toc-title {
+    font-size: 12px; font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+  .toc-links {
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+  .toc-links a {
+    font-size: 13px;
+    color: var(--accent);
+    text-decoration: none;
+    padding: 4px 12px;
+    border-radius: 6px;
+    background: rgba(74,222,128,0.06);
+    border: 1px solid rgba(74,222,128,0.12);
+    transition: background 0.15s;
+  }
+  .toc-links a:hover { background: rgba(74,222,128,0.12); }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="logo">
+      <div class="logo-icon">启</div>
+      <h1>菌藻启元·智能产线控制终端</h1>
+    </div>
+    <p>系统流程图与业务逻辑全景文档 · 2026</p>
+  </header>
+
+  <!-- TOC -->
+  <nav class="toc">
+    <div class="toc-title">目录</div>
+    <div class="toc-links">
+      <a href="#lifecycle">实验生命周期</a>
+      <a href="#agent-pipeline">七智能体流水线</a>
+      <a href="#agent-detail">智能体职责详解</a>
+      <a href="#data-flow">数据流转链</a>
+      <a href="#architecture">系统架构</a>
+      <a href="#command-queue">命令队列与Worker</a>
+      <a href="#route-tree">前端路由树</a>
+      <a href="#api-list">API端点清单</a>
+      <a href="#entity-model">数据实体模型</a>
+    </div>
+  </nav>
+
+  <!-- ═══════ 1. 实验生命周期 ═══════ -->
+  <section class="section" id="lifecycle">
+    <h2 class="section-title">实验生命周期 <span class="badge">4 阶段</span></h2>
+    <div class="lifecycle-wrap">
+      <div class="lifecycle-stages">
+        <div class="lifecycle-stage">
+          <div class="lifecycle-node ln-1">📋</div>
+          <div class="lifecycle-connector"></div>
+          <div class="ls-title">产品需求研判</div>
+          <div class="ls-sub">自然语言设想 → 可验证需求<br>ProductInnovation Agent<br>人工确认 → ProductRequirementVersion</div>
+        </div>
+        <div class="lifecycle-stage">
+          <div class="lifecycle-node ln-2">🔬</div>
+          <div class="lifecycle-connector"></div>
+          <div class="ls-title">数据分析</div>
+          <div class="ls-sub">7智能体流水线<br>收集→识别→清洗→特征→建模→评估→确认<br>输出：模型验收版本</div>
+        </div>
+        <div class="lifecycle-stage">
+          <div class="lifecycle-node ln-3">⚙️</div>
+          <div class="lifecycle-connector"></div>
+          <div class="ls-title">仿真模拟</div>
+          <div class="ls-sub">7阶段仿真运行<br>特征绑定 + 设备适配包<br>参数临时试算（不改正式版本）</div>
+        </div>
+        <div class="lifecycle-stage">
+          <div class="lifecycle-node ln-4">🎯</div>
+          <div class="ls-title">工艺优化</div>
+          <div class="ls-sub">候选方案生成 + 人工调参<br>补实验闭环 + 反馈重训练<br>唯一可正式提交版本的工作区</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════ 2. 七智能体流水线 ═══════ -->
+  <section class="section" id="agent-pipeline">
+    <h2 class="section-title">七智能体流水线 <span class="badge">数据分析阶段</span></h2>
+    <div class="flow-container">
+      <div class="flow-row">
+        <div class="flow-stage stage-intake">
+          <div class="flow-stage-box">
+            <div class="stage-label">● Agent 1</div>
+            <div class="stage-name">数据收集定位</div>
+            <div class="stage-desc">文件发现 · 来源定位<br>SHA-256资产指纹<br>设备适配器字段匹配</div>
+          </div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-stage stage-schema">
+          <div class="flow-stage-box">
+            <div class="stage-label">● Agent 2</div>
+            <div class="stage-name">字段识别</div>
+            <div class="stage-desc">别名词典匹配<br>LLM辅助识别（可选）<br>单位维度校验 · 冲突检测</div>
+          </div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-stage stage-clean">
+          <div class="flow-stage-box">
+            <div class="stage-label">● Agent 3</div>
+            <div class="stage-name">清洗对齐</div>
+            <div class="stage-desc">IQR异常检测<br>单位转换(scale+offset)<br>时间轴对齐 · 缺失值插值</div>
+          </div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-stage stage-feature">
+          <div class="flow-stage-box">
+            <div class="stage-label">● Agent 4</div>
+            <div class="stage-name">特征工程</div>
+            <div class="stage-desc">滞后/差分/滚动统计<br>特征泄漏审计<br>公式与窗口可复现</div>
+          </div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-stage stage-model">
+          <div class="flow-stage-box">
+            <div class="stage-label">● Agent 5</div>
+            <div class="stage-name">数学建模</div>
+            <div class="stage-desc">候选模型训练比较<br>交叉验证 · 超参搜索<br>模型版本化保存</div>
+          </div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-stage stage-eval">
+          <div class="flow-stage-box">
+            <div class="stage-label">● Agent 6</div>
+            <div class="stage-name">模型评估</div>
+            <div class="stage-desc">残差诊断 · 预测区间<br>特征漂移检测<br>仿真准入评分</div>
+          </div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-stage stage-human">
+          <div class="flow-stage-box">
+            <div class="stage-label">● Agent 7</div>
+            <div class="stage-name">人工确认</div>
+            <div class="stage-desc">逐项确认/驳回<br>决策人+理由+影响<br>只读验收版本</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════ 3. 智能体职责详解 ═══════ -->
+  <section class="section" id="agent-detail">
+    <h2 class="section-title">智能体职责详解 <span class="badge">7 + 6 辅助</span></h2>
+    <div class="agent-grid">
+
+      <!-- Agent 1 -->
+      <div class="agent-card ac1">
+        <div class="agent-num">01</div>
+        <div class="agent-header">
+          <div class="agent-icon">1</div>
+          <div>
+            <div class="agent-title">数据收集定位智能体</div>
+            <div class="agent-subtitle">DataCollectionLocalizationAgent</div>
+          </div>
+        </div>
+        <div class="agent-desc">定位多设备文件、识别来源并生成不可变资产指纹。使用企业设备适配包匹配字段别名，生成转换规则（scale + offset），所有映射必须人工确认。</div>
+        <div class="io-grid">
+          <div class="io-box">
+            <div class="io-label">输入</div>
+            <div class="io-items">设备文件清单<br>实验目标与批次<br>设备适配包引用</div>
+          </div>
+          <div class="io-box">
+            <div class="io-label">输出</div>
+            <div class="io-items">原始数据资产清单<br>字段转换规则<br>SHA-256资产指纹</div>
+          </div>
+        </div>
+        <div class="cap-tags">
+          <span class="cap-tag">file-discovery</span>
+          <span class="cap-tag">source-localization</span>
+          <span class="cap-tag">asset-fingerprint</span>
+          <span class="cap-tag">human-review-required</span>
+        </div>
+      </div>
+
+      <!-- Agent 2 -->
+      <div class="agent-card ac2">
+        <div class="agent-num">02</div>
+        <div class="agent-header">
+          <div class="agent-icon">2</div>
+          <div>
+            <div class="agent-title">字段识别智能体</div>
+            <div class="agent-subtitle">SchemaRecognitionAgent</div>
+          </div>
+        </div>
+        <div class="agent-desc">识别企业字段别名、时间格式、单位和低置信映射。支持LLM辅助识别+规则回退双模式，失败时自动降级为纯规则匹配。</div>
+        <div class="io-grid">
+          <div class="io-box">
+            <div class="io-label">输入</div>
+            <div class="io-items">原始字段列表<br>企业字段词典<br>LLM服务（可选）</div>
+          </div>
+          <div class="io-box">
+            <div class="io-label">输出</div>
+            <div class="io-items">标准字段映射<br>置信度评分<br>人工确认建议</div>
+          </div>
+        </div>
+        <div class="cap-tags">
+          <span class="cap-tag">schema-matching</span>
+          <span class="cap-tag">unit-detection</span>
+          <span class="cap-tag">local-llm-optional</span>
+          <span class="cap-tag">review-candidates</span>
+        </div>
+      </div>
+
+      <!-- Agent 3 -->
+      <div class="agent-card ac3">
+        <div class="agent-num">03</div>
+        <div class="agent-header">
+          <div class="agent-icon">3</div>
+          <div>
+            <div class="agent-title">清洗对齐智能体</div>
+            <div class="agent-subtitle">CleaningAlignmentAgent</div>
+          </div>
+        </div>
+        <div class="agent-desc">执行确定性缺失值处理、IQR异常检测、单位转换和时间轴对齐。所有处理规则生成审计表，支持输入指纹缓存。</div>
+        <div class="io-grid">
+          <div class="io-box">
+            <div class="io-label">输入</div>
+            <div class="io-items">标准字段映射<br>设备时间序列<br>清洗配置参数</div>
+          </div>
+          <div class="io-box">
+            <div class="io-label">输出</div>
+            <div class="io-items">清洗数据版本<br>处理规则审计表<br>时间对齐率/缺失率</div>
+          </div>
+        </div>
+        <div class="cap-tags">
+          <span class="cap-tag">data-cleaning</span>
+          <span class="cap-tag">unit-conversion</span>
+          <span class="cap-tag">time-alignment</span>
+        </div>
+      </div>
+
+      <!-- Agent 4 -->
+      <div class="agent-card ac4">
+        <div class="agent-num">04</div>
+        <div class="agent-header">
+          <div class="agent-icon">4</div>
+          <div>
+            <div class="agent-title">特征工程智能体</div>
+            <div class="agent-subtitle">FeatureEngineeringAgent</div>
+          </div>
+        </div>
+        <div class="agent-desc">从锁定清洗快照生成不可变、可审计的特征集。支持滞后特征、滚动统计、变化率，内置特征泄漏审计（常量检测、时间顺序、目标泄漏）。</div>
+        <div class="io-grid">
+          <div class="io-box">
+            <div class="io-label">输入</div>
+            <div class="io-items">对齐数据快照<br>目标变量<br>特征配置（lag/window）</div>
+          </div>
+          <div class="io-box">
+            <div class="io-label">输出</div>
+            <div class="io-items">特征集版本<br>公式与窗口清单<br>泄漏审计报告</div>
+          </div>
+        </div>
+        <div class="cap-tags">
+          <span class="cap-tag">feature-extraction</span>
+          <span class="cap-tag">formula-audit</span>
+          <span class="cap-tag">lag-features</span>
+        </div>
+      </div>
+
+      <!-- Agent 5 -->
+      <div class="agent-card ac5">
+        <div class="agent-num">05</div>
+        <div class="agent-header">
+          <div class="agent-icon">5</div>
+          <div>
+            <div class="agent-title">数学建模智能体</div>
+            <div class="agent-subtitle">ModelingAgent</div>
+          </div>
+        </div>
+        <div class="agent-desc">训练并比较候选模型（线性回归/随机森林/XGBoost等），执行K折交叉验证和超参数搜索，保存模型权重、配置、指标和数据版本。</div>
+        <div class="io-grid">
+          <div class="io-box">
+            <div class="io-label">输入</div>
+            <div class="io-items">特征集版本<br>目标变量<br>建模配置</div>
+          </div>
+          <div class="io-box">
+            <div class="io-label">输出</div>
+            <div class="io-items">模型版本+权重<br>超参数记录<br>交叉验证指标</div>
+          </div>
+        </div>
+        <div class="cap-tags">
+          <span class="cap-tag">model-training</span>
+          <span class="cap-tag">cross-validation</span>
+          <span class="cap-tag">hyperparameter-search</span>
+          <span class="cap-tag">gpu-optional</span>
+        </div>
+      </div>
+
+      <!-- Agent 6 -->
+      <div class="agent-card ac6">
+        <div class="agent-num">06</div>
+        <div class="agent-header">
+          <div class="agent-icon">6</div>
+          <div>
+            <div class="agent-title">模型评估智能体</div>
+            <div class="agent-subtitle">ModelEvaluationAgent</div>
+          </div>
+        </div>
+        <div class="agent-desc">评估误差、稳定性、漂移和仿真准入条件。综合4维度评分：预测性能(R²)、交叉验证稳定性、分布稳定性、范围覆盖度。输出仿真准入决策。</div>
+        <div class="io-grid">
+          <div class="io-box">
+            <div class="io-label">输入</div>
+            <div class="io-items">已晋升模型<br>模型卡片(ModelCard)<br>留出集观测</div>
+          </div>
+          <div class="io-box">
+            <div class="io-label">输出</div>
+            <div class="io-items">模型评估报告<br>预测区间(95%)<br>仿真准入建议</div>
+          </div>
+        </div>
+        <div class="cap-tags">
+          <span class="cap-tag">model-evaluation</span>
+          <span class="cap-tag">confidence-calibration</span>
+          <span class="cap-tag">simulation-gate</span>
+        </div>
+      </div>
+
+      <!-- Agent 7 -->
+      <div class="agent-card ac7">
+        <div class="agent-num">07</div>
+        <div class="agent-header">
+          <div class="agent-icon">7</div>
+          <div>
+            <div class="agent-title">人工确认节点</div>
+            <div class="agent-subtitle">HumanReviewAgent</div>
+          </div>
+        </div>
+        <div class="agent-desc">汇总待确认项（字段映射、异常处理、模型准入），逐项人工审核，记录决策人、理由、影响范围，生成只读验收版本。失败不覆盖已验收版本。</div>
+        <div class="io-grid">
+          <div class="io-box">
+            <div class="io-label">输入</div>
+            <div class="io-items">风险与模型评估<br>待确认字段映射<br>仿真准入决策</div>
+          </div>
+          <div class="io-box">
+            <div class="io-label">输出</div>
+            <div class="io-items">人工决策记录<br>模型验收版本<br>审计追踪日志</div>
+          </div>
+        </div>
+        <div class="cap-tags">
+          <span class="cap-tag">approval</span>
+          <span class="cap-tag">rejection</span>
+          <span class="cap-tag">audit-trail</span>
+          <span class="cap-tag">human-gate</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════ 4. 数据流转链 ═══════ -->
+  <section class="section" id="data-flow">
+    <h2 class="section-title">数据流转链 <span class="badge">端到端</span></h2>
+    <div class="flow-container" style="overflow-x:auto;">
+      <table class="dataflow-table">
+        <thead>
+          <tr>
+            <th>阶段</th>
+            <th>智能体</th>
+            <th>输入实体</th>
+            <th>核心处理</th>
+            <th>输出实体</th>
+            <th>人工门禁</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="color:var(--agent1)">① 数据收集</td>
+            <td class="mono">dataCollectionLocalization</td>
+            <td>ExperimentFileBundle</td>
+            <td>文件解析 → 适配器匹配 → SHA-256指纹</td>
+            <td class="mono">LocalizedDataAssets</td>
+            <td>✔ 字段映射确认</td>
+          </tr>
+          <tr>
+            <td style="color:var(--agent2)">② 字段识别</td>
+            <td class="mono">schemaRecognition</td>
+            <td>LocalizedDataAssets</td>
+            <td>别名词典 → LLM辅助 → 冲突合并</td>
+            <td class="mono">SchemaRecognitionResult</td>
+            <td>✔ 低置信映射确认</td>
+          </tr>
+          <tr>
+            <td style="color:var(--agent3)">③ 清洗对齐</td>
+            <td class="mono">cleaningAlignment</td>
+            <td>SchemaRecognitionResult</td>
+            <td>IQR异常 → 单位转换 → 时间对齐</td>
+            <td class="mono">AlignedDataset</td>
+            <td>✔ 清洗规则审核</td>
+          </tr>
+          <tr>
+            <td style="color:var(--agent4)">④ 特征工程</td>
+            <td class="mono">featureEngineering</td>
+            <td>AlignedDataset</td>
+            <td>滞后/滚动/差分 → 泄漏审计</td>
+            <td class="mono">FeatureDataset</td>
+            <td>✔ 特征集确认</td>
+          </tr>
+          <tr>
+            <td style="color:var(--agent5)">⑤ 数学建模</td>
+            <td class="mono">modeling</td>
+            <td>FeatureDataset</td>
+            <td>候选训练 → 交叉验证 → 超参搜索</td>
+            <td class="mono">ModelCandidateSet</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td style="color:var(--agent6)">⑥ 模型评估</td>
+            <td class="mono">modelEvaluation</td>
+            <td>ModelCandidateSet</td>
+            <td>残差诊断 → 漂移检测 → 准入评分</td>
+            <td class="mono">ModelEvaluationReport</td>
+            <td>✔ 评估报告审核</td>
+          </tr>
+          <tr>
+            <td style="color:var(--agent7)">⑦ 人工确认</td>
+            <td class="mono">humanReview</td>
+            <td>ReviewPackage</td>
+            <td>逐项确认 → 记录决策 → 验收版本</td>
+            <td class="mono">HumanDecision</td>
+            <td>✔ 必须人工</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ═══════ 5. 系统架构 ═══════ -->
+  <section class="section" id="architecture">
+    <h2 class="section-title">系统架构 <span class="badge">三层分离</span></h2>
+    <div class="arch-grid">
+      <div class="arch-layer">
+        <div class="arch-layer-title">前端 · Next.js 16</div>
+        <div class="arch-layer-items">
+          <div class="arch-item">App Router (SSR)</div>
+          <div class="arch-item">React 19 + TypeScript</div>
+          <div class="arch-item">Tailwind CSS</div>
+          <div class="arch-item">Zod 运行时校验</div>
+          <div class="arch-item">Server Components</div>
+          <div class="arch-item">47 实验组件</div>
+        </div>
+      </div>
+      <div class="arch-connector">⇄</div>
+      <div class="arch-layer">
+        <div class="arch-layer-title">后端 · FastAPI</div>
+        <div class="arch-layer-items">
+          <div class="arch-item">Routers (90+ 端点)</div>
+          <div class="arch-item">Services (业务逻辑)</div>
+          <div class="arch-item">Schemas (Pydantic)</div>
+          <div class="arch-item">Agent Orchestrator</div>
+          <div class="arch-item">Agent Runtime</div>
+          <div class="arch-item">Command Queue</div>
+        </div>
+      </div>
+      <div class="arch-connector">⇄</div>
+      <div class="arch-layer">
+        <div class="arch-layer-title">存储层</div>
+        <div class="arch-layer-items">
+          <div class="arch-item">SQLite (WAL模式)</div>
+          <div class="arch-item">PostgreSQL (可选)</div>
+          <div class="arch-item">Redis (分布式)</div>
+          <div class="arch-item">内容寻址存储</div>
+          <div class="arch-item">检查点持久化</div>
+          <div class="arch-item">Mock JSON</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════ 6. 命令队列与Worker ═══════ -->
+  <section class="section" id="command-queue">
+    <h2 class="section-title">命令队列与Worker <span class="badge">异步执行</span></h2>
+    <div class="flow-container">
+      <div class="queue-flow">
+        <div class="queue-node qn-accent">前端操作</div>
+        <div class="queue-arrow">→</div>
+        <div class="queue-node">API Router</div>
+        <div class="queue-arrow">→</div>
+        <div class="queue-node qn-accent">CommandService<br><small>幂等入队</small></div>
+        <div class="queue-arrow">→</div>
+        <div class="queue-node">SQLite/PG<br><small>命令队列</small></div>
+        <div class="queue-arrow">→</div>
+        <div class="queue-node qn-accent">Worker<br><small>claim+heartbeat</small></div>
+        <div class="queue-arrow">→</div>
+        <div class="queue-node">ExecutionRegistry<br><small>路由到Agent</small></div>
+        <div class="queue-arrow">→</div>
+        <div class="queue-node qn-accent">具体Agent<br><small>执行业务</small></div>
+        <div class="queue-arrow">→</div>
+        <div class="queue-node">complete/fail</div>
+      </div>
+      <div style="margin-top:20px; font-size:13px; color:var(--text-dim); line-height:1.8; padding: 0 20px;">
+        <strong style="color:var(--accent)">租约机制：</strong>Worker认领任务时获取leaseToken，后台线程定期心跳续约，租约过期后任务可被其他Worker重新认领。<br>
+        <strong style="color:var(--accent)">乐观并发：</strong>运行时状态使用revision版本号，advance/stop操作需携带expectedRevision防止并发冲突。<br>
+        <strong style="color:var(--accent)">命令幂等：</strong>每个命令携带唯一commandId，队列去重防止重复执行。<br>
+        <strong style="color:var(--accent)">调度后端：</strong>支持polling（默认）和dramatiq-redis两种调度模式。
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════ 7. 前端路由树 ═══════ -->
+  <section class="section" id="route-tree">
+    <h2 class="section-title">前端路由树 <span class="badge">Next.js App Router</span></h2>
+    <div class="route-tree">
+<span class="route-path">/</span> <span class="route-desc">→ 实验归档看板（首页）</span>
+<span class="route-path">/experiments</span> <span class="route-desc">→ 工业打样数据看板</span>
+<span class="route-path">/experiments/new</span> <span class="route-desc">→ 新建实验（企业/示例/空白）</span>
+<span class="route-path">/experiments/[id]</span> <span class="route-desc">→ 实验工作区</span>
+  <span class="route-path">├ overview</span> <span class="route-desc">→ 实验概览（生命周期+工作区）</span>
+  <span class="route-path">├ analysis</span> <span class="route-desc">→ 数据分析（7智能体流水线）</span>
+  <span class="route-path">├ simulation</span> <span class="route-desc">→ 仿真模拟（特征绑定+运行台）</span>
+  <span class="route-path">├ optimization</span> <span class="route-desc">→ 工艺优化（候选+补实验+反馈重训）</span>
+  <span class="route-path">├ innovation</span> <span class="route-desc">→ 产品需求研判</span>
+  <span class="route-path">├ agents</span> <span class="route-desc">→ 智能体任务中心</span>
+  <span class="route-path">└ reports</span> <span class="route-desc">→ 研究报告中心</span>
+<span class="route-path">/products</span> <span class="route-desc">→ AKK产物知识库</span>
+<span class="route-path">/products/[id]</span> <span class="route-desc">→ 产物详情</span>
+<span class="route-path">/formula/new</span> <span class="route-desc">→ 配方设计工作台</span>
+<span class="route-path">/formula/results</span> <span class="route-desc">→ 商品方案库</span>
+<span class="route-path">/formula/results/[id]</span> <span class="route-desc">→ 方案详情</span>
+<span class="route-path">/knowledge</span> <span class="route-desc">→ AKK文献知识库</span>
+<span class="route-path">/knowledge-assets</span> <span class="route-desc">→ 知识资产管理</span>
+<span class="route-path">/model-assets</span> <span class="route-desc">→ 模型资产列表</span>
+<span class="route-path">/model-assets/adapters</span> <span class="route-desc">→ 设备适配包</span>
+<span class="route-path">/model-assets/[expId]/[ver]</span> <span class="route-desc">→ 模型版本详情</span>
+<span class="route-path">/human-actions</span> <span class="route-desc">→ 人工确认中心</span>
+<span class="route-path">/runs</span> <span class="route-desc">→ 全局运行中心</span>
+<span class="route-path">/settings</span> <span class="route-desc">→ 模型能力中心</span>
+    </div>
+  </section>
+
+  <!-- ═══════ 8. API端点清单 ═══════ -->
+  <section class="section" id="api-list">
+    <h2 class="section-title">API端点清单 <span class="badge">90+ 端点</span></h2>
+    <div class="flow-container" style="overflow-x:auto;">
+      <table class="dataflow-table">
+        <thead>
+          <tr>
+            <th>模块</th>
+            <th>前缀</th>
+            <th>核心端点</th>
+            <th>数量</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="color:var(--accent)">实验工作区</td>
+            <td class="mono">/experiments</td>
+            <td>归档、创建、概览、生命周期、人工操作</td>
+            <td>~15</td>
+          </tr>
+          <tr>
+            <td style="color:var(--accent2)">文件管理</td>
+            <td class="mono">/experiments/{id}/files</td>
+            <td>上传、批量上传、完整性校验、删除、审计</td>
+            <td>~7</td>
+          </tr>
+          <tr>
+            <td style="color:var(--accent3)">字段映射</td>
+            <td class="mono">/experiments/{id}/field-*</td>
+            <td>建议、确认、词典、映射查询</td>
+            <td>~5</td>
+          </tr>
+          <tr>
+            <td style="color:var(--accent4)">数据分析流水线</td>
+            <td class="mono">/experiments/{id}/*-runs</td>
+            <td>数据摄入、字段识别、清洗对齐、特征工程、快照</td>
+            <td>~15</td>
+          </tr>
+          <tr>
+            <td style="color:var(--accent5)">建模与评估</td>
+            <td class="mono">/experiments/{id}/model-*</td>
+            <td>评估报告、训练任务、训练结果、建模计划</td>
+            <td>~8</td>
+          </tr>
+          <tr>
+            <td style="color:var(--accent6)">智能体运行</td>
+            <td class="mono">/experiments/{id}/agent-*</td>
+            <td>创建/推进/停止/重启运行、引导预览/应用、审核</td>
+            <td>~10</td>
+          </tr>
+          <tr>
+            <td style="color:var(--accent)">仿真运行</td>
+            <td class="mono">/experiments/{id}/simulation-*</td>
+            <td>创建/推进/停止仿真、试验快照、失败重试</td>
+            <td>~8</td>
+          </tr>
+          <tr>
+            <td style="color:var(--accent2)">优化运行</td>
+            <td class="mono">/experiments/{id}/optimization-*</td>
+            <td>创建、选择候选、提交、推进、审核</td>
+            <td>~7</td>
+          </tr>
+          <tr>
+            <td style="color:var(--accent3)">反馈闭环</td>
+            <td class="mono">/experiments/{id}/*-batches</td>
+            <td>验证批次、反馈重训、补实验设计/执行/测量</td>
+            <td>~12</td>
+          </tr>
+          <tr>
+            <td style="color:var(--accent4)">研究活动</td>
+            <td class="mono">/experiments/{id}/research-*</td>
+            <td>研究活动CRUD、试验入队、迭代、晋升</td>
+            <td>~6</td>
+          </tr>
+          <tr>
+            <td style="color:var(--accent5)">仿真服务</td>
+            <td class="mono">/simulation</td>
+            <td>预测、模型资产、设备适配包、场景</td>
+            <td>~15</td>
+          </tr>
+          <tr>
+            <td style="color:var(--accent6)">其他</td>
+            <td class="mono">/akk-products, /formula, /knowledge, /llm, /agent-runtime, /process</td>
+            <td>产物、配方、知识、LLM状态、运行时、工艺</td>
+            <td>~15</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ═══════ 9. 数据实体模型 ═══════ -->
+  <section class="section" id="entity-model">
+    <h2 class="section-title">数据实体模型 <span class="badge">核心关系</span></h2>
+    <div class="flow-container" style="overflow-x:auto;">
+      <div style="font-family:'SF Mono','Fira Code',monospace; font-size:13px; line-height:2; color:var(--text-dim);">
+        <div style="color:var(--accent); font-weight:700; margin-bottom:8px;">ExperimentWorkspace (实验工作区)</div>
+        <div style="padding-left:20px;">
+          ├── experimentId <span style="color:var(--text-muted)">(PK)</span>
+          <br>├── name · objective · batchCode
+          <br>├── currentStage: <span style="color:var(--accent2)">dataAnalysis | simulation | optimization</span>
+          <br>├── status: <span style="color:var(--accent3)">waiting | running | completed | needsReview | failed | stopped</span>
+          <br>├── sourceType: <span style="color:var(--accent4)">enterprise | sample | blank</span>
+          <br>├── productionContext → <span style="color:var(--accent5)">ProductionContext</span> (产业/工艺/产线/参数定义)
+          <br>├── adapterPack → <span style="color:var(--accent5)">DeviceAdapterPackReference</span>
+          <br>├── confidenceScore · modelVersion · resultVersion
+          <br>└── stages → <span style="color:var(--accent5)">list[ExperimentStageSummary]</span>
+        </div>
+        <br>
+        <div style="color:var(--accent); font-weight:700; margin-bottom:8px;">关联实体（1:N）</div>
+        <div style="padding-left:20px;">
+          ExperimentWorkspace <span style="color:var(--accent3)">1──N</span> ExperimentFileAsset <span style="color:var(--text-muted)">(文件资产, SHA-256内容寻址)</span>
+          <br>ExperimentWorkspace <span style="color:var(--accent3)">1──N</span> DataCollectionLocalizationRun <span style="color:var(--text-muted)">(数据摄入)</span>
+          <br>ExperimentWorkspace <span style="color:var(--accent3)">1──N</span> SchemaRecognitionRun <span style="color:var(--text-muted)">(字段识别)</span>
+          <br>ExperimentWorkspace <span style="color:var(--accent3)">1──N</span> CleaningAlignmentRun <span style="color:var(--text-muted)">(清洗对齐)</span>
+          <br>ExperimentWorkspace <span style="color:var(--accent3)">1──N</span> FeatureEngineeringRun <span style="color:var(--text-muted)">(特征工程)</span>
+          <br>ExperimentWorkspace <span style="color:var(--accent3)">1──N</span> ExperimentAgentRun <span style="color:var(--text-muted)">(智能体运行)</span>
+          <br>ExperimentWorkspace <span style="color:var(--accent3)">1──N</span> ExperimentSimulationRun <span style="color:var(--text-muted)">(仿真运行, 7阶段)</span>
+          <br>ExperimentWorkspace <span style="color:var(--accent3)">1──N</span> ExperimentOptimizationRun <span style="color:var(--text-muted)">(优化运行)</span>
+          <br>ExperimentWorkspace <span style="color:var(--accent3)">1──N</span> ResearchCampaign <span style="color:var(--text-muted)">(研究活动)</span>
+          <br>ExperimentWorkspace <span style="color:var(--accent3)">1──N</span> ModelEvaluationReport <span style="color:var(--text-muted)">(模型评估)</span>
+        </div>
+        <br>
+        <div style="color:var(--accent); font-weight:700; margin-bottom:8px;">命令实体</div>
+        <div style="padding-left:20px;">
+          AgentCommandTask <span style="color:var(--text-muted)">(taskId PK, commandId UNIQUE, 租约机制)</span>
+          <br>├── status: <span style="color:var(--accent2)">queued → leased → completed | failed | deadLetter</span>
+          <br>├── leaseOwner · leaseToken · leaseExpiresAt
+          <br>└── requiredCapabilities: <span style="color:var(--accent4)">[cpu | gpu | localLlm]</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer style="text-align:center; padding:40px 0 0; border-top:1px solid var(--border); margin-top:40px;">
+    <p style="font-size:12px; color:var(--text-muted);">
+      菌藻启元·智能产线控制终端 · 系统流程图与业务逻辑文档<br>
+      所有输出均为研发实验建议，不代表最终生产指令
+    </p>
+  </footer>
+
+</div>
+</body>
+</html>

@@ -3,9 +3,9 @@ import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.routers import akk_products, experiments, formula, health, knowledge, llm, system
+from app.routers import akk_products, auth, decision, experiments, formula, health, knowledge, llm, process, runtime, simulation, system
 
-app = FastAPI(title="AKK Formula API", version="0.1.0")
+app = FastAPI(title="菌藻启元｜智能产线控制终端 API", version="0.2.0")
 
 cors_origins_raw = os.getenv("CORS_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000")
 cors_origins = [origin.strip() for origin in cors_origins_raw.split(",") if origin.strip()]
@@ -24,9 +24,14 @@ app.add_middleware(
 )
 
 app.include_router(health.router)
+app.include_router(auth.router)
+app.include_router(decision.router)
 app.include_router(akk_products.router)
 app.include_router(formula.router)
 app.include_router(knowledge.router)
 app.include_router(llm.router)
 app.include_router(experiments.router)
 app.include_router(system.router)
+app.include_router(process.router)
+app.include_router(simulation.router)
+app.include_router(runtime.router)

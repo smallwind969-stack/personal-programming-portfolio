@@ -1,0 +1,27 @@
+{
+  "scenes": 1,
+  "start_seed": 32300,
+  "route_budget_s": 0.05,
+  "modes": {
+    "residual": {
+      "full_clear_runs": 1,
+      "total_sources": 10,
+      "total_cleared": 10,
+      "mean_total_s": 3249.2810559024383,
+      "mean_oracle_lower_bound_s": 1891.0380392495092,
+      "mean_oracle_regret_s": 1358.243016652929,
+      "mean_excess_move_s": 590.2430166529291,
+      "mean_measurement_regret_s": 635.0,
+      "mean_per_source_s": 324.92810559024383,
+      "mean_move_s": 2431.2810559024383,
+      "mean_measures": 127,
+      "mean_search_measures": 107,
+      "mean_localization_measures": 20,
+      "mean_no_signal_measures": 98,
+      "mean_switches": 121,
+      "failed_clears": 4,
+      "max_real_s": 4.862492499989457,
+      "errors": []
+    }
+  }
+}

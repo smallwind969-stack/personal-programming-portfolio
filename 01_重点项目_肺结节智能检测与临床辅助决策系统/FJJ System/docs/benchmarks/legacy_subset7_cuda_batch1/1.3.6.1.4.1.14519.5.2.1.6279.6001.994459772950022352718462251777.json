@@ -1,0 +1,15 @@
+{
+  "scan": "1.3.6.1.4.1.14519.5.2.1.6279.6001.994459772950022352718462251777",
+  "total_sec": 56.896181699998124,
+  "preprocess_sec": 0.317,
+  "vnet_detect_sec": 54.1118,
+  "candidate_extract_sec": 0.6879,
+  "resnet_filter_sec": 0.0712,
+  "prob_threshold": 0.15,
+  "resnet_threshold": 0.4,
+  "patch_size": 64,
+  "stride": 32,
+  "candidate_count_before_filter": 11,
+  "candidate_count_after_filter": 11,
+  "total_run_inference_sec": 55.1879
+}

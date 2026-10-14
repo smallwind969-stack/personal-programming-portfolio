@@ -48,12 +48,12 @@ def audit_patient(patient_id):
         "clinical_context": review.get("clinical_context", {}),
         "final_nodules": final_nodules(review),
     }
-    original_llm = followup_agent.generate_with_local_qwen
-    followup_agent.generate_with_local_qwen = lambda _prompt: ("", {"available": False, "reason": "audit_offline"})
+    original_llm = followup_agent.generate_with_llm_api
+    followup_agent.generate_with_llm_api = lambda _prompt: ("", {"available": True, "reason": "audit_offline"})
     try:
         result = build_followup_recommendation(patient_id, case_context=context)
     finally:
-        followup_agent.generate_with_local_qwen = original_llm
+        followup_agent.generate_with_llm_api = original_llm
     audit = audit_agent_text(flatten_text(result))
     return {
         "patient_id": patient_id,

@@ -36,7 +36,7 @@ export default async function KnowledgePage({
   return (
     <div className="space-y-4">
       <div>
-        <div className="text-xs font-medium text-primary">论文知识库 + 混合检索 + RAG 引用依据</div>
+        <div className="text-xs font-medium text-primary">论文知识库 + 混合检索 + 引用依据</div>
         <h1 className="mt-1 text-2xl font-semibold text-slate-950">AKK 文献知识库</h1>
         <p className="mt-1 text-xs leading-5 text-muted-foreground">
           当前知识库来自本地收集的 AKK 安全性、临床、法规、专利、产品案例、食品应用、培养条件和代谢产物资料。

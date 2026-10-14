@@ -2,8 +2,6 @@
 # @Time    : 2025/7/7 11:01
 # @Author  : 小宇
 # @File    : 1.py
-import os
-
 from PyQt5.QtWidgets import QStackedWidget, QWidget, QVBoxLayout, QLabel
 from PyQt5.QtCore import Qt
 
@@ -45,7 +43,7 @@ class HomePage(QWidget):
         self.db_config = {
             'host': 'localhost',
             'user': 'root',
-            'password': os.getenv('MYSQL_PASSWORD', ''),
+            'password': '12345678',
             'database': 'ai250317',
             'port': 3306,
             'charset': 'utf8mb4'

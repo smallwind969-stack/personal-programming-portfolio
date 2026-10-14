@@ -13,5 +13,6 @@ export function RiskBadge({ riskLevel }: { riskLevel: AkkProduct["riskLevel"] })
 }
 
 export function EvidenceBadge({ evidenceLevel }: { evidenceLevel: string }) {
-  return <Badge>证据等级 {evidenceLevel}</Badge>;
+  const tone = evidenceLevel === "A" ? "success" : evidenceLevel === "B" ? "warning" : "default";
+  return <Badge tone={tone}>证据等级 {evidenceLevel}</Badge>;
 }

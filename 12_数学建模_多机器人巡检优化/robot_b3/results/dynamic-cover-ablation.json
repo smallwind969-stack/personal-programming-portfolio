@@ -1,0 +1,33 @@
+{
+  "scenes": 60,
+  "start_seed": 13000,
+  "route_budget_s": 0.1,
+  "modes": {
+    "score-fixed": {
+      "full_clear_runs": 60,
+      "total_sources": 800,
+      "total_cleared": 800,
+      "mean_total_s": 2915.474128820742,
+      "mean_per_source_s": 223.96050917110446,
+      "mean_move_s": 2213.5574621540754,
+      "mean_measures": 106.3,
+      "mean_switches": 100.9,
+      "failed_clears": 57,
+      "max_real_s": 0.539540500001749,
+      "errors": []
+    },
+    "score": {
+      "full_clear_runs": 60,
+      "total_sources": 800,
+      "total_cleared": 800,
+      "mean_total_s": 2915.772762541896,
+      "mean_per_source_s": 224.12457124149253,
+      "mean_move_s": 2215.122762541896,
+      "mean_measures": 106.16666666666667,
+      "mean_switches": 100.6,
+      "failed_clears": 51,
+      "max_real_s": 2.961097299994435,
+      "errors": []
+    }
+  }
+}

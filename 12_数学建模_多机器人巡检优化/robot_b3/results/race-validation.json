@@ -1,0 +1,33 @@
+{
+  "scenes": 50,
+  "start_seed": 11000,
+  "route_budget_s": 0.1,
+  "modes": {
+    "score": {
+      "full_clear_runs": 50,
+      "total_sources": 646,
+      "total_cleared": 646,
+      "mean_total_s": 2972.6783187441683,
+      "mean_per_source_s": 234.08511882603483,
+      "mean_move_s": 2252.1783187441683,
+      "mean_measures": 109.6,
+      "mean_switches": 104.66,
+      "failed_clears": 54,
+      "max_real_s": 0.44747780000034254,
+      "errors": []
+    },
+    "race": {
+      "full_clear_runs": 50,
+      "total_sources": 646,
+      "total_cleared": 646,
+      "mean_total_s": 2976.490828461778,
+      "mean_per_source_s": 234.3865513452952,
+      "mean_move_s": 2263.8908284617783,
+      "mean_measures": 108.28,
+      "mean_switches": 103.24,
+      "failed_clears": 56,
+      "max_real_s": 1.8935165000002598,
+      "errors": []
+    }
+  }
+}

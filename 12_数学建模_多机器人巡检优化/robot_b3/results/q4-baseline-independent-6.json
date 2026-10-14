@@ -1,0 +1,20 @@
+{
+  "scenes": 6,
+  "start_seed": 28400,
+  "route_budget_s": 0.01,
+  "modes": {
+    "q4": {
+      "full_clear_runs": 6,
+      "total_sources": 80,
+      "total_cleared": 80,
+      "mean_total_s": 8880.678325945659,
+      "mean_per_source_s": 673.3749080477513,
+      "mean_move_s": 6996.011659278993,
+      "mean_measures": 306.8333333333333,
+      "mean_switches": 281.8333333333333,
+      "failed_clears": 4,
+      "max_real_s": 2.565821299998788,
+      "errors": []
+    }
+  }
+}

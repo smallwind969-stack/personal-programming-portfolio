@@ -1,26 +1,21 @@
 import argparse
 import csv
 import json
+import sys
 from pathlib import Path
 
-import SimpleITK as sitk
-
-
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from dicom_io import load_ct_image  # noqa: E402
+
+
 UPLOADS = ROOT / "uploads"
 CASE_CONTEXT = ROOT / "case_context"
 OUT = ROOT / "docs" / "world_frontier"
 
 
 def load_itk(path):
-    if path.is_file() and path.suffix.lower() == ".mhd":
-        return sitk.ReadImage(str(path))
-    reader = sitk.ImageSeriesReader()
-    dicom_names = reader.GetGDCMSeriesFileNames(str(path))
-    if not dicom_names:
-        raise FileNotFoundError(f"No DICOM series found under {path}")
-    reader.SetFileNames(list(dicom_names)[::-1])
-    return reader.Execute()
+    return load_ct_image(path)
 
 
 def safe_float(value, default=0.0):

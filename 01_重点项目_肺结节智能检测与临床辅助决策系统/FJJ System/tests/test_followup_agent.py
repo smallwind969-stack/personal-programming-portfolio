@@ -5,6 +5,21 @@ from agent.followup_agent import build_followup_recommendation
 
 
 class FollowupAgentReportTests(unittest.TestCase):
+    def test_unreviewed_candidates_do_not_receive_low_risk_label(self):
+        case_context = {
+            "clinical_context": {},
+            "model_findings": [{"nodule_id": "model-1", "doctor_confirmed": False}],
+            "final_nodules": [],
+        }
+
+        with patch("agent.followup_agent.generate_with_llm_api") as llm:
+            result = build_followup_recommendation("case-pending", case_context=case_context)
+
+        self.assertEqual(result["risk_level"], "not_assessed")
+        self.assertEqual(result["risk_label"], "待复核")
+        self.assertIn("待复核", result["case_summary"])
+        llm.assert_not_called()
+
     def test_builds_structured_agent_report_for_reviewed_case(self):
         case_context = {
             "clinical_context": {
@@ -46,7 +61,10 @@ class FollowupAgentReportTests(unittest.TestCase):
             ],
         }
 
-        with patch("agent.followup_agent.generate_with_local_qwen", return_value=("", {"available": False})):
+        with patch(
+            "agent.followup_agent.generate_with_llm_api",
+            return_value=("API 生成的医生复核建议", {"available": True, "model": "test-model"}),
+        ):
             result = build_followup_recommendation("case-001", case_context=case_context)
 
         self.assertEqual(result["risk_level"], "high")
@@ -61,6 +79,37 @@ class FollowupAgentReportTests(unittest.TestCase):
         self.assertIn("Fleischner", result["risk_sections"]["high"][0]["guideline_hint"]["framework"])
         self.assertIn("既往CT对比", result["missing_information"])
         self.assertIn("safety_note", result)
+
+        self.assertEqual(result["llm_summary"], "API 生成的医生复核建议")
+
+    def test_llm_prompt_uses_doctor_readable_digest(self):
+        captured = {}
+        case_context = {
+            "clinical_context": {},
+            "final_nodules": [
+                {
+                    "nodule_id": "doctor_box_internal_id_should_not_leak",
+                    "source": "doctor",
+                    "doctor_confirmed": True,
+                    "slice_idx": 22,
+                    "diameter_mm": "-0.1",
+                    "status": "confirmed",
+                    "imaging_features": {},
+                }
+            ],
+        }
+
+        def fake_llm(prompt):
+            captured["prompt"] = prompt
+            return "复核建议", {"available": True, "model": "test-model"}
+
+        with patch("agent.followup_agent.generate_with_llm_api", side_effect=fake_llm):
+            result = build_followup_recommendation("case-002", case_context=case_context)
+
+        self.assertNotIn("doctor_box_internal_id_should_not_leak", captured["prompt"])
+        self.assertTrue(any("最大径数值无效" in item for item in result["risk_sections"]["medium"][0]["basis"]))
+        self.assertIsNone(result["risk_sections"]["medium"][0]["diameter_mm"])
+        self.assertIn("不要输出内部 nodule_id", captured["prompt"])
 
 
 if __name__ == "__main__":

@@ -6,14 +6,15 @@
 
 # 安装pymysql 1.1.1
 import os
+
 import pymysql
 
 class DB_util(object):
     def __init__(self):
-        self.host = os.getenv('MYSQL_HOST', 'localhost')
-        self.user = os.getenv('MYSQL_USER', 'root')
-        self.password = os.getenv('MYSQL_PASSWORD', '')
-        self.database = os.getenv('MYSQL_DATABASE', 'ai250317')
+        self.host = os.getenv('YOLO_DB_HOST', 'localhost')
+        self.user = os.getenv('YOLO_DB_USER', 'root')
+        self.password = os.getenv('YOLO_DB_PASSWORD', '')
+        self.database = os.getenv('YOLO_DB_NAME', 'ai250317')
 
     def db_user_login(self, acc, pwd):
         """
@@ -22,6 +23,8 @@ class DB_util(object):
         :param pwd: 密码
         :return: int类型 1 和 0 ，1表示成功，0表示失败
         """
+        conn = None
+        cursor = None
         try:
             #获取链接
             conn = pymysql.connect(host=self.host, port=3306, user=self.user, password=self.password, database=self.database, charset='utf8')
@@ -29,9 +32,9 @@ class DB_util(object):
             cursor = conn.cursor()
             #执行查询语句
             #定义语句
-            sql = f"SELECT * FROM users where user_name = '{acc}' AND user_pwd = '{pwd}'"
+            sql = "SELECT * FROM users WHERE user_name = %s AND user_pwd = %s"
             #执行
-            cursor.execute(sql)
+            cursor.execute(sql, (acc, pwd))
             # print(cursor.fetchall())
             res = list(cursor.fetchall())
             print(res)
@@ -42,11 +45,14 @@ class DB_util(object):
                 return 0
         except Exception as e:
             print(e)
-            conn.rollback()#回滚  如果try 里面执行了插入，更新等等很多操作，只要一个出错，所有try 里面的操作都会还原
+            if conn:
+                conn.rollback()#回滚  如果try 里面执行了插入，更新等等很多操作，只要一个出错，所有try 里面的操作都会还原
             return 0
         finally:
-            cursor.close()
-            conn.close()
+            if cursor:
+                cursor.close()
+            if conn:
+                conn.close()
 
 
 

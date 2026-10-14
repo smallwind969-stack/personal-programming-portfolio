@@ -40,7 +40,7 @@ def normalize_nodule(item, index=0):
         "diameter_mm": item.get("diameter_mm"),
         "prob": item.get("prob", item.get("detection_prob")),
         "malignancy_prob": item.get("malignancy_prob"),
-        "status": item.get("status", "confirmed"),
+        "status": item.get("status", "confirmed" if source == "doctor" else "pending"),
         "doctor_assessment": item.get("doctor_assessment", ""),
         "imaging_features": item.get("imaging_features", {}),
     }
@@ -56,7 +56,7 @@ def save_review(base_dir, patient_id, findings=None, doctor_nodules=None, clinic
     for idx, finding in enumerate(findings):
         item = dict(finding)
         item.setdefault("source", "model")
-        item.setdefault("doctor_confirmed", item.get("status") != "dismissed")
+        item.setdefault("doctor_confirmed", False)
         normalized_model.append(normalize_nodule(item, idx))
 
     normalized_doctor = []
@@ -99,17 +99,17 @@ def merge_case_context(patient_id, findings=None, review=None, clinical_context=
     reviewed_model = review.get("model_findings") or []
     doctor_nodules = review.get("doctor_nodules") or []
 
-    if reviewed_model:
+    if review.get("updated_at") is not None or reviewed_model:
         base_nodules = reviewed_model
     else:
         base_nodules = [
-            normalize_nodule({**finding, "source": "model", "doctor_confirmed": True}, idx)
+            normalize_nodule({**finding, "source": "model", "doctor_confirmed": False}, idx)
             for idx, finding in enumerate(findings)
         ]
 
     final_nodules = [
         nodule for nodule in base_nodules + doctor_nodules
-        if nodule.get("status") != "dismissed"
+        if nodule.get("doctor_confirmed") and nodule.get("status") != "dismissed"
     ]
 
     return {

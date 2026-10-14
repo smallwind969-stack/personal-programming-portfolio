@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AKK 菌藻工艺平台 - 轻量预览</title>
+  <style>
+    :root {
+      --bg: #edf2ef;
+      --panel: #ffffff;
+      --ink: #10201d;
+      --muted: #66736f;
+      --line: #d8e1de;
+      --primary: #11665d;
+      --primaryDark: #0d403b;
+      --soft: #e7f4ef;
+      --warn: #fff3cf;
+      --danger: #ffe5e1;
+      --blue: #315f9d;
+      --gold: #a86d12;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+      font-size: 14px;
+    }
+    button, input, select, textarea { font: inherit; }
+    .shell { min-height: 100vh; display: grid; grid-template-columns: 248px 1fr; }
+    .side {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      border-right: 1px solid var(--line);
+      background: #fff;
+      padding: 22px;
+    }
+    .brand { background: var(--primaryDark); color: white; border-radius: 8px; padding: 16px; line-height: 1.6; }
+    .brand strong { display: block; font-size: 18px; }
+    .nav { margin-top: 24px; display: grid; gap: 6px; }
+    .nav a { color: #374541; text-decoration: none; border-radius: 8px; padding: 12px; display: block; }
+    .nav a.active, .nav a:hover { background: var(--soft); color: var(--primary); }
+    .nav small { display: block; color: #87928f; margin-top: 3px; }
+    .notice {
+      position: absolute;
+      bottom: 22px;
+      left: 22px;
+      right: 22px;
+      background: var(--soft);
+      border: 1px solid #b8ded4;
+      border-radius: 8px;
+      padding: 12px;
+      color: #16463f;
+      line-height: 1.7;
+      font-size: 12px;
+    }
+    .main { padding: 24px; }
+    .top {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: flex-start;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      border-radius: 999px;
+      background: var(--soft);
+      color: var(--primary);
+      padding: 0 10px;
+      font-size: 12px;
+      border: 1px solid #bfddd5;
+    }
+    h1, h2, h3, p { margin: 0; }
+    h1 { font-size: 26px; margin-top: 10px; }
+    h2 { font-size: 20px; margin-bottom: 14px; }
+    h3 { font-size: 15px; margin-bottom: 10px; }
+    .top p { color: var(--muted); margin-top: 8px; line-height: 1.7; }
+    .stage-tabs { display: grid; grid-template-columns: repeat(4, 120px); gap: 8px; }
+    .stage-tabs button {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: #4d5a56;
+      border-radius: 8px;
+      min-height: 40px;
+      cursor: pointer;
+    }
+    .stage-tabs button.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .content { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 18px; margin-top: 18px; }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 18px;
+    }
+    .hidden { display: none; }
+    .grid { display: grid; gap: 12px; }
+    .two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    label span, .field-title {
+      display: block;
+      color: #52605c;
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid #cfdad7;
+      border-radius: 8px;
+      background: #fbfdfc;
+      color: var(--ink);
+      padding: 10px 11px;
+      outline: none;
+    }
+    textarea { resize: vertical; min-height: 86px; line-height: 1.7; }
+    input:focus, select:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(17,102,93,.12); }
+    .actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px; }
+    .btn {
+      border: 0;
+      border-radius: 8px;
+      background: var(--primary);
+      color: #fff;
+      min-height: 40px;
+      padding: 0 16px;
+      cursor: pointer;
+    }
+    .btn.secondary { background: #e8eeeb; color: #273531; }
+    .pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .pill {
+      border: 1px solid #cfdad7;
+      background: #fff;
+      color: #40504b;
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .pill.active { color: var(--primary); background: var(--soft); border-color: #afd6cd; }
+    .line-editor { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+    .status-panel {
+      border: 1px solid #d4dedb;
+      border-radius: 8px;
+      background: #fbfdfc;
+      padding: 12px;
+    }
+    .gap-list { margin: 0; padding-left: 18px; color: #4a5955; line-height: 1.8; }
+    .gap-list b { color: #9a5b00; }
+    .metric-table { width: 100%; border-collapse: collapse; overflow: hidden; border-radius: 8px; }
+    .metric-table th, .metric-table td {
+      border-bottom: 1px solid #e2e9e6;
+      padding: 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+    .metric-table th { color: #596864; background: #f4f8f6; font-weight: 600; }
+    .metric-table tr:last-child td { border-bottom: 0; }
+    .plan-card {
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      padding: 13px;
+      cursor: pointer;
+      background: #fff;
+    }
+    .plan-card.active { border-color: var(--primary); background: var(--soft); }
+    .plan-head { display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+    .score { font-size: 22px; color: var(--primary); font-weight: 800; }
+    .plan-card p { color: var(--muted); line-height: 1.6; margin-top: 8px; }
+    .compare { margin-top: 14px; }
+    .surface-box {
+      border-radius: 10px;
+      background: #10201d;
+      color: #fff;
+      padding: 14px;
+      min-height: 430px;
+    }
+    .surface-wrap { position: relative; margin-top: 12px; padding-left: 44px; padding-bottom: 36px; }
+    .surface {
+      position: relative;
+      height: 300px;
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 8px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 58% 42%, #ffef87 0 6%, #e6a03b 15%, #348c73 33%, #315f9d 58%, #20324d 82%),
+        linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,0));
+    }
+    .surface::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.13) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.13) 1px, transparent 1px);
+      background-size: 14.28% 16.66%;
+    }
+    .marker {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      border: 2px solid #fff;
+      box-shadow: 0 0 0 4px rgba(0,0,0,.22);
+      z-index: 2;
+    }
+    .marker.current { background: #ffffff; left: 29%; top: 61%; }
+    .marker.best { background: #ffdf45; left: 58%; top: 42%; }
+    .marker.selected { background: #47e0b5; left: 54%; top: 45%; }
+    .danger-zone {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 24%;
+      height: 100%;
+      background: repeating-linear-gradient(45deg, rgba(255,80,80,.18), rgba(255,80,80,.18) 8px, rgba(255,80,80,.04) 8px, rgba(255,80,80,.04) 16px);
+      z-index: 1;
+    }
+    .axis-y, .axis-x {
+      position: absolute;
+      color: #cbd8d5;
+      font-size: 12px;
+    }
+    .axis-y { left: 0; top: 120px; writing-mode: vertical-rl; transform: rotate(180deg); }
+    .axis-x { left: 44px; right: 0; bottom: 0; text-align: center; }
+    .legend { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; color: #dce9e5; font-size: 12px; }
+    .legend span { display: inline-flex; align-items: center; gap: 6px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+    .dot.white { background: #fff; }
+    .dot.gold { background: #ffdf45; }
+    .dot.green { background: #47e0b5; }
+    .bar-row { margin-top: 12px; }
+    .bar-row span { display: flex; justify-content: space-between; color: #52605c; font-size: 12px; margin-bottom: 6px; }
+    .bar { height: 8px; border-radius: 999px; background: #e5ece9; overflow: hidden; }
+    .bar i { display: block; height: 100%; background: var(--primary); }
+    .summary { position: sticky; top: 18px; align-self: start; }
+    .summary dl { margin: 0; display: grid; gap: 12px; }
+    .summary dt { color: #70807b; font-size: 12px; }
+    .summary dd { margin: 3px 0 0; font-weight: 700; line-height: 1.5; }
+    .warn {
+      background: var(--warn);
+      border: 1px solid #ead39a;
+      color: #5d4305;
+      border-radius: 8px;
+      padding: 12px;
+      line-height: 1.7;
+      margin-top: 14px;
+    }
+    .report-block {
+      border: 1px solid #dce5e2;
+      background: #fbfdfc;
+      border-radius: 8px;
+      padding: 13px;
+      line-height: 1.75;
+    }
+    .report-block ul { margin: 0; padding-left: 18px; }
+    @media (max-width: 1100px) {
+      .shell { grid-template-columns: 1fr; }
+      .side { position: static; height: auto; }
+      .notice { position: static; margin-top: 18px; }
+      .content { grid-template-columns: 1fr; }
+      .summary { position: static; }
+    }
+    @media (max-width: 760px) {
+      .main { padding: 14px; }
+      .top { display: grid; }
+      .stage-tabs { grid-template-columns: repeat(2, 1fr); }
+      .two, .three, .line-editor { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="side">
+      <div class="brand">
+        <strong>AKK 菌藻工艺平台</strong>
+        <span>内部研发实验建议</span>
+      </div>
+      <nav class="nav">
+        <a class="active" href="#">工艺任务<small>目标产品到产线状态</small></a>
+        <a href="#">产线档案<small>设备能力与现状</small></a>
+        <a href="#">实验回填<small>结果验证与复盘</small></a>
+        <a href="#">知识库<small>菌株、培养基、边界</small></a>
+      </nav>
+      <div class="notice">第一版用于内部研发探索，所有输出均为研发实验建议，不代表最终生产配方。</div>
+    </aside>
+
+    <main class="main">
+      <section class="top">
+        <div>
+          <span class="badge">轻量预览</span>
+          <h1>新建产品工艺任务</h1>
+          <p>从终端产品出发，推导目标产物需求，再根据产线现状生成可验证的工艺调整方案。</p>
+        </div>
+        <div class="stage-tabs">
+          <button class="active" onclick="setStage(0)">目标产品</button>
+          <button onclick="setStage(1)">产线现状</button>
+          <button onclick="setStage(2)">方案探索</button>
+          <button onclick="setStage(3)">状态建议书</button>
+        </div>
+      </section>
+
+      <div class="content">
+        <section>
+          <div class="card stage" id="stage-0">
+            <h2>第一步：定义要生产的产品</h2>
+            <div class="grid two">
+              <label><span>终端产品名称</span><input id="targetProduct" value="功能果冻" oninput="syncAll()" /></label>
+              <label><span>产品形态</span><select id="productForm" onchange="syncAll()"><option>果冻</option><option>饮料</option><option>软糖</option><option>酸奶</option><option>营养粉</option></select></label>
+              <label><span>目标消费场景</span><input id="scene" value="肠道健康方向的日常营养补充" oninput="syncAll()" /></label>
+              <label><span>计划批量</span><select id="scale" onchange="syncAll()"><option>小试 20 升</option><option selected>中试 200 升</option><option>放大 1000 升</option></select></label>
+            </div>
+
+            <h3 style="margin-top:18px">产品需要的核心产物目标</h3>
+            <div class="grid three">
+              <label><span>AKK 相关产物</span><select id="akkNeed" onchange="syncAll()"><option>AKK 后生元</option><option>AKK 活菌体</option><option>AKK 代谢产物</option><option>AKK 与菌藻协同产物</option></select></label>
+              <label><span>目标含量</span><input id="targetContent" value="每批次有效成分 18-24 g" oninput="syncAll()" /></label>
+              <label><span>活性保留目标</span><input id="activityTarget" value="不低于 82%" oninput="syncAll()" /></label>
+              <label><span>稳定性目标</span><input id="stabilityTarget" value="常温 90 天指标衰减不超过 15%" oninput="syncAll()" /></label>
+              <label><span>成本上限</span><input id="costLimit" value="培养与后处理成本不高于 620 元/批" oninput="syncAll()" /></label>
+              <label><span>关键限制</span><input id="constraint" value="低异味、低苦味、不可破坏果冻凝胶体系" oninput="syncAll()" /></label>
+            </div>
+            <div class="actions"><button class="btn" onclick="setStage(1)">进入产线现状</button></div>
+          </div>
+
+          <div class="card stage hidden" id="stage-1">
+            <h2>第二步：录入产线现状与可调整空间</h2>
+            <div class="pill-row">
+              <button class="pill active" onclick="loadLine(0)">中试厌氧发酵罐 B</button>
+              <button class="pill" onclick="loadLine(1)">菌藻共培养反应器 C</button>
+              <button class="pill" onclick="loadLine(2)">小试厌氧发酵平台 A</button>
+            </div>
+            <div class="line-editor" style="margin-top:14px">
+              <label><span>反应器体积</span><input id="lineVolume" value="200 升" oninput="recalcLine()" /></label>
+              <label><span>当前温度</span><input id="lineTemp" value="36.0 ℃" oninput="recalcLine()" /></label>
+              <label><span>可调温度范围</span><input id="lineTempRange" value="28-40 ℃" oninput="recalcLine()" /></label>
+              <label><span>当前 pH</span><input id="linePh" value="6.8" oninput="recalcLine()" /></label>
+              <label><span>可调 pH 范围</span><input id="linePhRange" value="6.0-7.6" oninput="recalcLine()" /></label>
+              <label><span>当前搅拌</span><input id="lineStir" value="160 rpm" oninput="recalcLine()" /></label>
+              <label><span>通气/厌氧能力</span><select id="anaerobic" onchange="recalcLine()"><option selected>稳定厌氧</option><option>厌氧能力一般</option><option>可厌氧/微氧切换</option></select></label>
+              <label><span>检测能力</span><select id="sensor" onchange="recalcLine()"><option>离线检测</option><option selected>pH、温度、溶氧在线</option><option>含量、污染、代谢物在线</option></select></label>
+              <label><span>后处理能力</span><select id="postProcess" onchange="recalcLine()"><option>基础离心</option><option selected>离心、冻干、灭活</option><option>膜过滤、冻干、微胶囊</option></select></label>
+            </div>
+            <div class="grid two" style="margin-top:14px">
+              <div class="status-panel">
+                <h3>与目标产品的差距</h3>
+                <ul class="gap-list" id="gapList"></ul>
+              </div>
+              <div class="status-panel">
+                <h3>可调整建议</h3>
+                <ul class="gap-list" id="adjustList"></ul>
+              </div>
+            </div>
+            <div class="actions"><button class="btn secondary" onclick="setStage(0)">返回目标产品</button><button class="btn" onclick="generatePlans()">生成具体方案</button></div>
+          </div>
+
+          <div class="card stage hidden" id="stage-2">
+            <h2>第三步：方案数值评估与响应面探索</h2>
+            <div class="grid three">
+              <div class="plan-card" onclick="selectPlan(0)">
+                <div class="plan-head"><h3>保守验证方案</h3><span class="score">82</span></div>
+                <p>优先降低失败概率，适合作为首轮验证。</p>
+              </div>
+              <div class="plan-card" onclick="selectPlan(1)">
+                <div class="plan-head"><h3>强化产出方案</h3><span class="score">84</span></div>
+                <p>追求更高目标产物含量，风险和成本更高。</p>
+              </div>
+              <div class="plan-card active" onclick="selectPlan(2)">
+                <div class="plan-head"><h3>工艺平衡方案</h3><span class="score">87</span></div>
+                <p>综合产量、活性、稳定性和放大风险。</p>
+              </div>
+            </div>
+
+            <div class="compare">
+              <table class="metric-table" id="planTable"></table>
+            </div>
+
+            <div class="grid two" style="margin-top:14px">
+              <div class="surface-box">
+                <strong>响应面：温度 × pH × 综合评分</strong>
+                <p style="color:#c9d8d4;margin-top:6px;line-height:1.6">白点为当前产线状态，黄点为理论最佳点，绿点为所选方案。右侧斜纹区为风险升高区。</p>
+                <div class="surface-wrap">
+                  <span class="axis-y">pH 从 6.2 到 7.6</span>
+                  <div class="surface" id="surface">
+                    <div class="danger-zone"></div>
+                    <i class="marker current" title="当前产线点"></i>
+                    <i class="marker best" title="理论最佳点"></i>
+                    <i class="marker selected" id="selectedMarker" title="所选方案点"></i>
+                  </div>
+                  <span class="axis-x">温度从 34 ℃ 到 40 ℃</span>
+                </div>
+                <div class="legend">
+                  <span><i class="dot white"></i>当前产线</span>
+                  <span><i class="dot gold"></i>理论最佳</span>
+                  <span><i class="dot green"></i>所选方案</span>
+                  <span>颜色越亮，综合评分越高</span>
+                </div>
+              </div>
+              <div>
+                <h3 id="planTitle">工艺平衡方案参数窗口</h3>
+                <div class="grid">
+                  <label><span>温度窗口</span><input id="planTemp" value="36.4-37.2 ℃" oninput="manualPlanUpdate()" /></label>
+                  <label><span>pH 窗口</span><input id="planPh" value="6.75-7.05" oninput="manualPlanUpdate()" /></label>
+                  <label><span>培养时间</span><input id="planTime" value="42-48 小时" oninput="manualPlanUpdate()" /></label>
+                  <label><span>搅拌策略</span><input id="planStir" value="180-220 rpm，后段降低剪切" oninput="manualPlanUpdate()" /></label>
+                </div>
+                <div class="bar-row"><span><b>目标产物</b><b id="yieldScore">88/100</b></span><div class="bar"><i style="width:88%"></i></div></div>
+                <div class="bar-row"><span><b>活性保留</b><b id="activityScore">84/100</b></span><div class="bar"><i style="width:84%"></i></div></div>
+                <div class="bar-row"><span><b>稳定性</b><b id="stabilityScore">86/100</b></span><div class="bar"><i style="width:86%"></i></div></div>
+                <div class="bar-row"><span><b>成本友好</b><b id="costScore">80/100</b></span><div class="bar"><i style="width:80%"></i></div></div>
+                <div class="actions"><button class="btn" onclick="setStage(3)">生成状态建议书</button></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card stage hidden" id="stage-3">
+            <h2 id="reportTitle">功能果冻生产状态建议书</h2>
+            <div class="grid three">
+              <div class="report-block"><h3>产线状态</h3><ul id="reportState"></ul></div>
+              <div class="report-block"><h3>预期效果</h3><ul id="reportEffect"></ul></div>
+              <div class="report-block"><h3>风险与验证</h3><ul id="reportRisk"></ul></div>
+            </div>
+            <div class="warn">注意：该输出为内部研发实验建议，需要通过小试或中试实验验证，不可直接作为最终生产配方或上市依据。</div>
+            <div class="actions"><button class="btn secondary" onclick="setStage(2)">返回调参</button><button class="btn" onclick="alert('预览版：后续可接入建议书导出和实验回填。')">保存研发建议</button></div>
+          </div>
+        </section>
+
+        <aside class="card summary">
+          <h2>任务摘要</h2>
+          <dl>
+            <div><dt>终端产品</dt><dd id="sumProduct">功能果冻</dd></div>
+            <div><dt>目标产物</dt><dd id="sumNeed">AKK 后生元，每批次有效成分 18-24 g</dd></div>
+            <div><dt>产线现状</dt><dd id="sumLine">中试厌氧发酵罐 B，200 升</dd></div>
+            <div><dt>当前方案</dt><dd id="sumPlan">工艺平衡方案，综合评分 87/100</dd></div>
+            <div><dt>关键约束</dt><dd id="sumConstraint">低异味、低苦味、不可破坏果冻凝胶体系</dd></div>
+          </dl>
+          <div class="warn">建议先确认“产品目标”和“产线现状”是否真实，再看方案评分。当前数据为模拟规则。</div>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const linePresets = [
+      { name: "中试厌氧发酵罐 B", volume: "200 升", temp: "36.0 ℃", tempRange: "28-40 ℃", ph: "6.8", phRange: "6.0-7.6", stir: "160 rpm", anaerobic: "稳定厌氧", sensor: "pH、温度、溶氧在线", post: "离心、冻干、灭活" },
+      { name: "菌藻共培养反应器 C", volume: "120 升", temp: "33.5 ℃", tempRange: "20-38 ℃", ph: "7.2", phRange: "6.2-8.2", stir: "90 rpm", anaerobic: "可厌氧/微氧切换", sensor: "离线检测", post: "基础离心" },
+      { name: "小试厌氧发酵平台 A", volume: "20 升", temp: "35.5 ℃", tempRange: "25-42 ℃", ph: "6.6", phRange: "5.5-8.0", stir: "180 rpm", anaerobic: "稳定厌氧", sensor: "pH、温度、溶氧在线", post: "离心、冻干、灭活" }
+    ];
+    const plans = [
+      { name: "保守验证方案", score: 82, temp: "35.8-36.8 ℃", ph: "6.8-7.1", time: "36-44 小时", stir: "150-190 rpm", inoc: "3.0%", medium: "基础培养基，碳源强度 80%", yield: "预计达标率 78%", activity: "预计保留 86%", stability: "中高", cost: "约 560 元/批", risk: "低", confidence: "72%", y: 80, a: 86, s: 84, c: 88, marker: [48, 48] },
+      { name: "强化产出方案", score: 84, temp: "37.0-37.8 ℃", ph: "6.6-6.9", time: "46-54 小时", stir: "210-260 rpm", inoc: "4.5%", medium: "强化培养基，碳源强度 115%", yield: "预计达标率 90%", activity: "预计保留 80%", stability: "中", cost: "约 690 元/批", risk: "中高", confidence: "66%", y: 92, a: 80, s: 78, c: 70, marker: [66, 43] },
+      { name: "工艺平衡方案", score: 87, temp: "36.4-37.2 ℃", ph: "6.75-7.05", time: "42-48 小时", stir: "180-220 rpm，后段降低剪切", inoc: "3.8%", medium: "平衡培养基，碳源强度 95%", yield: "预计达标率 86%", activity: "预计保留 84%", stability: "高", cost: "约 610 元/批", risk: "中", confidence: "76%", y: 88, a: 84, s: 86, c: 80, marker: [58, 45] }
+    ];
+    let selectedPlan = 2;
+    let selectedLineName = "中试厌氧发酵罐 B";
+
+    function setStage(index) {
+      document.querySelectorAll(".stage").forEach((stage, i) => stage.classList.toggle("hidden", i !== index));
+      document.querySelectorAll(".stage-tabs button").forEach((button, i) => button.classList.toggle("active", i === index));
+      if (index === 3) renderReport();
+      syncAll();
+    }
+    function loadLine(index) {
+      document.querySelectorAll(".pill").forEach((pill, i) => pill.classList.toggle("active", i === index));
+      const line = linePresets[index];
+      selectedLineName = line.name;
+      $("lineVolume").value = line.volume;
+      $("lineTemp").value = line.temp;
+      $("lineTempRange").value = line.tempRange;
+      $("linePh").value = line.ph;
+      $("linePhRange").value = line.phRange;
+      $("lineStir").value = line.stir;
+      $("anaerobic").value = line.anaerobic;
+      $("sensor").value = line.sensor;
+      $("postProcess").value = line.post;
+      recalcLine();
+    }
+    function recalcLine() {
+      const gaps = [
+        "当前温度 " + $("lineTemp").value + "，距离平衡方案中心点约 <b>0.8 ℃</b>，需要进入更窄控制。",
+        "当前检测能力为“" + $("sensor").value + "”，若要判断目标产物含量，建议补充离线含量检测或批次取样。",
+        "后处理能力为“" + $("postProcess").value + "”，需要验证是否影响 " + $("productForm").value + " 的口感和稳定性。"
+      ];
+      const adjusts = [
+        "将温度控制窗口收窄到 36.4-37.2 ℃，减少批间波动。",
+        "pH 从当前 " + $("linePh").value + " 调整为 6.75-7.05，并记录补碱频率。",
+        "搅拌从 " + $("lineStir").value + " 过渡到 180-220 rpm，后段降低剪切以保护目标产物。"
+      ];
+      $("gapList").innerHTML = gaps.map(item => "<li>" + item + "</li>").join("");
+      $("adjustList").innerHTML = adjusts.map(item => "<li>" + item + "</li>").join("");
+      syncAll();
+    }
+    function generatePlans() {
+      setStage(2);
+      selectPlan(selectedPlan);
+    }
+    function selectPlan(index) {
+      selectedPlan = index;
+      document.querySelectorAll(".plan-card").forEach((card, i) => card.classList.toggle("active", i === index));
+      const plan = plans[index];
+      $("planTitle").textContent = plan.name + "参数窗口";
+      $("planTemp").value = plan.temp;
+      $("planPh").value = plan.ph;
+      $("planTime").value = plan.time;
+      $("planStir").value = plan.stir;
+      $("yieldScore").textContent = plan.y + "/100";
+      $("activityScore").textContent = plan.a + "/100";
+      $("stabilityScore").textContent = plan.s + "/100";
+      $("costScore").textContent = plan.c + "/100";
+      document.querySelectorAll(".bar i")[0].style.width = plan.y + "%";
+      document.querySelectorAll(".bar i")[1].style.width = plan.a + "%";
+      document.querySelectorAll(".bar i")[2].style.width = plan.s + "%";
+      document.querySelectorAll(".bar i")[3].style.width = plan.c + "%";
+      $("selectedMarker").style.left = plan.marker[0] + "%";
+      $("selectedMarker").style.top = plan.marker[1] + "%";
+      renderPlanTable();
+      syncAll();
+    }
+    function renderPlanTable() {
+      $("planTable").innerHTML = `
+        <tr><th>方案</th><th>温度 / pH / 时间</th><th>接种与培养基</th><th>产物与稳定性</th><th>成本 / 风险 / 置信度</th></tr>
+        ${plans.map((plan, index) => `
+          <tr style="${index === selectedPlan ? "background:#f1faf6" : ""}">
+            <td><b>${plan.name}</b><br>综合评分 ${plan.score}/100</td>
+            <td>${plan.temp}<br>pH ${plan.ph}<br>${plan.time}</td>
+            <td>接种比例 ${plan.inoc}<br>${plan.medium}<br>${plan.stir}</td>
+            <td>${plan.yield}<br>${plan.activity}<br>稳定性 ${plan.stability}</td>
+            <td>${plan.cost}<br>风险 ${plan.risk}<br>置信度 ${plan.confidence}</td>
+          </tr>
+        `).join("")}
+      `;
+    }
+    function manualPlanUpdate() {
+      const plan = plans[selectedPlan];
+      plan.temp = $("planTemp").value;
+      plan.ph = $("planPh").value;
+      plan.time = $("planTime").value;
+      plan.stir = $("planStir").value;
+      renderPlanTable();
+      syncAll();
+    }
+    function renderReport() {
+      const plan = plans[selectedPlan];
+      $("reportTitle").textContent = $("targetProduct").value + "生产状态建议书";
+      $("reportState").innerHTML = [
+        selectedLineName + "按 " + plan.name + " 运行。",
+        "温度：" + plan.temp + "；pH：" + plan.ph + "。",
+        "培养时间：" + plan.time + "；搅拌：" + plan.stir + "。",
+        "培养基：" + plan.medium + "；接种比例：" + plan.inoc + "。"
+      ].map(item => "<li>" + item + "</li>").join("");
+      $("reportEffect").innerHTML = [
+        plan.yield + "，" + plan.activity + "。",
+        "预计适配：" + $("targetProduct").value + "，重点关注 " + $("constraint").value + "。",
+        "综合评分 " + plan.score + "/100，置信度 " + plan.confidence + "。"
+      ].map(item => "<li>" + item + "</li>").join("");
+      $("reportRisk").innerHTML = [
+        "当前风险等级：" + plan.risk + "。",
+        "需要验证：目标产物含量、活性保留、稳定性、污染情况、产品口感。",
+        "建议用至少 3 个批次回填数据后再调整评分规则。"
+      ].map(item => "<li>" + item + "</li>").join("");
+    }
+    function syncAll() {
+      $("sumProduct").textContent = $("targetProduct").value + "，" + $("productForm").value + "，" + $("scale").value;
+      $("sumNeed").textContent = $("akkNeed").value + "，" + $("targetContent").value + "，活性 " + $("activityTarget").value;
+      $("sumLine").textContent = selectedLineName + "，" + $("lineVolume").value + "，" + $("anaerobic").value;
+      $("sumPlan").textContent = plans[selectedPlan].name + "，综合评分 " + plans[selectedPlan].score + "/100";
+      $("sumConstraint").textContent = $("constraint").value;
+      if (!$("stage-3").classList.contains("hidden")) renderReport();
+    }
+    recalcLine();
+    selectPlan(2);
+  </script>
+</body>
+</html>

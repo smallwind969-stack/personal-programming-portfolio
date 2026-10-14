@@ -11,8 +11,11 @@ from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 from PIL import Image
 from engine import DiagnosisEngine
+from agent.llm_client import LLMClientError
 from agent.followup_agent import build_followup_recommendation
 from doctor_review import load_review, merge_case_context, save_review
+from model_run_evidence import EvidenceError, fetch_verified_run
+from patient_storage import delete_patients, list_patients, move_patients
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
 app = Flask(
@@ -21,6 +24,8 @@ app = Flask(
     static_folder=os.path.join(base_dir, 'static')
 )
 app.config['JSON_AS_ASCII'] = False
+app.config['TEMPLATES_AUTO_RELOAD'] = True
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 CORS(app)
 
 # 路径配置
@@ -31,11 +36,10 @@ TIMING_CSV = os.path.join(base_dir, 'timing_results.csv')
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(PROCESSED_FOLDER, exist_ok=True)
 
-# 模型权重路径：作品集仓库不提交权重文件，本地运行时可用环境变量覆盖。
-MODEL_DIR = os.getenv("LUNG_NODULE_MODEL_DIR", os.path.join(base_dir, "models"))
-VNET_W = os.getenv("LUNG_NODULE_VNET_W", os.path.join(MODEL_DIR, "vnet_v6_7_sprint_recall_0.9648_epoch_41.pth"))
-RESNET_W = os.getenv("LUNG_NODULE_RESNET_W", os.path.join(MODEL_DIR, "fpr_v7_best_rec_0.9612.pth"))
-MALIG_W = os.getenv("LUNG_NODULE_MALIGNANCY_W", os.path.join(MODEL_DIR, "GOLDEN_Ep58_A0.923.pth"))
+# 模型权重路径
+VNET_W = os.path.join(base_dir, 'models', 'vnet_v6_7_sprint_recall_0.9648_epoch_41.pth')
+RESNET_W = os.path.join(base_dir, 'models', 'fpr_v7_best_rec_0.9612.pth')
+MALIG_W = os.path.join(base_dir, 'models', 'GOLDEN_Ep58_A0.923.pth')
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -203,15 +207,52 @@ def index():
 
 @app.route('/get_patients')
 def get_patients():
-    pids = [d for d in os.listdir(PROCESSED_FOLDER) if os.path.isdir(os.path.join(PROCESSED_FOLDER, d))]
-    return jsonify({"patients": pids})
+    return jsonify({"patients": list_patients(base_dir)})
 
 
 @app.route('/get_patient_detail/<pid>')
 def get_detail(pid):
     path = os.path.join(PROCESSED_FOLDER, pid)
+    if not os.path.isdir(path):
+        return jsonify({"images": [], "status": "no_processed_images"})
     imgs = sorted([f for f in os.listdir(path) if f.endswith('.png')])
     return jsonify({"images": imgs})
+
+
+@app.route('/patients/delete', methods=['POST'])
+def delete_patient_records():
+    data = request.json or {}
+    patient_ids = data.get('patient_ids') or data.get('patients') or []
+    if isinstance(patient_ids, str):
+        patient_ids = [patient_ids]
+    if not patient_ids:
+        return jsonify({"status": "error", "message": "缺少 patient_ids"}), 400
+
+    result = delete_patients(base_dir, patient_ids)
+    for pid in result["deleted"]:
+        TIMING_CACHE.pop(pid, None)
+    return jsonify({"status": "success", **result})
+
+
+@app.route('/patients/move', methods=['POST'])
+def move_patient_records():
+    data = request.json or {}
+    patient_ids = data.get('patient_ids') or data.get('patients') or []
+    if isinstance(patient_ids, str):
+        patient_ids = [patient_ids]
+    target_name = data.get('target_name') or data.get('target') or ""
+    if not patient_ids:
+        return jsonify({"status": "error", "message": "缺少 patient_ids"}), 400
+    try:
+        result = move_patients(base_dir, patient_ids, target_name)
+    except ValueError as exc:
+        return jsonify({"status": "error", "message": str(exc)}), 400
+
+    for item in result["moved"]:
+        cached = TIMING_CACHE.pop(item["from"], None)
+        if cached is not None:
+            TIMING_CACHE[item["to"]] = cached
+    return jsonify({"status": "success", **result})
 
 
 @app.route('/upload', methods=['POST'])
@@ -352,27 +393,53 @@ def agent_followup():
         return jsonify({"status": "error", "message": "缺少 JSON 数据"}), 400
 
     pid = data.get('patient_id')
-    findings = data.get('findings', [])
-    clinical_context = data.get('clinical_context', {})
     if not pid:
         return jsonify({"status": "error", "message": "缺少 patient_id"}), 400
 
-    review = data.get('doctor_review')
-    if review is None:
-        review = load_review(base_dir, pid)
+    # 随访只读取服务端已保存的医生复核；浏览器传来的模型发现/复核 JSON 不作证据。
+    review = load_review(base_dir, pid)
 
     case_context = merge_case_context(
         pid,
-        findings=findings,
+        findings=[],
         review=review,
-        clinical_context=clinical_context,
+        clinical_context={},
     )
-    result = build_followup_recommendation(pid, findings, case_context=case_context)
+    try:
+        result = build_followup_recommendation(pid, [], case_context=case_context)
+    except LLMClientError as exc:
+        return jsonify({
+            "status": "error",
+            "message": str(exc),
+            "case_context": case_context,
+        }), 502
+
     return jsonify({
         "status": "success",
         "case_context": case_context,
         "followup": result
     })
+
+
+@app.route('/agent/verify-run', methods=['POST'])
+def verify_model_run():
+    origin = request.headers.get('Origin')
+    if origin and origin.rstrip('/') != request.host_url.rstrip('/'):
+        return jsonify({"status": "error", "message": "只允许当前工作台核验运行记录"}), 403
+    data = request.get_json(silent=True) or {}
+    case_id = data.get('case_id', '')
+    run_id = data.get('run_id', '')
+    if case_id not in list_patients(base_dir):
+        return jsonify({"status": "error", "message": "请先选择已导入的演示病例"}), 404
+    try:
+        evidence = fetch_verified_run(
+            case_id, run_id,
+            os.getenv('MODEL_SERVER_URL', 'http://127.0.0.1:8100'),
+            os.getenv('MODEL_SERVER_TOKEN', ''),
+        )
+    except EvidenceError as exc:
+        return jsonify({"status": "error", "message": str(exc)}), 422
+    return jsonify({"status": "success", "evidence": evidence})
 
 
 @app.route('/doctor/review/<pid>', methods=['GET'])

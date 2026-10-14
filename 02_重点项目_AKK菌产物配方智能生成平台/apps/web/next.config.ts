@@ -1,14 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  async rewrites() {
-    return [
-      {
-        source: "/api/:path*",
-        destination: `${process.env.SERVER_API_BASE_URL ?? "http://127.0.0.1:8000"}/:path*`,
-      },
-    ];
-  },
+  allowedDevOrigins: ["127.0.0.1"],
 };
 
 export default nextConfig;

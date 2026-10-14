@@ -1,4 +1,5 @@
 import json
+import os
 import sqlite3
 from datetime import datetime, timezone
 from pathlib import Path
@@ -6,8 +7,9 @@ from typing import Any
 
 
 class SqliteRepository:
-    def __init__(self) -> None:
-        self.db_path = Path(__file__).resolve().parents[4] / "data" / "akk_platform.sqlite3"
+    def __init__(self, db_path: str | Path | None = None) -> None:
+        default_path = os.getenv("EXPERIMENT_WORKSPACE_DB_PATH") or str(Path(__file__).resolve().parents[4] / "data" / "akk_platform.sqlite3")
+        self.db_path = Path(db_path) if db_path is not None else Path(default_path)
         self.db_path.parent.mkdir(parents=True, exist_ok=True)
         self._init_db()
 
@@ -47,6 +49,71 @@ class SqliteRepository:
                     FOREIGN KEY(result_id) REFERENCES formula_results(result_id)
                 )
                 """
+            )
+            connection.execute(
+                """
+                CREATE TABLE IF NOT EXISTS experiment_workspaces (
+                    experiment_id TEXT PRIMARY KEY,
+                    payload_json TEXT NOT NULL,
+                    created_at TEXT NOT NULL,
+                    updated_at TEXT NOT NULL
+                )
+                """
+            )
+            connection.commit()
+
+    def save_experiment_workspace(self, workspace: dict[str, Any]) -> None:
+        with self._connect() as connection:
+            connection.execute(
+                """
+                INSERT INTO experiment_workspaces
+                (experiment_id, payload_json, created_at, updated_at)
+                VALUES (?, ?, ?, ?)
+                """,
+                (
+                    workspace["experimentId"], json.dumps(workspace, ensure_ascii=False),
+                    workspace["updatedAt"], workspace["updatedAt"],
+                ),
+            )
+            connection.commit()
+
+    def get_experiment_workspace(self, experiment_id: str) -> dict[str, Any] | None:
+        with self._connect() as connection:
+            row = connection.execute(
+                "SELECT payload_json FROM experiment_workspaces WHERE experiment_id = ?",
+                (experiment_id,),
+            ).fetchone()
+        return json.loads(row["payload_json"]) if row else None
+
+    def update_experiment_workspace(self, workspace: dict[str, Any]) -> None:
+        with self._connect() as connection:
+            cursor = connection.execute(
+                """
+                UPDATE experiment_workspaces
+                SET payload_json = ?, updated_at = ?
+                WHERE experiment_id = ?
+                """,
+                (
+                    json.dumps(workspace, ensure_ascii=False),
+                    workspace["updatedAt"], workspace["experimentId"],
+                ),
+            )
+            if cursor.rowcount == 0:
+                raise LookupError("persisted experiment workspace was not found")
+            connection.commit()
+
+    def list_experiment_workspaces(self) -> list[dict[str, Any]]:
+        with self._connect() as connection:
+            rows = connection.execute(
+                "SELECT payload_json FROM experiment_workspaces ORDER BY created_at DESC"
+            ).fetchall()
+        return [json.loads(row["payload_json"]) for row in rows]
+
+    def delete_experiment_workspace(self, experiment_id: str) -> None:
+        with self._connect() as connection:
+            connection.execute(
+                "DELETE FROM experiment_workspaces WHERE experiment_id = ?",
+                (experiment_id,),
             )
             connection.commit()
 

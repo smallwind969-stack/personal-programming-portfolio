@@ -1,0 +1,14 @@
+const fs=require('node:fs'),assert=require('node:assert/strict'),M=require('./model.js');
+const s=M.parse(fs.readFileSync('C:/Users/LSY/Downloads/房间布局 (2).json','utf8'));
+const item=(id,name,x,y,w,d,h,z,color,visible=true)=>({id,name,x,y,w,d,h,z,angle:0,color,visible,zone:'room',kind:'box'});
+const cabinet=s.objects.find(o=>o.id==='wardrobe');Object.assign(cabinet,{name:'入口组合柜·下部鞋柜',x:4.715,y:1.55,w:.45,d:1.2,h:.7,z:0});
+const display=item('display','上部收藏柜·带门',4.715,1.55,.45,1.2,1.6,.7,'#acc4c3');display.kind='cabinet';
+const bean=item('bean','懒人沙发·可移动',2.15,5.4,.8,.8,.65,0,'#b9a484');bean.shape='bean';
+const extra=item('bean-spare','备用懒人沙发·收起',2.15,4.5,.8,.8,.65,0,'#859ca4',false);extra.shape='bean';
+const screen=item('screen','80吋升降白幕·放下',.26,4.7,.035,1.771,.996,1.3,'#f5f4ed');
+const casing=item('screen-case','幕布卷筒·预留',.26,4.7,.15,1.95,.12,2.4,'#59665c');
+const projector=item('projector','投影安装位·型号待定',4.65,4.7,.3,.25,.15,2.4,'#f2eee4',false);
+s.objects.push(display,bean,extra,screen,casing,projector);
+for(const o of [cabinet,display,bean,screen,casing])assert.deepEqual(M.warnings(o,s),[],o.name);
+M.parse(JSON.stringify(s));fs.writeFileSync('收纳与投影-预留方案.json',JSON.stringify(s,null,2));
+console.log('PASS: new shoe/display cabinet, one beanbag and screen fit current geometry; optional second beanbag/projector hidden. Current desk/chair edits preserved.');

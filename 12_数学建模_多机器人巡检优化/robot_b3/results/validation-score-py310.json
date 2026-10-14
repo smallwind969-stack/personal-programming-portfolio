@@ -1,0 +1,53 @@
+{
+  "scenes": 100,
+  "start_seed": 1000,
+  "route_budget_s": 1.0,
+  "modes": {
+    "safe": {
+      "full_clear_runs": 100,
+      "total_sources": 1278,
+      "total_cleared": 1278,
+      "mean_total_s": 4904.03295788516,
+      "mean_per_source_s": 390.2916363201402,
+      "mean_move_s": 3982.95295788516,
+      "mean_measures": 143.39,
+      "mean_switches": 140.23,
+      "failed_clears": 0,
+      "max_real_s": 0.03236720000131754,
+      "errors": []
+    },
+    "adaptive": {
+      "full_clear_runs": 100,
+      "total_sources": 1278,
+      "total_cleared": 1278,
+      "mean_total_s": 4901.2583140674615,
+      "mean_per_source_s": 390.06974874310714,
+      "mean_move_s": 3980.2283140674617,
+      "mean_measures": 143.38,
+      "mean_switches": 140.23,
+      "failed_clears": 0,
+      "max_real_s": 0.01965129999734927,
+      "errors": []
+    },
+    "score": {
+      "full_clear_runs": 100,
+      "total_sources": 1278,
+      "total_cleared": 1278,
+      "mean_total_s": 3072.8063573271734,
+      "mean_per_source_s": 245.38903145371512,
+      "mean_move_s": 2201.8363573271736,
+      "mean_measures": 135.2,
+      "mean_switches": 128.67,
+      "failed_clears": 80,
+      "max_real_s": 0.6067827000006218,
+      "errors": []
+    }
+  },
+  "score_minus_adaptive": {
+    "wins": 100,
+    "ties": 0,
+    "losses": 0,
+    "mean_delta_s": -1828.451956740288,
+    "worst_delta_s": -544.9665212209961
+  }
+}

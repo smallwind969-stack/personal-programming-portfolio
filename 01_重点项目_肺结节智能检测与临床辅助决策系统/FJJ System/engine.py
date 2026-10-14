@@ -1,4 +1,3 @@
-import os
 import time
 import torch
 import numpy as np
@@ -6,6 +5,7 @@ import SimpleITK as sitk
 from scipy.ndimage import zoom
 from skimage.measure import label, regionprops
 from models import AttentionVNet_v6_7, ResNet18_3D_CBAM, DualBranchResNet
+from dicom_io import load_ct_image
 
 
 class DiagnosisEngine:
@@ -28,14 +28,7 @@ class DiagnosisEngine:
         self.model_dual.eval()
 
     def load_itk(self, path):
-        if os.path.isfile(path) and path.endswith('.mhd'):
-            return sitk.ReadImage(path)
-
-        reader = sitk.ImageSeriesReader()
-        dicom_names = reader.GetGDCMSeriesFileNames(path)
-        reversed_names = list(dicom_names)[::-1]
-        reader.SetFileNames(reversed_names)
-        return reader.Execute()
+        return load_ct_image(path)
 
     def get_vol_1mm(self, itk_img):
         spacing = itk_img.GetSpacing()

@@ -9,6 +9,46 @@ services:
       - PYTHONUNBUFFERED=1
       - API_PORT=${API_PORT:-8000}
       - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost:3000}
+      - CORS_ORIGIN_REGEX=${CORS_ORIGIN_REGEX:-^http://(localhost|127\.0\.0\.1):3000$}
+      - LOCAL_LLM_ENABLED=${LOCAL_LLM_ENABLED:-false}
+      - LOCAL_LLM_PROVIDER=${LOCAL_LLM_PROVIDER:-openai_compatible}
+      - LOCAL_LLM_BASE_URL=${LOCAL_LLM_BASE_URL:-https://ai.rjyunk.com/v1}
+      - LOCAL_LLM_API_KEY=${LOCAL_LLM_API_KEY:-}
+      - LOCAL_LLM_MODEL=${LOCAL_LLM_MODEL:-gpt-5.3-codex-spark}
+      - LOCAL_LLM_TIMEOUT_SECONDS=${LOCAL_LLM_TIMEOUT_SECONDS:-45}
+      - SIMULATION_LLM_ENABLED=${SIMULATION_LLM_ENABLED:-false}
+      - SIMULATION_LLM_PROVIDER=${SIMULATION_LLM_PROVIDER:-openai_compatible}
+      - SIMULATION_LLM_BASE_URL=${SIMULATION_LLM_BASE_URL:-https://ai.rjyunk.com/v1}
+      - SIMULATION_LLM_API_KEY=${SIMULATION_LLM_API_KEY:-}
+      - SIMULATION_LLM_MODEL=${SIMULATION_LLM_MODEL:-gpt-5.3-codex-spark}
+      - SIMULATION_LLM_TIMEOUT_SECONDS=${SIMULATION_LLM_TIMEOUT_SECONDS:-45}
+      - AGENT_RUNTIME_BACKEND=${AGENT_RUNTIME_BACKEND:-deterministic}
+      - AGENT_RUNTIME_CHECKPOINT_PATH=${AGENT_RUNTIME_CHECKPOINT_PATH:-/app/data/agent-runtime.db}
+      - LANGGRAPH_STRICT_MSGPACK=${LANGGRAPH_STRICT_MSGPACK:-true}
+      - AGENT_COMMAND_QUEUE_PATH=${AGENT_COMMAND_QUEUE_PATH:-/app/data/agent-commands.db}
+      - DOMAIN_RUN_STORE_PATH=${DOMAIN_RUN_STORE_PATH:-/app/data/domain-runs.db}
+      - PRODUCT_INNOVATION_STORE_PATH=${PRODUCT_INNOVATION_STORE_PATH:-/app/data/product-innovation.db}
+      - RESEARCH_CAMPAIGN_STORE_PATH=${RESEARCH_CAMPAIGN_STORE_PATH:-/app/data/research-campaigns.db}
+      - RESEARCH_RUNNER=${RESEARCH_RUNNER:-mock}
+      - RESEARCH_ARTIFACT_PATH=${RESEARCH_ARTIFACT_PATH:-/app/data/model-artifacts}
+      - MODEL_REGISTRY_PATH=${MODEL_REGISTRY_PATH:-/app/data/model-registry.db}
+      - FEATURE_BINDING_STORE_PATH=${FEATURE_BINDING_STORE_PATH:-/app/data/feature-bindings.db}
+      - FEATURE_BINDING_SUGGESTION_STORE_PATH=${FEATURE_BINDING_SUGGESTION_STORE_PATH:-/app/data/feature-binding-suggestions.db}
+      - DEVICE_ADAPTER_PACK_STORE_PATH=${DEVICE_ADAPTER_PACK_STORE_PATH:-/app/data/device-adapter-packs.db}
+      - EXPERIMENT_DATA_STORE_PATH=${EXPERIMENT_DATA_STORE_PATH:-/app/data/experiment-data.db}
+      - EXPERIMENT_OBJECT_STORE_PATH=${EXPERIMENT_OBJECT_STORE_PATH:-/app/data/experiment-objects}
+      - FEATURE_BINDING_LLM_ENABLED=${FEATURE_BINDING_LLM_ENABLED:-false}
+      - AGENT_QUEUE_BACKEND=${AGENT_QUEUE_BACKEND:-sqlite}
+      - DATABASE_URL=${DATABASE_URL:-}
+      - AGENT_QUEUE_NAMESPACE=${AGENT_QUEUE_NAMESPACE:-default}
+      - AGENT_DISPATCH_BACKEND=${AGENT_DISPATCH_BACKEND:-polling}
+      - AGENT_REDIS_URL=${AGENT_REDIS_URL:-redis://redis:6379/0}
+    extra_hosts:
+      - "api.ofox.ai:47.83.144.71"
+    volumes:
+      - ./data/runtime:/app/data
+      - ./data/decision:/app/data/decision:ro
+      - ./data/mock:/app/data/mock:ro
     healthcheck:
       test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:${API_PORT:-8000}/health')\""]
       interval: 10s
@@ -24,7 +64,7 @@ services:
     environment:
       - WEB_PORT=${WEB_PORT:-3000}
       - SERVER_API_BASE_URL=http://api:${API_PORT:-8000}
-      - NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL:-http://localhost:8000}
+      - NEXT_PUBLIC_API_BASE_URL=/api
       - NEXT_TELEMETRY_DISABLED=1
     depends_on:
       api:
@@ -34,3 +74,117 @@ services:
       interval: 10s
       timeout: 5s
       retries: 10
+
+  agent-worker:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    command: ["python", "-m", "app.worker"]
+    environment:
+      - PYTHONUNBUFFERED=1
+      - AGENT_RUNTIME_BACKEND=${AGENT_RUNTIME_BACKEND:-deterministic}
+      - AGENT_RUNTIME_CHECKPOINT_PATH=${AGENT_RUNTIME_CHECKPOINT_PATH:-/app/data/agent-runtime.db}
+      - AGENT_COMMAND_QUEUE_PATH=${AGENT_COMMAND_QUEUE_PATH:-/app/data/agent-commands.db}
+      - DOMAIN_RUN_STORE_PATH=${DOMAIN_RUN_STORE_PATH:-/app/data/domain-runs.db}
+      - PRODUCT_INNOVATION_STORE_PATH=${PRODUCT_INNOVATION_STORE_PATH:-/app/data/product-innovation.db}
+      - RESEARCH_CAMPAIGN_STORE_PATH=${RESEARCH_CAMPAIGN_STORE_PATH:-/app/data/research-campaigns.db}
+      - RESEARCH_RUNNER=${RESEARCH_RUNNER:-mock}
+      - RESEARCH_ARTIFACT_PATH=${RESEARCH_ARTIFACT_PATH:-/app/data/model-artifacts}
+      - MODEL_REGISTRY_PATH=${MODEL_REGISTRY_PATH:-/app/data/model-registry.db}
+      - FEATURE_BINDING_STORE_PATH=${FEATURE_BINDING_STORE_PATH:-/app/data/feature-bindings.db}
+      - FEATURE_BINDING_SUGGESTION_STORE_PATH=${FEATURE_BINDING_SUGGESTION_STORE_PATH:-/app/data/feature-binding-suggestions.db}
+      - DEVICE_ADAPTER_PACK_STORE_PATH=${DEVICE_ADAPTER_PACK_STORE_PATH:-/app/data/device-adapter-packs.db}
+      - EXPERIMENT_DATA_STORE_PATH=${EXPERIMENT_DATA_STORE_PATH:-/app/data/experiment-data.db}
+      - EXPERIMENT_OBJECT_STORE_PATH=${EXPERIMENT_OBJECT_STORE_PATH:-/app/data/experiment-objects}
+      - FEATURE_BINDING_LLM_ENABLED=${FEATURE_BINDING_LLM_ENABLED:-false}
+      - LANGGRAPH_STRICT_MSGPACK=${LANGGRAPH_STRICT_MSGPACK:-true}
+      - LOCAL_LLM_ENABLED=${LOCAL_LLM_ENABLED:-false}
+      - LOCAL_LLM_PROVIDER=${LOCAL_LLM_PROVIDER:-openai_compatible}
+      - LOCAL_LLM_BASE_URL=${LOCAL_LLM_BASE_URL:-https://ai.rjyunk.com/v1}
+      - LOCAL_LLM_API_KEY=${LOCAL_LLM_API_KEY:-}
+      - LOCAL_LLM_MODEL=${LOCAL_LLM_MODEL:-gpt-5.3-codex-spark}
+      - LOCAL_LLM_TIMEOUT_SECONDS=${LOCAL_LLM_TIMEOUT_SECONDS:-45}
+      - SIMULATION_LLM_ENABLED=${SIMULATION_LLM_ENABLED:-false}
+      - SIMULATION_LLM_PROVIDER=${SIMULATION_LLM_PROVIDER:-openai_compatible}
+      - SIMULATION_LLM_BASE_URL=${SIMULATION_LLM_BASE_URL:-https://ai.rjyunk.com/v1}
+      - SIMULATION_LLM_API_KEY=${SIMULATION_LLM_API_KEY:-}
+      - SIMULATION_LLM_MODEL=${SIMULATION_LLM_MODEL:-gpt-5.3-codex-spark}
+      - SIMULATION_LLM_TIMEOUT_SECONDS=${SIMULATION_LLM_TIMEOUT_SECONDS:-45}
+      - AGENT_QUEUE_BACKEND=${AGENT_QUEUE_BACKEND:-sqlite}
+      - DATABASE_URL=${DATABASE_URL:-}
+      - AGENT_QUEUE_NAMESPACE=${AGENT_QUEUE_NAMESPACE:-default}
+      - AGENT_DISPATCH_BACKEND=${AGENT_DISPATCH_BACKEND:-polling}
+      - AGENT_REDIS_URL=${AGENT_REDIS_URL:-redis://redis:6379/0}
+      - AGENT_WORKER_CAPABILITIES=${AGENT_WORKER_CAPABILITIES:-cpu,localLlm}
+      - AGENT_WORKER_MAX_CONCURRENT=${AGENT_WORKER_MAX_CONCURRENT:-1}
+    extra_hosts:
+      - "api.ofox.ai:47.83.144.71"
+    volumes:
+      - ./data/runtime:/app/data
+      - ./data/decision:/app/data/decision:ro
+      - ./data/mock:/app/data/mock:ro
+    depends_on:
+      api:
+        condition: service_healthy
+
+  redis:
+    image: redis:7.4-alpine
+    profiles: ["distributed"]
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis-data:/data
+
+  postgres:
+    image: postgres:17-alpine
+    profiles: ["distributed"]
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:-akk_platform}
+      - POSTGRES_USER=${POSTGRES_USER:-akk}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-akk-development-only}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-akk} -d ${POSTGRES_DB:-akk_platform}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  distributed-agent-worker:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    profiles: ["distributed"]
+    command: ["dramatiq", "app.agent_queue.dramatiq_actors", "--processes", "1", "--threads", "4"]
+    environment:
+      - AGENT_QUEUE_BACKEND=postgres
+      - DATABASE_URL=${DATABASE_URL:-postgresql://akk:akk-development-only@postgres:5432/akk_platform}
+      - AGENT_QUEUE_NAMESPACE=${AGENT_QUEUE_NAMESPACE:-default}
+      - AGENT_DISPATCH_BACKEND=dramatiq-redis
+      - AGENT_REDIS_URL=${AGENT_REDIS_URL:-redis://redis:6379/0}
+      - AGENT_RUNTIME_BACKEND=${AGENT_RUNTIME_BACKEND:-langgraph}
+      - AGENT_RUNTIME_CHECKPOINT_PATH=/app/data/agent-runtime.db
+      - AGENT_COMMAND_QUEUE_PATH=/app/data/agent-commands.db
+      - DOMAIN_RUN_STORE_PATH=/app/data/domain-runs.db
+      - PRODUCT_INNOVATION_STORE_PATH=/app/data/product-innovation.db
+      - RESEARCH_CAMPAIGN_STORE_PATH=/app/data/research-campaigns.db
+      - RESEARCH_RUNNER=${RESEARCH_RUNNER:-mock}
+      - RESEARCH_ARTIFACT_PATH=${RESEARCH_ARTIFACT_PATH:-/app/data/model-artifacts}
+      - MODEL_REGISTRY_PATH=${MODEL_REGISTRY_PATH:-/app/data/model-registry.db}
+      - FEATURE_BINDING_STORE_PATH=${FEATURE_BINDING_STORE_PATH:-/app/data/feature-bindings.db}
+      - FEATURE_BINDING_SUGGESTION_STORE_PATH=${FEATURE_BINDING_SUGGESTION_STORE_PATH:-/app/data/feature-binding-suggestions.db}
+      - DEVICE_ADAPTER_PACK_STORE_PATH=${DEVICE_ADAPTER_PACK_STORE_PATH:-/app/data/device-adapter-packs.db}
+      - EXPERIMENT_DATA_STORE_PATH=${EXPERIMENT_DATA_STORE_PATH:-/app/data/experiment-data.db}
+      - EXPERIMENT_OBJECT_STORE_PATH=${EXPERIMENT_OBJECT_STORE_PATH:-/app/data/experiment-objects}
+      - FEATURE_BINDING_LLM_ENABLED=${FEATURE_BINDING_LLM_ENABLED:-false}
+      - AGENT_WORKER_CAPABILITIES=${AGENT_WORKER_CAPABILITIES:-cpu,localLlm}
+    volumes:
+      - ./data/runtime:/app/data
+    depends_on:
+      redis:
+        condition: service_started
+      postgres:
+        condition: service_healthy
+
+volumes:
+  redis-data:
+  postgres-data:

@@ -45,12 +45,53 @@
         .right-panel { border-left: 1px solid var(--line); padding: 16px; }
         .upload-box { padding: 16px; border-bottom: 1px solid var(--line); }
         .patient-item {
-            padding: 12px 14px;
+            display: grid;
+            grid-template-columns: 26px 1fr;
+            align-items: center;
+            gap: 8px;
+            padding: 11px 14px;
             border-bottom: 1px solid #0b1118;
             cursor: pointer;
             color: var(--muted);
+            user-select: none;
         }
         .patient-item:hover, .patient-item.active { background: #20313a; color: var(--text); }
+        .patient-item.selected { box-shadow: inset 4px 0 0 var(--accent); color: var(--text); }
+        .patient-item.long-pressing { background: #28424a; color: var(--accent); }
+        .patient-select-box {
+            width: 18px;
+            height: 18px;
+            border: 1px solid #425662;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #061014;
+            background: #091018;
+            font-size: 13px;
+            font-weight: 800;
+        }
+        .patient-item.selected .patient-select-box {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+        .patient-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .patient-bulk-actions {
+            display: none;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #243844;
+        }
+        .patient-bulk-actions.active { display: grid; }
+        .patient-bulk-actions .bulk-summary {
+            grid-column: 1 / -1;
+            color: var(--accent);
+            font-size: 12px;
+            line-height: 1.4;
+        }
+        .patient-bulk-actions button { min-height: 30px; font-size: 13px; }
         .main-view {
             display: grid;
             grid-template-rows: 1fr auto auto;
@@ -66,7 +107,7 @@
             border-bottom: 1px solid var(--line);
         }
         #transform-layer { position: relative; width: 512px; height: 512px; transform-origin: center center; }
-        #ct-img { display: none; width: 512px; height: 512px; image-rendering: pixelated; }
+        #ct-img { display: none; width: 512px; height: 512px; object-fit: contain; image-rendering: pixelated; background: #000; }
         #draw-layer { position: absolute; inset: 0; width: 512px; height: 512px; cursor: crosshair; }
         .zoom-bar { position: absolute; top: 14px; left: 14px; z-index: 5; display: flex; gap: 8px; }
         .navigation-bar { display: flex; gap: 12px; align-items: center; padding: 10px 16px; background: var(--panel); }
@@ -146,17 +187,48 @@
             margin-top: 6px;
         }
         .risk-row small { display: block; color: var(--muted); line-height: 1.5; }
+        #patient-context-menu {
+            position: fixed;
+            z-index: 50;
+            display: none;
+            min-width: 118px;
+            background: #071019;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
+            padding: 4px;
+        }
+        #patient-context-menu button {
+            width: 100%;
+            border: 0;
+            color: var(--text);
+            text-align: left;
+            background: transparent;
+            padding: 7px 9px;
+            min-height: 28px;
+            font-size: 13px;
+        }
+        #patient-context-menu button:hover { background: #10222a; color: var(--accent); }
     </style>
 </head>
 <body>
 <aside class="sidebar">
     <div class="upload-box">
-        <button class="primary" style="width:100%;" onclick="document.getElementById('folderInput').click()">批量上传 CT 文件夹</button>
-        <input type="file" id="folderInput" webkitdirectory directory multiple style="display:none" onchange="uploadPatients()">
+        <button class="primary" style="width:100%;" onclick="openUploadDirectory()">批量上传 CT 文件夹</button>
+        <input type="file" id="folderInput" webkitdirectory directory multiple style="display:none" onchange="legacyUploadPatients()">
         <div class="status-line" id="upload-status">可选择单个病例文件夹，也可选择包含多个病例子文件夹的总目录。</div>
+        <div id="patient-bulk-actions" class="patient-bulk-actions">
+            <div id="bulk-summary" class="bulk-summary">已选择 0 个病例</div>
+            <button class="danger" onclick="deleteSelectedPatients()">删除</button>
+            <button onclick="clearPatientSelection()">取消选择</button>
+        </div>
     </div>
     <div id="plist-content"></div>
 </aside>
+<div id="patient-context-menu">
+    <button onclick="contextToggleSelection()">选择/取消</button>
+    <button class="danger" onclick="deleteSelectedPatients()">删除</button>
+</div>
 
 <main class="main-view">
     <div class="viewport" onwheel="onScroll(event)">
@@ -195,6 +267,14 @@
         <button id="btn-add" onclick="toggleBoxMode()" disabled>拖拽框选新增结节</button>
         <button id="btn-save-review" onclick="saveDoctorReview()" disabled>保存医生复核</button>
         <button id="btn-followup" onclick="runFollowup()" disabled>基于复核生成随访建议</button>
+    </div>
+
+    <div class="panel-block">
+        <h3>Nexent 运行记录核验</h3>
+        <label>模型服务返回的 run_id</label>
+        <input id="run-id-input" placeholder="粘贴检测工具返回的运行批次 ID">
+        <button id="btn-verify-run" onclick="verifyModelRun()" disabled>从模型服务核验</button>
+        <div id="run-evidence" class="status-line">仅显示服务端当前批次的候选编号和模型评分；不自动写入复核记录。</div>
     </div>
 
     <div class="panel-block">
@@ -312,8 +392,19 @@
     let dragPreview = null;
     let zoomLevel = 1.0;
     let followupResult = null;
+    let selectedPatients = new Set();
+    let contextPatientId = "";
+    const LONG_PRESS_MOVE_MS = 600;
+    let patientLongPressTimer = null;
+    let patientLongPressFired = false;
 
-    window.onload = loadPatients;
+    window.onload = () => {
+        loadPatients();
+        document.addEventListener('click', hidePatientMenu);
+        document.addEventListener('keydown', event => {
+            if (event.key === "Escape") hidePatientMenu();
+        });
+    };
 
     function uid(prefix) {
         return `${prefix}_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
@@ -391,18 +482,162 @@
         container.innerHTML = "";
         (data.patients || []).forEach(pid => {
             const div = document.createElement('div');
-            div.className = `patient-item ${pid === currentPID ? 'active' : ''}`;
-            div.innerText = pid;
-            div.onclick = () => selectPatient(pid);
+            const checked = selectedPatients.has(pid);
+            div.className = `patient-item ${pid === currentPID ? 'active' : ''} ${checked ? 'selected' : ''}`;
+            div.dataset.pid = pid;
+            div.innerHTML = `
+                <span class="patient-select-box" title="选择病例">${checked ? "✓" : ""}</span>
+                <span class="patient-name">${escapeHtml(pid)}</span>
+            `;
+            div.onclick = event => onPatientClick(event, pid);
+            div.oncontextmenu = event => showPatientMenu(event, pid);
+            div.onpointerdown = event => beginPatientLongPress(event, pid, div);
+            div.onpointerup = finishPatientLongPress;
+            div.onpointerleave = cancelPatientLongPress;
+            div.onpointercancel = cancelPatientLongPress;
             container.appendChild(div);
         });
+        updatePatientBulkActions();
     }
 
-    async function uploadPatients() {
+    function onPatientClick(event, pid) {
+        if (patientLongPressFired) {
+            patientLongPressFired = false;
+            event.preventDefault();
+            return;
+        }
+        if (event.target.closest('.patient-select-box') || event.ctrlKey || event.shiftKey) {
+            togglePatientSelection(pid);
+            return;
+        }
+        selectPatient(pid);
+    }
+
+    function beginPatientLongPress(event, pid, row) {
+        if (event.button !== undefined && event.button !== 0) return;
+        if (event.target.closest('.patient-select-box')) return;
+        cancelPatientLongPress();
+        patientLongPressFired = false;
+        row.classList.add('long-pressing');
+        patientLongPressTimer = window.setTimeout(() => {
+            patientLongPressFired = true;
+            row.classList.remove('long-pressing');
+            movePatientsFromLongPress(pid);
+        }, LONG_PRESS_MOVE_MS);
+    }
+
+    function finishPatientLongPress() {
+        cancelPatientLongPress();
+    }
+
+    function cancelPatientLongPress() {
+        if (patientLongPressTimer) {
+            window.clearTimeout(patientLongPressTimer);
+            patientLongPressTimer = null;
+        }
+        document.querySelectorAll('.patient-item.long-pressing').forEach(item => item.classList.remove('long-pressing'));
+    }
+
+    async function movePatientsFromLongPress(pid) {
+        contextPatientId = pid;
+        const patientIds = selectedPatients.size ? Array.from(selectedPatients) : [pid];
+        await moveSelectedPatients(patientIds);
+    }
+
+    function showPatientMenu(event, pid) {
+        event.preventDefault();
+        event.stopPropagation();
+        contextPatientId = pid;
+        if (!selectedPatients.size && !selectedPatients.has(pid)) selectedPatients.add(pid);
+        const menu = document.getElementById('patient-context-menu');
+        menu.style.left = `${event.clientX}px`;
+        menu.style.top = `${event.clientY}px`;
+        menu.style.display = "block";
+        loadPatients();
+    }
+
+    function hidePatientMenu() {
+        document.getElementById('patient-context-menu').style.display = "none";
+    }
+
+    function togglePatientSelection(pid) {
+        selectedPatients.has(pid) ? selectedPatients.delete(pid) : selectedPatients.add(pid);
+        loadPatients();
+    }
+
+    function contextToggleSelection() {
+        if (!contextPatientId) return;
+        togglePatientSelection(contextPatientId);
+        hidePatientMenu();
+    }
+
+    function clearPatientSelection() {
+        selectedPatients.clear();
+        contextPatientId = "";
+        hidePatientMenu();
+        loadPatients();
+    }
+
+    function updatePatientBulkActions() {
+        const bar = document.getElementById('patient-bulk-actions');
+        const summary = document.getElementById('bulk-summary');
+        const count = selectedPatients.size;
+        bar.classList.toggle('active', count > 0);
+        summary.innerText = `已选择 ${count} 个病例`;
+    }
+
+    function selectedPatientList() {
+        if (selectedPatients.size) return Array.from(selectedPatients);
+        return contextPatientId ? [contextPatientId] : (currentPID ? [currentPID] : []);
+    }
+
+    async function openUploadDirectory() {
+        if (!window.showDirectoryPicker) {
+            const input = document.getElementById('folderInput');
+            input.value = "";
+            input.click();
+            return;
+        }
+
+        try {
+            const rootHandle = await window.showDirectoryPicker({ mode: "read" });
+            const files = await collectDirectoryFiles(rootHandle, rootHandle.name);
+            await submitUploadFiles(files);
+        } catch (error) {
+            if (error && error.name === "AbortError") return;
+            document.getElementById('upload-status').innerText = `读取文件夹失败：${error.message || "未知错误"}`;
+        }
+    }
+
+    async function collectDirectoryFiles(directoryHandle, basePath) {
+        const files = [];
+        for await (const [name, handle] of directoryHandle.entries()) {
+            const nextPath = `${basePath}/${name}`;
+            if (handle.kind === "file") {
+                const file = await handle.getFile();
+                files.push({ file, path: nextPath });
+            } else if (handle.kind === "directory") {
+                files.push(...await collectDirectoryFiles(handle, nextPath));
+            }
+        }
+        return files;
+    }
+
+    async function legacyUploadPatients() {
         const files = document.getElementById('folderInput').files;
-        if (!files.length) return;
+        await submitUploadFiles(Array.from(files).map(file => ({
+            file,
+            path: file.webkitRelativePath || file.name
+        })));
+    }
+
+    async function submitUploadFiles(files) {
+        if (!files.length) {
+            document.getElementById('upload-status').innerText = "未读取到文件，请确认选择的是包含 DICOM 的病例文件夹。";
+            return;
+        }
         const formData = new FormData();
-        for (const file of files) formData.append('files', file, file.webkitRelativePath || file.name);
+        for (const item of files) formData.append('files', item.file, item.path);
         document.getElementById('upload-status').innerText = `正在上传 ${files.length} 个文件，并按病患文件夹分组...`;
         const res = await fetch('/upload', { method: 'POST', body: formData });
         const data = await res.json();
@@ -419,15 +654,24 @@
         selectedId = "";
         findings = [];
         followupResult = null;
+        document.getElementById('run-id-input').value = "";
+        document.getElementById('run-evidence').textContent = "仅显示服务端当前批次的候选编号和模型评分；不自动写入复核记录。";
         document.getElementById('patient-name').innerText = pid;
-        document.querySelectorAll('.patient-item').forEach(item => item.classList.toggle('active', item.innerText === pid));
+        document.querySelectorAll('.patient-item').forEach(item => item.classList.toggle('active', item.dataset.pid === pid));
 
         const res = await fetch(`/get_patient_detail/${pid}`);
         const data = await res.json();
         imageList = data.images || [];
         currentIdx = 0;
         document.getElementById('sliceSlider').max = Math.max(imageList.length - 1, 0);
-        document.getElementById('total-txt').innerText = Math.max(imageList.length - 1, 0);
+        document.getElementById('total-txt').innerText = imageList.length;
+
+        if (!imageList.length) {
+            clearCtView();
+            setButtonsForPatient();
+            renderResults("该病例尚无可用预览图，可能是处理失败的 CT。可右键移动或删除。");
+            return;
+        }
 
         await loadDoctorReview(pid);
         setButtonsForPatient();
@@ -449,23 +693,39 @@
     }
 
     function setButtonsForPatient() {
-        document.getElementById('btn-detect').disabled = !currentPID;
+        const hasImages = Boolean(currentPID && imageList.length);
+        document.getElementById('btn-detect').disabled = !hasImages;
         document.getElementById('btn-identify').disabled = findings.length === 0;
-        document.getElementById('btn-add').disabled = !currentPID;
+        document.getElementById('btn-add').disabled = !hasImages;
         document.getElementById('btn-save-review').disabled = !currentPID;
         document.getElementById('btn-followup').disabled = !currentPID;
+        document.getElementById('btn-verify-run').disabled = !currentPID;
         document.getElementById('followup-block').style.display = "none";
         document.getElementById('editor-block').style.display = selectedId ? "block" : "none";
     }
 
     function updateView() {
-        if (!currentPID || !imageList.length) return;
+        if (!currentPID || !imageList.length) {
+            clearCtView();
+            return;
+        }
         document.getElementById('ct-img').src = `/static/processed/${currentPID}/${imageList[currentIdx]}`;
         document.getElementById('ct-img').style.display = "block";
-        document.getElementById('cur-txt').innerText = currentIdx;
+        document.getElementById('cur-txt').innerText = currentIdx + 1;
         document.getElementById('sliceSlider').value = currentIdx;
         applySettings();
         drawFindings();
+    }
+
+    function clearCtView() {
+        document.getElementById('ct-img').style.display = "none";
+        document.getElementById('ct-img').removeAttribute('src');
+        document.getElementById('cur-txt').innerText = 0;
+        document.getElementById('total-txt').innerText = 0;
+        document.getElementById('sliceSlider').value = 0;
+        document.getElementById('sliceSlider').max = 0;
+        const canvas = document.getElementById('draw-layer');
+        canvas.getContext('2d').clearRect(0, 0, 512, 512);
     }
 
     function drawFindings() {
@@ -821,22 +1081,122 @@
         return data.review || null;
     }
 
+    async function verifyModelRun() {
+        if (!currentPID) return;
+        const runId = document.getElementById('run-id-input').value.trim();
+        const area = document.getElementById('run-evidence');
+        area.textContent = "正在向模型服务核验批次...";
+        try {
+            const res = await fetch('/agent/verify-run', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({case_id: currentPID, run_id: runId})
+            });
+            const data = await res.json();
+            if (!res.ok || data.status !== 'success') {
+                area.textContent = data.message || '核验失败';
+                return;
+            }
+            const evidence = data.evidence;
+            const rows = (evidence.findings || []).map(item => {
+                const detection = item.detection_score == null ? '未提供' : Number(item.detection_score).toFixed(3);
+                const model = item.model_score == null ? '未分类' : Number(item.model_score).toFixed(3);
+                return `<li>${escapeHtml(item.candidate_id)}：检测评分 ${detection}，分类评分 ${model}，待医生复核</li>`;
+            }).join('');
+            area.innerHTML = `已核验批次 ${escapeHtml(evidence.run_id)}；服务端候选 ${evidence.findings.length} 个。`
+                + (rows ? `<ul>${rows}</ul>` : '当前无候选。')
+                + '<br>评分未经临床校准；坐标映射未核实，暂不在 CT 上定位或写入复核。';
+        } catch {
+            area.textContent = '模型服务暂不可用，无法核验运行记录。';
+        }
+    }
+
     async function runFollowup() {
         if (!currentPID) return;
         const btn = document.getElementById('btn-followup');
         btn.disabled = true;
         btn.innerText = "Agent 正在生成建议...";
         const review = await saveDoctorReview();
+        if (!review) {
+            renderFollowupError("医生复核保存失败，请重试。");
+            btn.innerText = "基于复核生成随访建议";
+            btn.disabled = false;
+            return;
+        }
         const res = await fetch('/agent/followup', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ patient_id: currentPID, findings, doctor_review: review, clinical_context: collectClinicalContext() })
+            body: JSON.stringify({ patient_id: currentPID })
         });
         const data = await res.json();
+        if (!res.ok || data.status !== "success") {
+            renderFollowupError(data.message || "大模型 API 调用失败");
+            btn.innerText = "基于复核生成随访建议";
+            btn.disabled = false;
+            return;
+        }
         followupResult = data.followup;
         renderFollowup(followupResult);
         btn.innerText = "基于复核生成随访建议";
         btn.disabled = false;
+    }
+
+    async function deleteSelectedPatients() {
+        const patientIds = selectedPatientList();
+        if (!patientIds.length) return;
+        const ok = window.confirm(`确认从本系统工作区移除 ${patientIds.length} 个病例？这会删除上传副本、预览图和复核记录，不会主动查找电脑其他位置的原始资料。`);
+        if (!ok) return;
+        hidePatientMenu();
+        const res = await fetch('/patients/delete', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ patient_ids: patientIds })
+        });
+        const data = await res.json();
+        document.getElementById('upload-status').innerText = data.status === "success"
+            ? `已删除病例：${(data.deleted || []).join('、') || '无'}`
+            : `删除失败：${data.message || "未知错误"}`;
+        if (patientIds.includes(currentPID)) {
+            currentPID = "";
+            imageList = [];
+            findings = [];
+            selectedId = "";
+            clearCtView();
+            renderResults("请选择病例。");
+        }
+        selectedPatients.clear();
+        await loadPatients();
+        updatePatientBulkActions();
+    }
+
+    async function moveSelectedPatients(patientIds = null) {
+        patientIds = patientIds || selectedPatientList();
+        if (!patientIds.length) return;
+        const targetName = window.prompt(
+            patientIds.length > 1 ? "输入分组前缀，例如 处理失败" : "输入新的病例名称",
+            patientIds.length > 1 ? "处理失败" : patientIds[0]
+        );
+        if (targetName === null) return;
+        hidePatientMenu();
+        const res = await fetch('/patients/move', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ patient_ids: patientIds, target_name: targetName })
+        });
+        const data = await res.json();
+        if (data.status !== "success") {
+            document.getElementById('upload-status').innerText = `移动失败：${data.message || "未知错误"}`;
+            return;
+        }
+        const moved = data.moved || [];
+        document.getElementById('upload-status').innerText = `已移动病例：${moved.map(item => `${item.from}→${item.to}`).join('、')}`;
+        const currentMove = moved.find(item => item.from === currentPID);
+        selectedPatients.clear();
+        await loadPatients();
+        updatePatientBulkActions();
+        if (currentMove) {
+            await selectPatient(currentMove.to);
+        }
     }
 
     function renderFollowup(result) {
@@ -846,19 +1206,20 @@
         const stats = result.statistics || {};
         const missing = (result.missing_information || []).map(item => `<li>${escapeHtml(item)}</li>`).join('');
         const llmStatus = result.llm_metadata && result.llm_metadata.available
-            ? `本地 ${escapeHtml(result.llm_metadata.model || "Qwen")} 已参与生成`
-            : "本地 Qwen 未连接，当前为规则版建议";
+            ? `大模型 API ${escapeHtml(result.llm_metadata.model || "")} 已参与生成`
+            : "大模型 API 未连接";
 
         const sectionLabel = { high: "高风险", medium: "中等风险", low: "低风险" };
         const riskSections = result.risk_sections || {};
         const riskHtml = ["high", "medium", "low"].map(level => {
             const rows = riskSections[level] || [];
             if (!rows.length) return "";
-            const items = rows.map(item => {
+            const items = rows.map((item, idx) => {
                 const basis = (item.basis || []).slice(0, 3).map(text => `<small>${escapeHtml(text)}</small>`).join("");
+                const displayName = `${sectionLabel[level]}结节 ${idx + 1}`;
                 return `
                     <div class="risk-row" style="border-left-color:${level === "high" ? "#fb7185" : level === "medium" ? "#facc15" : "#38bdf8"}">
-                        <b>${escapeHtml(item.nodule_id || "结节")}</b>
+                        <b>${escapeHtml(displayName)}</b>
                         <small>层面 ${escapeHtml(item.slice_idx ?? "N/A")} | 位置 (${escapeHtml(item.x ?? "N/A")}, ${escapeHtml(item.y ?? "N/A")}) | ${escapeHtml(item.risk_label || "")}</small>
                         ${basis}
                     </div>
@@ -875,12 +1236,12 @@
                 <div class="metric"><strong>${escapeHtml(stats.doctor_added_count ?? 0)}</strong>医生新增</div>
                 <div class="metric"><strong>${escapeHtml(stats.high_count ?? 0)}</strong>高风险</div>
             </div>
+            ${result.llm_summary ? `<div class="agent-section"><h4>Agent复核建议</h4>${escapeHtml(result.llm_summary)}</div>` : ""}
             ${riskHtml}
             <div class="agent-section">
                 <h4>辅助建议</h4>
                 ${escapeHtml(result.followup_suggestion || "")}
             </div>
-            ${result.llm_summary ? `<div class="agent-section"><h4>大模型总结</h4>${escapeHtml(result.llm_summary)}</div>` : ""}
             <div class="agent-section">
                 <h4>仍需补充</h4>
                 <ul class="missing-list">${missing}</ul>
@@ -890,6 +1251,19 @@
                 ${escapeHtml(result.presentation_highlight || "")}
             </div>
             <div class="status-line">${escapeHtml(result.safety_note || "")}<br>${llmStatus}</div>
+        `;
+    }
+
+    function renderFollowupError(message) {
+        const block = document.getElementById('followup-block');
+        const area = document.getElementById('followup-area');
+        block.style.display = "block";
+        area.innerHTML = `
+            <div class="agent-section">
+                <h4>大模型 API 调用失败</h4>
+                ${escapeHtml(message)}
+            </div>
+            <div class="status-line">请检查 LLM_API_KEY、LLM_API_BASE、LLM_MODEL 是否已正确配置。</div>
         `;
     }
 

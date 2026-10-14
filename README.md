@@ -15,6 +15,10 @@
 | 07 | [PyQt 图像处理工具](./07_桌面应用_PyQt图像处理工具/) | 桌面应用 / 图像处理 | Python、PyQt5、OpenCV、Pillow、NumPy | GUI 能力 |
 | 08 | [PyQt 拼图游戏](./08_桌面游戏_PyQt拼图游戏/) | 桌面游戏 / 交互设计 | Python、PyQt5、验证码、登录注册、本地存储 | 交互能力 |
 | 09 | [手势识别贪吃蛇](./09_交互游戏_手势识别贪吃蛇/) | 人机交互 / OpenCV | Python、OpenCV、cvzone、HandTracking、JSON | 趣味项目 |
+| 10 | [课堂派题目整理工具](./10_自动化工具_课堂派题目整理/) | 浏览器自动化 / 文档导出 | Python、PyQt5、Playwright、BeautifulSoup、openpyxl、python-docx | 自动化工具 |
+| 11 | [智慧校园图算法平台](./11_算法工程_智慧校园图算法平台/) | 数据结构 / 图算法 | C++17、Dijkstra、Floyd、A*、Kruskal、Prim、CMake | 算法工程 |
+| 12 | [多机器人巡检优化](./12_数学建模_多机器人巡检优化/) | 数学建模 / 路径规划 | Python、NumPy、几何可行域、信息增益、动态决策 | 建模算法 |
+| 13 | [房间布局可视化](./13_交互设计_房间布局可视化/) | 交互设计 / 3D可视化 | HTML、CSS、JavaScript、Canvas、Three.js | 可视化工具 |
 
 ## 作品集能力概览
 
@@ -79,6 +83,8 @@ mindmap
 - 搭建 AKK 配方平台的前后端架构，明确 API、数据契约、页面流程、风险提示和验证建议。
 - 使用 Python 完成统计建模、机器学习、SHAP 解释、图表输出和结果汇总。
 - 使用 PyQt、OpenCV、华为云 ModelArts/API 完成多个视觉和桌面交互项目。
+- 使用 Playwright、openpyxl 与 python-docx 实现授权页面整理和结构化文档导出。
+- 使用 C++ 实现校园图上的最短路、遍历与最小生成树，并提供自动化测试和地图导出。
 
 ## 技术栈
 
@@ -91,6 +97,7 @@ mindmap
 | 桌面应用 | PyQt5、PyQt6、Qt 信号槽、Pillow |
 | 工具平台 | GitHub、VS Code、华为云 CodeArts、华为云 ModelArts、Docker、Excel、Figma、Photoshop |
 | AI 辅助开发 | GPT、DeepSeek、Grok、Codex |
+| 自动化与算法 | Playwright、BeautifulSoup、C++17、CMake、图算法、路径规划 |
 
 ## 证书与语言
 
@@ -108,5 +115,6 @@ mindmap
 - 隐私材料：原始申报书、手机号、邮箱、用户账号文件、数据库 dump
 - 本地环境：`.venv`、`node_modules`、`.next`、`dist`、`build`
 - 密钥信息：云平台 AK/SK、API token、数据库密码均不提交，运行时通过环境变量读取
+- 登录会话：浏览器 `auth.json`、Cookie、课堂账号状态及本地日志均不提交
 
 这个仓库的定位是“展示我的项目能力”，不是临床软件、生产系统或可直接商用产品。

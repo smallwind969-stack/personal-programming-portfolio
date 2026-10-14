@@ -6,7 +6,8 @@ COPY apps/web/package.json ./package.json
 RUN npm install
 
 COPY apps/web ./
+RUN npm run build
 
 EXPOSE 3000
 
-CMD ["sh", "-c", "npm run dev -- -p ${WEB_PORT:-3000}"]
+CMD ["sh", "-c", "npm run start -- -p ${WEB_PORT:-3000}"]

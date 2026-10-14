@@ -1,4 +1,4 @@
-from .llm_client import generate_with_local_qwen
+from .llm_client import generate_with_llm_api
 from .guideline_rules import SAFETY_NOTE, guideline_hint_for_finding
 
 
@@ -13,6 +13,11 @@ def _to_float(value, default=0.0):
 
 def _has_text(value):
     return isinstance(value, str) and value.strip()
+
+
+def _valid_diameter(value):
+    diameter = _to_float(value, default=-1)
+    return diameter if diameter > 0 else None
 
 
 def _risk_from_finding(finding):
@@ -86,8 +91,11 @@ def _rank_findings(findings, clinical_context=None):
             basis.append(f"检测置信度: {detection_prob}")
         if malignancy_prob not in ("", None):
             basis.append(f"恶性概率: {malignancy_prob}")
-        if finding.get("diameter_mm"):
-            basis.append(f"最大径: {finding.get('diameter_mm')} mm")
+        diameter = _valid_diameter(finding.get("diameter_mm"))
+        if diameter is not None:
+            basis.append(f"最大径: {diameter:g} mm")
+        elif finding.get("diameter_mm") not in ("", None):
+            basis.append("最大径数值无效，需重新测量")
         if _has_text(doctor_notes):
             basis.append(f"医生意见: {doctor_notes}")
 
@@ -106,7 +114,7 @@ def _rank_findings(findings, clinical_context=None):
             "y": finding.get("y"),
             "bbox_3d": finding.get("bbox_3d", {}),
             "area": finding.get("area"),
-            "diameter_mm": finding.get("diameter_mm"),
+            "diameter_mm": diameter,
             "detection_prob": detection_prob,
             "malignancy_prob": malignancy_prob,
             "status": finding.get("status", "pending"),
@@ -202,24 +210,81 @@ def _missing_information(ranked, clinical_context):
     return list(dict.fromkeys(missing))
 
 
+def _finding_feature_summary(item):
+    features = item.get("imaging_features") or {}
+    labels = []
+    solid_type = features.get("solid_type")
+    if solid_type:
+        labels.append(f"类型{solid_type}")
+    if features.get("spiculation") in ("可疑", "明确"):
+        labels.append(f"毛刺{features.get('spiculation')}")
+    if features.get("lobulation") in ("可疑", "明确"):
+        labels.append(f"分叶{features.get('lobulation')}")
+    if features.get("pleural_indentation") in ("可疑", "明确"):
+        labels.append(f"胸膜牵拉{features.get('pleural_indentation')}")
+    if item.get("diameter_mm"):
+        labels.append(f"最大径{item.get('diameter_mm'):g}mm")
+    if item.get("malignancy_prob") not in ("", None):
+        labels.append(f"恶性概率{item.get('malignancy_prob')}")
+    elif item.get("detection_prob") not in ("", None):
+        labels.append(f"检测置信度{item.get('detection_prob')}")
+    return "，".join(labels) if labels else "关键影像征象/最大径未补齐"
+
+
+def _prompt_case_digest(patient_id, ranked, overall_risk, clinical_context):
+    stats = _statistics(ranked)
+    missing = _missing_information(ranked, clinical_context)[:6]
+    priority = []
+    for idx, item in enumerate(ranked[:5], start=1):
+        source = "医生新增/确认" if item.get("source") == "doctor" else "AI候选已复核"
+        priority.append(
+            f"{idx}. {source}，层面{item.get('slice_idx', 'N/A')}，"
+            f"{item.get('risk_label', '待评估')}，{_finding_feature_summary(item)}"
+        )
+    if not priority:
+        priority.append("当前无有效结节进入复核列表。")
+
+    return {
+        "patient_id": patient_id,
+        "overall_risk": _risk_label(overall_risk),
+        "statistics": {
+            "total": stats["total_nodules"],
+            "high": stats["high_count"],
+            "medium": stats["medium_count"],
+            "low": stats["low_count"],
+            "doctor_added": stats["doctor_added_count"],
+            "doctor_confirmed": stats["doctor_confirmed_count"],
+        },
+        "clinical_context": clinical_context,
+        "priority_findings": priority,
+        "missing_information": missing,
+    }
+
+
 def _build_prompt(patient_id, ranked, overall_risk, clinical_context):
+    digest = _prompt_case_digest(patient_id, ranked, overall_risk, clinical_context)
     return f"""
-你是肺结节CT辅助诊断系统中的随访建议助手。请根据结构化病例上下文生成简洁、谨慎、面向医生复核的中文说明。
+你是肺结节 CT 医生复核工作台里的 Agent。请输出“给医生看的复核建议”，不是病例字段转述。
+
+输入摘要：
+{digest}
+
 硬性要求：
-1. 不得使用“确诊”“一定是癌”“无需就医”等绝对化表达。
-2. 医生复核、医生新增结节和医生补充病史的优先级高于模型原始判断。
-3. 如果医生没有补充毛刺、分叶、胸膜牵拉、结节类型、最大径等信息，不要自行编造。
-4. 建议必须是辅助参考，最终由医生结合临床资料决定。
+1. 必须用中文，控制在 350-550 字。
+2. 不要逐条罗列所有结节，不要输出内部 nodule_id，不要复述坐标清单。
+3. 只挑 2-4 个最值得优先复核的影像问题，说明为什么优先。
+4. 负数、0 或缺失的最大径必须视为“测量无效/待补测”，不能当作真实直径。
+5. 不要生成“确诊肺癌”“必须手术”等诊断或治疗结论，只能给辅助复核路径。
+6. 不要重复输出“仍需补充的信息”清单，系统界面会单独显示。
+7. 如果临床信息缺失，要说“当前无法形成最终随访间隔”，但要给出下一步工作顺序。
 
-病例ID：{patient_id}
-总体风险：{_risk_label(overall_risk)}
-临床信息：{clinical_context}
-复核后结节列表：{ranked}
-
-请输出三段：
-- 病例概述
-- 随访建议
-- 仍需补充的信息
+请严格按以下三段输出：
+### 复核判断
+用 2-3 句话概括当前风险和主要限制。
+### 优先处理
+列 2-4 条医生下一步最应该先看的内容。
+### 建议路径
+给出短期工作流建议：薄层 CT/MPR 复核、统一测量、去重合并、补临床背景、再套用指南。
 """.strip()
 
 
@@ -236,20 +301,24 @@ def build_followup_recommendation(patient_id, findings=None, case_context=None):
             "结节最大径、类型和既往CT对比",
         ]
         stats = _statistics([])
+        pending_count = sum(
+            1 for item in case_context.get("model_findings", [])
+            if item.get("status") != "dismissed" and not item.get("doctor_confirmed")
+        )
         return {
             "patient_id": patient_id,
-            "case_summary": f"病例 {patient_id} 当前最终上下文中未发现需要纳入随访建议的结节。",
-            "risk_level": "low",
-            "risk_label": "低风险",
+            "case_summary": f"病例 {patient_id} 尚无医生确认的结节；{pending_count} 个模型候选待复核。",
+            "risk_level": "not_assessed",
+            "risk_label": "待复核",
             "statistics": stats,
             "risk_sections": {"high": [], "medium": [], "low": []},
-            "followup_suggestion": "若临床仍有疑问，建议医生结合原始CT、症状和既往影像进行复核。",
+            "followup_suggestion": "请医生先复核模型候选和原始影像，再决定是否形成随访建议。",
             "recommendations": [],
             "clinical_context": clinical_context,
             "missing_information": list(dict.fromkeys(missing)),
-            "presentation_highlight": "系统已具备AI检测-医生复核-临床补充-Agent建议的闭环框架，当前病例需先补充有效结节或人工复核结果。",
-            "llm_summary": "",
-            "llm_metadata": {"available": False, "reason": "no_findings"},
+            "presentation_highlight": "当前病例尚未完成医生复核，不能依据模型候选给出风险结论。",
+            "llm_summary": "尚无医生确认的结节，暂不生成大模型随访建议。",
+            "llm_metadata": {"available": False, "reason": "review_required"},
             "safety_note": SAFETY_NOTE,
         }
 
@@ -265,7 +334,7 @@ def build_followup_recommendation(patient_id, findings=None, case_context=None):
         followup_suggestion = "整体风险较低，但仍建议以医生确认后的结节列表为准，结合患者危险因素决定是否常规随访。"
 
     prompt = _build_prompt(patient_id, ranked, overall_risk, clinical_context)
-    llm_summary, llm_metadata = generate_with_local_qwen(prompt)
+    llm_summary, llm_metadata = generate_with_llm_api(prompt)
 
     return {
         "patient_id": patient_id,

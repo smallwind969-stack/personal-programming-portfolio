@@ -1,0 +1,47 @@
+{
+  "scenes": 3,
+  "start_seed": 29100,
+  "route_budget_s": 0.03,
+  "modes": {
+    "q4_routefirst": {
+      "full_clear_runs": 3,
+      "total_sources": 48,
+      "total_cleared": 48,
+      "mean_total_s": 4884.657311871619,
+      "mean_oracle_lower_bound_s": 1802.6373915890515,
+      "mean_oracle_regret_s": 3082.0199202825675,
+      "mean_excess_move_s": 1773.3532536159005,
+      "mean_measurement_regret_s": 1095.0,
+      "mean_per_source_s": 305.29108199197617,
+      "mean_move_s": 3495.990645204952,
+      "mean_measures": 219,
+      "mean_search_measures": 161,
+      "mean_localization_measures": 58,
+      "mean_no_signal_measures": 152,
+      "mean_switches": 188.66666666666666,
+      "failed_clears": 25,
+      "max_real_s": 35.70976259998861,
+      "errors": []
+    },
+    "q4_unified": {
+      "full_clear_runs": 3,
+      "total_sources": 48,
+      "total_cleared": 48,
+      "mean_total_s": 4909.274836370932,
+      "mean_oracle_lower_bound_s": 1802.6373915890515,
+      "mean_oracle_regret_s": 3106.63744478188,
+      "mean_excess_move_s": 1697.3041114485463,
+      "mean_measurement_regret_s": 1050.0,
+      "mean_per_source_s": 306.8296772731832,
+      "mean_move_s": 3419.941503037598,
+      "mean_measures": 210,
+      "mean_search_measures": 162.66666666666666,
+      "mean_localization_measures": 47.333333333333336,
+      "mean_no_signal_measures": 152.66666666666666,
+      "mean_switches": 195.33333333333334,
+      "failed_clears": 164,
+      "max_real_s": 64.84194250000292,
+      "errors": []
+    }
+  }
+}

@@ -1,0 +1,3 @@
+﻿seed,layout,reception,error_mode,mode,sources,cleared,move_distance_m,move_s,measures,measure_s,switches,switch_s,clear_s,failed_clears,total_s,excess_move_s,measurement_regret_s,switch_regret_s,clear_regret_s,total_regret_s,oracle_lower_bound_s,oracle_route_gap,real_s,error
+28630,uniform,1000,extreme,q4_routefirst,15,15,25647.000069059657,5129.400013811932,332,1660,291,291,87,4,7167.400013811932,3081.834521907268,1660.0,291.0,12.0,5044.834521907268,2122.5654919046638,0.0,28.956782500012196,
+28630,uniform,1000,extreme,q4_unified,15,15,24945.38812803568,4989.077625607136,307,1535,283,283,78,1,6885.077625607136,2941.512133702472,1535.0,283.0,3.0,4762.512133702472,2122.5654919046638,0.0,40.905655900001875,

@@ -1,0 +1,41 @@
+{
+  "scenes": 6,
+  "start_seed": 28610,
+  "route_budget_s": 0.05,
+  "modes": {
+    "q4_belief": {
+      "full_clear_runs": 6,
+      "total_sources": 75,
+      "total_cleared": 75,
+      "mean_total_s": 7870.3865306682765,
+      "mean_oracle_lower_bound_s": 1625.4053538895134,
+      "mean_oracle_regret_s": 6244.981176778762,
+      "mean_excess_move_s": 4341.647843445429,
+      "mean_measurement_regret_s": 1600.0,
+      "mean_per_source_s": 634.1277807344186,
+      "mean_move_s": 5904.5531973349425,
+      "mean_measures": 320,
+      "mean_switches": 280.3333333333333,
+      "failed_clears": 46,
+      "max_real_s": 53.50996569999552,
+      "errors": []
+    },
+    "q4_routefirst": {
+      "full_clear_runs": 6,
+      "total_sources": 75,
+      "total_cleared": 75,
+      "mean_total_s": 6544.343409903201,
+      "mean_oracle_lower_bound_s": 1625.4053538895134,
+      "mean_oracle_regret_s": 4918.938056013688,
+      "mean_excess_move_s": 3092.6047226803544,
+      "mean_measurement_regret_s": 1536.6666666666667,
+      "mean_per_source_s": 528.4748955343667,
+      "mean_move_s": 4655.510076569868,
+      "mean_measures": 307.3333333333333,
+      "mean_switches": 268.1666666666667,
+      "failed_clears": 43,
+      "max_real_s": 41.75375419999182,
+      "errors": []
+    }
+  }
+}

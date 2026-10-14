@@ -1,0 +1,33 @@
+{
+  "scenes": 6,
+  "start_seed": 28100,
+  "route_budget_s": 0.01,
+  "modes": {
+    "q4": {
+      "full_clear_runs": 6,
+      "total_sources": 86,
+      "total_cleared": 86,
+      "mean_total_s": 8696.047900800811,
+      "mean_per_source_s": 614.3289410380065,
+      "mean_move_s": 6822.547900800811,
+      "mean_measures": 304.1666666666667,
+      "mean_switches": 277.5,
+      "failed_clears": 7,
+      "max_real_s": 2.6037556000082986,
+      "errors": []
+    },
+    "q4_belief": {
+      "full_clear_runs": 6,
+      "total_sources": 86,
+      "total_cleared": 86,
+      "mean_total_s": 7819.882906356228,
+      "mean_per_source_s": 556.5524680754714,
+      "mean_move_s": 5823.882906356228,
+      "mean_measures": 327.6666666666667,
+      "mean_switches": 277.5,
+      "failed_clears": 17,
+      "max_real_s": 14.626749799994286,
+      "errors": []
+    }
+  }
+}

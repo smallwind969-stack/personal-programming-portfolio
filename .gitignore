@@ -46,6 +46,16 @@ processed/
 users.txt
 .env
 .env.*
+auth.json
+**/auth.json
+*.jsonl
+
+# Local agent metadata
+.codex-finalizer/
+.superpowers/
+**/docs/superpowers/
+.agents/
+.codeartsdoer/
 
 # Generated media and office submissions
 *.mp4
@@ -62,6 +72,8 @@ users.txt
 *.whl
 *.ipynb
 *.sav
+tmp/
+.runtime/
 
 # Local raw/sensitive project folders kept out of portfolio commits
 01_重点项目_肺结节智能检测与临床辅助决策系统/张东晓/transformed/

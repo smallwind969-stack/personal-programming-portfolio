@@ -1,0 +1,20 @@
+{
+  "chain": "original VNet + ResNet weights, thresholds and sliding-window positions",
+  "subset": 7,
+  "scans_selected": 1,
+  "device": "cuda",
+  "prob_threshold": 0.15,
+  "resnet_threshold": 0.4,
+  "patch_size": 64,
+  "stride": 32,
+  "return_all_candidates": true,
+  "vnet_batch_size": 4,
+  "vnet_sha256": "e24f0d6f5135641d8338bebf97b45860858de4f062c471526517749bb419c9fd",
+  "resnet_sha256": "e7e069d4498544fbb4dd530f5dd33f315500d4044305151d84136e8b094a4953",
+  "known_limitations": [
+    "Legacy sliding windows do not cover trailing image borders.",
+    "Candidate generation is fixed at VNet threshold 0.15.",
+    "ResNet score is not a calibrated nodule probability.",
+    "Training-data provenance of old weights is not established."
+  ]
+}

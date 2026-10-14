@@ -1,10 +1,39 @@
 import numpy as np
+import importlib
 import random
 import torch
 import torch.nn as nn
 
 from models.common import Conv, DWConv
 from utils.google_utils import attempt_download
+
+
+_ALLOWED_CHECKPOINT_GLOBALS = {
+    'models.common.Concat', 'models.common.Conv', 'models.common.ImplicitA',
+    'models.common.ImplicitM', 'models.common.MP', 'models.common.RepConv',
+    'models.common.SPPCSPC', 'models.yolo.Detect', 'models.yolo.IDetect',
+    'models.yolo.Model', 'numpy.core.multiarray._reconstruct', 'numpy.ndarray',
+    'numpy.dtype', 'torch.nn.modules.activation.SiLU',
+    'torch.nn.modules.batchnorm.BatchNorm2d', 'torch.nn.modules.container.ModuleList',
+    'torch.nn.modules.container.Sequential', 'torch.nn.modules.conv.Conv2d',
+    'torch.nn.modules.pooling.MaxPool2d', 'torch.nn.modules.upsampling.Upsample',
+}
+
+
+def _load_checkpoint(path, map_location):
+    if not hasattr(torch.serialization, 'get_unsafe_globals_in_checkpoint'):
+        return torch.load(path, map_location=map_location)
+    checkpoint_globals = set(torch.serialization.get_unsafe_globals_in_checkpoint(path))
+    unknown = checkpoint_globals - _ALLOWED_CHECKPOINT_GLOBALS
+    if unknown:
+        raise ValueError(f'Checkpoint contains unapproved globals: {sorted(unknown)}')
+    allowed = []
+    for name in checkpoint_globals:
+        module_name, attribute = name.rsplit('.', 1)
+        allowed.append(getattr(importlib.import_module(module_name), attribute))
+    allowed.extend([type(np.dtype(np.float32)), type(np.dtype(np.float64))])
+    with torch.serialization.safe_globals(allowed):
+        return torch.load(path, map_location=map_location, weights_only=True)
 
 
 class CrossConv(nn.Module):
@@ -249,7 +278,7 @@ def attempt_load(weights, map_location=None):
     model = Ensemble()
     for w in weights if isinstance(weights, list) else [weights]:
         attempt_download(w)
-        ckpt = torch.load(w, map_location=map_location)  # load
+        ckpt = _load_checkpoint(w, map_location)
         model.append(ckpt['ema' if ckpt.get('ema') else 'model'].float().fuse().eval())  # FP32 model
     
     # Compatibility updates

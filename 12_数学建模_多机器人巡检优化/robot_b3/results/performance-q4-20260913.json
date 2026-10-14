@@ -1,0 +1,98 @@
+{
+  "scenes": 30,
+  "start_seed": 91300,
+  "route_budget_s": 0.1,
+  "execution_note": "First 9 runs serial; remaining runs with 4 local processes. Wall times are reported separately.",
+  "modes": {
+    "q4_certified21": {
+      "full_clear_runs": 30,
+      "total_sources": 391,
+      "total_cleared": 391,
+      "failed_clears": 195,
+      "errors": [],
+      "mean_total_s": 6307.710915952992,
+      "mean_move_s": 4637.010915952992,
+      "mean_measures": 270.06666666666666,
+      "mean_switches": 235.7,
+      "timing": {
+        "serial": {
+          "runs": 5,
+          "mean_real_s": 52.75584692000412,
+          "max_real_s": 73.7171842000098
+        },
+        "parallel_4": {
+          "runs": 25,
+          "mean_real_s": 52.18252207600279,
+          "max_real_s": 101.99650490001659
+        }
+      }
+    },
+    "q4_routefirst": {
+      "full_clear_runs": 30,
+      "total_sources": 391,
+      "total_cleared": 391,
+      "failed_clears": 148,
+      "errors": [],
+      "mean_total_s": 6265.7551007685615,
+      "mean_move_s": 4401.721767435229,
+      "mean_measures": 303.53333333333336,
+      "mean_switches": 266.4,
+      "timing": {
+        "serial": {
+          "runs": 4,
+          "mean_real_s": 43.894695725008205,
+          "max_real_s": 62.431588900013594
+        },
+        "parallel_4": {
+          "runs": 26,
+          "mean_real_s": 41.30404690384547,
+          "max_real_s": 69.30841590001364
+        }
+      }
+    }
+  },
+  "current_minus_baseline": {
+    "wins": 18,
+    "ties": 0,
+    "losses": 12,
+    "mean_delta_s": 41.955815184429746
+  },
+  "by_layout": {
+    "uniform": {
+      "q4_certified21": {
+        "runs": 10,
+        "full_clear_runs": 10,
+        "mean_total_s": 6521.663652134769
+      },
+      "q4_routefirst": {
+        "runs": 10,
+        "full_clear_runs": 10,
+        "mean_total_s": 6600.525006706197
+      }
+    },
+    "clustered": {
+      "q4_certified21": {
+        "runs": 10,
+        "full_clear_runs": 10,
+        "mean_total_s": 5965.680286959545
+      },
+      "q4_routefirst": {
+        "runs": 10,
+        "full_clear_runs": 10,
+        "mean_total_s": 5979.55182444189
+      }
+    },
+    "boundary": {
+      "q4_certified21": {
+        "runs": 10,
+        "full_clear_runs": 10,
+        "mean_total_s": 6435.788808764662
+      },
+      "q4_routefirst": {
+        "runs": 10,
+        "full_clear_runs": 10,
+        "mean_total_s": 6217.188471157599
+      }
+    }
+  }
+}

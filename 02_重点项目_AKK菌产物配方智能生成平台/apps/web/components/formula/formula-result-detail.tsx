@@ -18,27 +18,27 @@ export function FormulaResultDetail({
   const reviewLabel = highRiskCount > 0 ? "建议复测后再推进" : candidate.confidenceScore >= 0.7 ? "可进入下一轮小试" : "待补充验证";
 
   return (
-    <div className="space-y-4 text-[13px]">
+    <div className="space-y-4 text-sm">
       <section className="rounded-lg border border-emerald-100 bg-white shadow-sm">
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-emerald-100 px-5 py-3">
           <div className="flex flex-wrap items-center gap-2">
-            <ButtonLink href="/" variant="secondary">返回设计台</ButtonLink>
+            <ButtonLink href="/formula/new" variant="secondary">返回生成页</ButtonLink>
             <ButtonLink href="/formula/results" variant="secondary">查看方案库</ButtonLink>
           </div>
           <div className="flex flex-wrap gap-2">
             <Badge tone={highRiskCount > 0 ? "warning" : "success"}>{reviewLabel}</Badge>
             <Badge tone="success">内部研发建议</Badge>
-            <Badge>Research use only</Badge>
+            <Badge>不可直接生产</Badge>
           </div>
         </div>
 
         <div className="grid gap-5 px-5 py-4 xl:grid-cols-[1fr_380px]">
           <div>
-            <div className="text-xs font-medium text-emerald-700">AKK 商品方案建议书</div>
+            <p className="text-xs font-medium text-emerald-700">AKK 产品方案建议书</p>
             <h1 className="mt-2 text-2xl font-semibold text-slate-950">{candidate.candidateName}</h1>
             <p className="mt-2 max-w-4xl leading-6 text-muted-foreground">
-              面向下游品牌的商品概念、AKK 原料组合、知识库引用、预测风险和实验验证计划。
-              当前结果只作为打样和研发沟通起点，不作为可直接上市的最终食品配方。
+              面向内部研发的小试建议，包含 AKK 产物组合、知识库引用、风险预测和实验验证计划。
+              当前结果不能作为直接上市配方，也不能作为真实生产指令。
             </p>
             <div className="mt-3 rounded-lg border border-emerald-100 bg-emerald-50 px-3 py-2 text-xs leading-5 text-emerald-900">
               审核建议：{reviewLabel}。请结合实验平台中的稳定性、感官、成本和关键标志物数据进行下一轮判断。
@@ -46,7 +46,7 @@ export function FormulaResultDetail({
           </div>
 
           <div className="grid grid-cols-3 gap-2">
-            <SummaryMetric label="原料数" value={`${candidate.composition.length}`} />
+            <SummaryMetric label="对象数" value={`${candidate.composition.length}`} />
             <SummaryMetric label="高风险" value={`${highRiskCount}`} tone={highRiskCount > 0 ? "warning" : "success"} />
             <SummaryMetric label="必测项" value={`${requiredMetricCount}`} />
           </div>
@@ -78,7 +78,7 @@ export function FormulaResultDetail({
             <div>
               <CardTitle>方案判断</CardTitle>
               <p className="mt-2 leading-6 text-muted-foreground">
-                {candidate.predictions[0]?.explanation ?? "当前 AKK 原料组合适合作为商品概念打样起点。"}
+                {candidate.predictions[0]?.explanation ?? "当前组合适合作为内部小试起点。"}
               </p>
             </div>
             <Badge tone="success">置信度 {(candidate.confidenceScore * 100).toFixed(0)}%</Badge>
@@ -98,7 +98,7 @@ export function FormulaResultDetail({
             <div className="text-xs font-semibold text-emerald-800">产品优势总结</div>
             <ul className="mt-2 space-y-1.5 leading-6 text-slate-700">
               {candidate.productAdvantages.slice(0, 4).map((advantage) => (
-                <li key={advantage}>· {advantage}</li>
+                <li key={advantage}>- {advantage}</li>
               ))}
             </ul>
           </div>
@@ -118,10 +118,11 @@ export function FormulaResultDetail({
                       <div className="font-semibold text-slate-950">{ingredient.productName}</div>
                       <Badge>{ingredient.ratioPercent}%</Badge>
                     </div>
-                    <p className="mt-2 leading-6 text-slate-700">{buildRatioReason(ingredient.ratioPercent)}</p>
+                    <p className="mt-2 leading-6 text-slate-700">{ingredient.role}</p>
+                    <p className="mt-1 leading-6 text-muted-foreground">{buildRatioReason(ingredient.ratioPercent)}</p>
                     {product ? (
                       <div className="mt-2 text-xs text-slate-600">
-                        原料风险：{formatRisk(product.riskLevel)}；证据等级：{product.evidenceLevel}
+                        风险：{formatRisk(product.riskLevel)}；证据等级：{product.evidenceLevel}
                       </div>
                     ) : null}
                   </div>
@@ -146,7 +147,7 @@ export function FormulaResultDetail({
                     </div>
                   ) : null}
                   <div className="mt-2 text-xs text-muted-foreground">
-                    检索得分：{reference.retrievalScore?.toFixed(1) ?? "-"}。引用用途：解释 AKK 原料适配性、安全边界或食品基质风险。
+                    检索得分：{reference.retrievalScore?.toFixed(1) ?? "-"}。引用用途：解释 AKK 产物适配性、安全边界或食品基质风险。
                   </div>
                 </div>
               ))}
@@ -226,7 +227,7 @@ export function FormulaResultDetail({
       <Card>
         <div className="flex flex-wrap items-center justify-between gap-3">
           <CardTitle>下一步动作</CardTitle>
-          <ButtonLink href="/" variant="primary">继续设计新方案</ButtonLink>
+          <ButtonLink href="/formula/new" variant="primary">继续设计新方案</ButtonLink>
         </div>
         <div className="mt-3 grid gap-3 md:grid-cols-2">
           <CompactList title="打样动作" items={candidate.experimentSuggestions.slice(0, 4)} />
@@ -242,6 +243,7 @@ const donutColors = [
   { dot: "bg-cyan-600", ring: "#0891b2" },
   { dot: "bg-amber-500", ring: "#f59e0b" },
   { dot: "bg-slate-500", ring: "#64748b" },
+  { dot: "bg-purple-500", ring: "#8b5cf6" },
 ];
 
 function FormulaDonut({ composition }: { composition: { productName: string; ratioPercent: number }[] }) {
@@ -262,7 +264,7 @@ function FormulaDonut({ composition }: { composition: { productName: string; rat
       <div className="grid h-24 w-24 place-items-center rounded-full bg-white text-center shadow-inner">
         <div>
           <div className="text-xl font-semibold text-slate-950">{total.toFixed(0)}%</div>
-          <div className="text-xs text-muted-foreground">AKK 配比</div>
+          <div className="text-xs text-muted-foreground">研发对象</div>
         </div>
       </div>
     </div>
@@ -289,7 +291,7 @@ function CompactList({ title, items }: { title: string; items: string[] }) {
       <div className="font-semibold text-slate-950">{title}</div>
       <ul className="mt-2 space-y-1.5 leading-6 text-slate-700">
         {items.map((item) => (
-          <li key={item}>· {item}</li>
+          <li key={item}>- {item}</li>
         ))}
       </ul>
     </div>
@@ -298,12 +300,12 @@ function CompactList({ title, items }: { title: string; items: string[] }) {
 
 function buildRatioReason(ratioPercent: number) {
   if (ratioPercent >= 50) {
-    return "作为主导 AKK 原料使用，用于形成商品核心卖点；该比例适合作为首轮小试起点，后续根据感官和稳定性调整。";
+    return "作为主导研发对象使用，适合形成核心卖点；该比例仅作为首轮小试起点，后续应根据感官和稳定性调整。";
   }
   if (ratioPercent >= 20) {
-    return "作为功能强化组分使用，用于补足主原料在口感、稳定性或功能概念上的表达，适合做 A/B 梯度比较。";
+    return "作为功能强化或结构支撑对象使用，适合做 A/B 梯度比较。";
   }
-  return "作为辅助修饰组分使用，重点观察其对质构、复水、风味或成本的影响，避免过量带来感官和稳定性风险。";
+  return "作为辅助修饰对象使用，重点观察其对质构、复水、风味、释放或成本的影响。";
 }
 
 function totalRatio(composition: { ratioPercent: number }[]) {

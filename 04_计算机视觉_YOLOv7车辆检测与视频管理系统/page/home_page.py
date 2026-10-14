@@ -10,18 +10,20 @@ import time
 from datetime import datetime
 import mysql.connector
 import numpy as np
+import torch
 from mysql.connector import Error
 from mysql.connector.pooling import MySQLConnectionPool
 from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QPushButton,
                              QLabel, QSpacerItem, QSizePolicy, QMessageBox,
                              QListWidget, QListWidgetItem, QFrame, QGridLayout,
                              QScrollArea, QDialog, QStackedWidget, QInputDialog, QLineEdit, QFileDialog)
-from PyQt5.QtCore import Qt, QSize, QTimer, pyqtSignal, QUrl, QPointF, QThread
+from PyQt5.QtCore import Qt, QSize, QTimer, pyqtSignal, QUrl, QPointF
 from PyQt5.QtGui import QPixmap, QIcon, QFont, QImage, QPainter, QPen, QTransform, QPainterPath, QColor
 
 from driving_detect import driving_detect
 
 from vehicle_detector import VehicleDetector
+from video_detection import DetectionThread, should_display_detection_result
 
 
 # ====================== 工具类 ======================
@@ -1416,26 +1418,6 @@ class VideoListPage(QWidget):
                 widget.setParent(None)
         super().closeEvent(event)
 
-class DetectionThread(QThread):
-    """车辆检测异步线程"""
-    detection_complete = pyqtSignal(list, list)  # 发送检测结果的信号
-    error_occurred = pyqtSignal(str)  # 发送错误信息的信号
-
-    def __init__(self, detector, frame):
-        super().__init__()
-        self.detector = detector  # 车辆检测器实例
-        self.frame = frame  # 待检测的视频帧
-
-    def run(self):
-        """线程执行函数：执行检测并发送结果"""
-        try:
-            # 执行核心检测逻辑
-            labels, boxes = self.detector.detect(self.frame)
-            self.detection_complete.emit(labels, boxes)
-        except Exception as e:
-            # 捕获检测过程中的错误并发送
-            self.error_occurred.emit(f"检测方法出错: {str(e)}")
-
 class HomePage(QWidget):
     """主页面"""
     switch_to_page = pyqtSignal(str)
@@ -1446,7 +1428,7 @@ class HomePage(QWidget):
         self.db_config = {
             'host': 'localhost',
             'user': 'root',
-            'password': os.getenv('MYSQL_PASSWORD', ''),
+            'password': '12345678',
             'database': 'ai250317',
             'port': 3306,
             'charset': 'utf8mb4'
@@ -1460,10 +1442,10 @@ class HomePage(QWidget):
 
         # 异步检测相关属性
         self.detection_thread = None  # 检测线程实例
-        self.last_labels = []  # 上一次检测的标签
-        self.last_boxes = []  # 上一次检测的边界框
-        self.detection_counter = 0  # 检测频率计数器
-        self.detection_frequency = 1  # 每3帧检测一次（可调整）
+        self.drive_video_session = 0
+        self.drive_video_frame_id = 0
+        self.last_presented_vehicle_frame = -1
+        self.detection_pending = False
 
 
 
@@ -1471,12 +1453,17 @@ class HomePage(QWidget):
         try:
             self.vehicle_detector = VehicleDetector(
                 weights='yolov7.pt',  # 确保路径正确
-                device='cpu'
+                device='0' if torch.cuda.is_available() else 'cpu',
+                trace=False
             )
             # 验证模型是否加载成功（假设VehicleDetector有验证方法）
             if not hasattr(self.vehicle_detector, 'model') or self.vehicle_detector.model is None:
                 raise Exception("模型未成功加载")
             print("车辆检测器初始化成功")
+            self.detection_thread = DetectionThread(self.vehicle_detector)
+            self.detection_thread.detection_complete.connect(self.update_detection_results)
+            self.detection_thread.error_occurred.connect(self.handle_detection_error)
+            self.detection_thread.start()
         except Exception as e:
             QMessageBox.critical(self, "初始化失败", f"车辆检测器加载失败：\n{str(e)}")
             self.vehicle_detector = None  # 标记为无效
@@ -1636,11 +1623,20 @@ class HomePage(QWidget):
         if self.is_recording:
             self.stop_detection()
 
+        if self.drive_video_timer:
+            self.drive_video_timer.stop()
+        if self.drive_video_cap:
+            self.drive_video_cap.release()
+
         # 打开视频文件
         self.drive_video_cap = cv2.VideoCapture(str(video_path))
         if not self.drive_video_cap.isOpened():
             QMessageBox.warning(self, "错误", "无法打开视频文件")
             return
+
+        self.drive_video_session += 1
+        self.drive_video_frame_id = 0
+        self.last_presented_vehicle_frame = -1
 
         # 启动视频播放定时器，绑定到车辆检测处理方法
         self.drive_video_timer = QTimer(self)
@@ -1671,39 +1667,16 @@ class HomePage(QWidget):
             # 检查帧是否有效
             if frame is None or frame.size == 0:
                 raise Exception("读取到空帧")
+            self.drive_video_frame_id += 1
 
-            # 显示用的帧（始终使用当前帧，避免画面冻结）
-            display_frame = frame.copy()
-
-            # 检测频率控制：每N帧执行一次检测
-            self.detection_counter = (self.detection_counter + 1) % self.detection_frequency
-
-            # 仅在计数器为0且无活跃线程时启动检测
-            if self.detection_counter == 0 and (not self.detection_thread or not self.detection_thread.isRunning()):
-                # 创建新的检测线程
-                self.detection_thread = DetectionThread(self.vehicle_detector, frame)
-                # 绑定信号处理函数
-                self.detection_thread.detection_complete.connect(self.update_detection_results)
-                self.detection_thread.error_occurred.connect(self.handle_detection_error)
-                self.detection_thread.start()
-
-            # 绘制上一次的检测结果（保证画面流畅）
-            self.draw_detection_results(display_frame)
-
-            # 转换为Qt图像格式并显示
-            try:
-                frame_rgb = cv2.cvtColor(display_frame, cv2.COLOR_BGR2RGB)
-                h, w, ch = frame_rgb.shape
-                q_img = QImage(frame_rgb.data, w, h, ch * w, QImage.Format_RGB888)
-                if q_img.isNull():
-                    raise Exception("转换为QImage失败")
-                self.car_video_label.setPixmap(
-                    QPixmap.fromImage(q_img).scaled(600, 300, Qt.KeepAspectRatio, Qt.SmoothTransformation))
-            except Exception as e:
-                raise Exception(f"图像格式转换失败: {str(e)}")
+            if not self.detection_pending:
+                self.detection_pending = self.detection_thread.submit(
+                    frame, self.drive_video_session, self.drive_video_frame_id
+                )
 
         except Exception as e:
             # 捕获所有异常，显示错误并停止视频播放
+            self.drive_video_session += 1
             error_msg = f"视频处理失败: {str(e)}"
             print(error_msg)
             QMessageBox.critical(self, "处理错误", error_msg)
@@ -1716,26 +1689,38 @@ class HomePage(QWidget):
             self.car_video_label.setPixmap(
                 QPixmap("images/car.png").scaled(600, 300, Qt.KeepAspectRatio, Qt.SmoothTransformation))
 
-    def update_detection_results(self, labels, boxes):
-        """更新检测结果（由检测线程触发）"""
-        self.last_labels = labels
-        self.last_boxes = boxes
+    def update_detection_results(self, session_id, frame_id, frame, labels, boxes):
+        """将检测结果画在产生它的原始视频帧上。"""
+        self.detection_pending = False
+        if not should_display_detection_result(
+            self.drive_video_session, session_id, self.last_presented_vehicle_frame, frame_id
+        ):
+            return
+        self.last_presented_vehicle_frame = frame_id
+        self.draw_detection_results(frame, labels, boxes)
+        frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        height, width, channels = frame_rgb.shape
+        image = QImage(frame_rgb.data, width, height, channels * width, QImage.Format_RGB888)
+        self.car_video_label.setPixmap(
+            QPixmap.fromImage(image).scaled(600, 300, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        )
 
     def handle_detection_error(self, error_msg):
         """处理检测线程中的错误（由检测线程触发）"""
+        self.detection_pending = False
         print(f"异步检测错误: {error_msg}")
         # 可根据需要显示错误提示，避免频繁弹窗干扰
         # QMessageBox.warning(self, "检测错误", error_msg)
 
-    def draw_detection_results(self, frame):
+    def draw_detection_results(self, frame, labels, boxes):
         """绘制检测结果（独立提取为函数）"""
-        if self.last_labels and self.last_boxes and len(self.last_labels) == len(self.last_boxes):
-            for i, box in enumerate(self.last_boxes):
+        if labels and boxes and len(labels) == len(boxes):
+            for i, box in enumerate(boxes):
                 # 检查box格式是否正确（必须是4个整数坐标）
                 if len(box) != 4:
                     continue
                 try:
-                    cls_name = self.last_labels[i].split()[0]
+                    cls_name = labels[i].split()[0]
                     # 避免索引越界（names列表中可能没有cls_name）
                     if cls_name not in self.vehicle_detector.names:
                         continue
@@ -1749,7 +1734,7 @@ class HomePage(QWidget):
                     x2 = max(0, min(x2, frame.shape[1]))
                     y2 = max(0, min(y2, frame.shape[0]))
                     cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
-                    cv2.putText(frame, self.last_labels[i], (x1, y1 - 10),
+                    cv2.putText(frame, labels[i], (x1, y1 - 10),
                                 cv2.FONT_HERSHEY_SIMPLEX, 0.7, color, 2)
                 except Exception as e:
                     print(f"绘制第{i}个检测结果失败: {e}")
@@ -2170,6 +2155,13 @@ class HomePage(QWidget):
 
     def closeEvent(self, event):
         """关闭窗口时释放资源"""
+        if self.drive_video_timer:
+            self.drive_video_timer.stop()
+        if self.drive_video_cap:
+            self.drive_video_cap.release()
+        if self.detection_thread:
+            self.detection_thread.stop()
+            self.detection_thread.wait()
         self.stop_detection()
         super().closeEvent(event)
 

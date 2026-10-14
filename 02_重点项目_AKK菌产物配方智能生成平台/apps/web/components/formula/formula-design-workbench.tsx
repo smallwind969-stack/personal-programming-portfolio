@@ -1,42 +1,48 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
 import { generateFormula } from "@/lib/api";
-import { formatCategory, formatRisk, getIngredientProfile } from "@/lib/display";
+import { formatApplication, formatCategory, formatRisk, getProductRole } from "@/lib/display";
 import { AkkProduct, LlmStatus } from "@/lib/schemas";
 
 type RatioMap = Record<string, number>;
 type StageKey = "target" | "formula" | "evidence" | "submit";
-type RecommendationPlan = {
+
+type ProductPlan = {
+  name: string;
+  reason: string;
   ids: string[];
   ratios: RatioMap;
   tags: string[];
-  namePrefix: string;
-  reason: string;
 };
 
 const stages: { key: StageKey; label: string; desc: string }[] = [
-  { key: "target", label: "01 目标输入", desc: "商品类型与客户需求" },
-  { key: "formula", label: "02 原料配比", desc: "AKK 产物与比例" },
-  { key: "evidence", label: "03 证据风险", desc: "知识库与验证点" },
-  { key: "submit", label: "04 生成报告", desc: "输出方案建议书" },
+  { key: "target", label: "01 目标产品", desc: "产品形态与客户需求" },
+  { key: "formula", label: "02 产物组合", desc: "底物、产物与比例调整" },
+  { key: "evidence", label: "03 证据风险", desc: "模型解释与验证指标" },
+  { key: "submit", label: "04 生成建议书", desc: "输出内部研发方案" },
 ];
 
-const targetOptions = ["低糖", "肠道健康", "后生元概念", "清洁标签", "轻负担", "饱腹感", "即饮化", "儿童友好", "银发营养"];
-const chartColors = ["#0d6b61", "#f2b84b", "#3d6fb6", "#8a63d2", "#d96c6c"];
+const targetOptions = ["低糖", "肠道健康", "后生元概念", "清洁标签", "轻负担", "饱腹感", "即饮化", "儿童友好", "银发营养", "海藻基质", "包埋保护", "低腥味"];
 
 const quickExamples = [
-  "低糖肠道健康酸奶，面向女性白领，口感清爽，成本中等",
-  "儿童可食用肠道健康软糖，低糖、果味、方便携带",
-  "银发人群营养粉，强调肠道舒适、复水快、蛋白和膳食纤维",
-  "运动后即饮功能饮料，清爽低负担，减少沉淀和底味",
-  "体重管理代餐奶昔，饱腹感强，配料表尽量清洁",
+  "低糖肠道健康果冻，面向年轻女性，口感清爽，不要破坏果冻凝胶体系",
+  "功能果冻或爆爆珠，需要突出海藻源包埋和 AKK 后生元概念",
+  "低腥味海藻鱼丸，目标是改善口感并保留红藻多糖发酵潜力",
+  "中试厌氧发酵平台，目标是提高 AKK 有效成分与短链脂肪酸表现",
+  "银发营养粉，强调肠道舒适、复水快、蛋白和膳食纤维",
 ];
+
+const chartColors = ["#0d6b61", "#f2b84b", "#3d6fb6", "#8a63d2", "#d96c6c", "#14b8a6"];
+
+function includesAny(text: string, keywords: string[]) {
+  return keywords.some((keyword) => text.includes(keyword.toLowerCase()));
+}
 
 function normalizeRatios(productIds: string[], ratios: RatioMap) {
   const total = productIds.reduce((sum, id) => sum + (ratios[id] || 0), 0);
@@ -47,167 +53,228 @@ function normalizeRatios(productIds: string[], ratios: RatioMap) {
   }, {});
 }
 
-function findProduct(products: AkkProduct[], category: string, fallbackIndex: number) {
-  return products.find((item) => item.productCategory === category) ?? products[fallbackIndex] ?? products[0];
+function findById(products: AkkProduct[], productId: string) {
+  return products.find((product) => product.productId === productId);
 }
 
-function includesAny(text: string, keywords: string[]) {
-  return keywords.some((keyword) => text.includes(keyword.toLowerCase()));
+function firstAvailable(products: AkkProduct[], productIds: string[]) {
+  return productIds.map((id) => findById(products, id)).filter(Boolean) as AkkProduct[];
+}
+
+function extractTargetProduct(text: string) {
+  return text.split(/[，,。；;]/)[0]?.trim() || text.trim();
 }
 
 function inferTags(text: string) {
   const tags = new Set<string>();
-  if (includesAny(text, ["低糖", "控糖", "无糖", "减糖"])) tags.add("低糖");
-  if (includesAny(text, ["肠", "胃", "akk", "菌", "消化"])) tags.add("肠道健康");
-  if (includesAny(text, ["后生元", "灭活", "postbiotic"])) tags.add("后生元概念");
-  if (includesAny(text, ["清洁", "配料表", "clean label"])) tags.add("清洁标签");
-  if (includesAny(text, ["轻", "低负担"])) tags.add("轻负担");
-  if (includesAny(text, ["饱腹", "代餐", "体重"])) tags.add("饱腹感");
-  if (includesAny(text, ["饮料", "即饮", "水"])) tags.add("即饮化");
-  if (includesAny(text, ["儿童", "孩子", "软糖", "糖果"])) tags.add("儿童友好");
-  if (includesAny(text, ["银发", "老人", "老年"])) tags.add("银发营养");
-  return Array.from(tags).slice(0, 5);
+  const pairs: [string, string[]][] = [
+    ["低糖", ["低糖", "控糖", "无糖", "减糖"]],
+    ["肠道健康", ["肠道", "消化", "akk", "菌", "后生元"]],
+    ["后生元概念", ["后生元", "灭活", "postbiotic"]],
+    ["清洁标签", ["清洁", "配料表", "clean label"]],
+    ["轻负担", ["轻", "低负担", "清爽"]],
+    ["饱腹感", ["饱腹", "代餐", "体重"]],
+    ["即饮化", ["饮料", "即饮", "水相", "beverage", "drink"]],
+    ["儿童友好", ["儿童", "孩子", "软糖", "糖果"]],
+    ["银发营养", ["银发", "老人", "老年"]],
+    ["海藻基质", ["海藻", "红藻", "鱼丸", "紫菜", "岩藻"]],
+    ["包埋保护", ["包埋", "颗粒", "爆爆珠", "释放"]],
+    ["低腥味", ["脱腥", "腥味", "低腥"]],
+  ];
+  pairs.forEach(([tag, keywords]) => {
+    if (includesAny(text, keywords)) tags.add(tag);
+  });
+  return Array.from(tags).slice(0, 6);
 }
 
-function inferProductPlan(text: string, products: AkkProduct[]): RecommendationPlan {
-  const normalized = text.toLowerCase();
-  const postbiotic = findProduct(products, "postbiotic", 0);
-  const metabolite = findProduct(products, "metabolite_blend", 1);
-  const fiber = findProduct(products, "fiber_complex", 2);
-  const tags = inferTags(normalized);
+function buildPlan(input: string, products: AkkProduct[]): ProductPlan {
+  const text = input.toLowerCase();
+  const tags = inferTags(text);
 
-  if (includesAny(normalized, ["牛奶", "酸奶", "乳", "奶", "yogurt", "milk"])) {
+  if (includesAny(text, ["巧克力", "可可", "黑巧", "白巧", "巧克力棒", "chocolate", "cocoa"])) {
+    const selected = firstAvailable(products, [
+      "akk-postbiotic-powder",
+      "akk-encapsulated-particles",
+      "bfp-polysaccharide",
+      "akk-metabolite-blend",
+    ]);
     return {
-      ids: [postbiotic.productId, fiber.productId, metabolite.productId],
-      ratios: { [postbiotic.productId]: 58, [fiber.productId]: 28, [metabolite.productId]: 14 },
-      tags: Array.from(new Set(["低糖", "肠道健康", "后生元概念", ...tags])).slice(0, 5),
-      namePrefix: "AKK 乳品",
-      reason: "识别为乳品/酸奶方向：后生元粉末承担 AKK 主卖点，纤维复配物改善质构、低糖厚度和饱腹表达，代谢物组合低比例补充风味与功能概念。",
+      name: "巧克力低糖包埋方案",
+      reason: "识别为巧克力或可可基产品。推荐以 AKK 后生元作为核心概念，配合海藻源包埋颗粒降低加工和脂相体系对标志物的影响，BFP 作为论文底物证据，代谢物组合低比例参与风味和功能线索验证。",
+      ids: selected.map((product) => product.productId),
+      ratios: Object.fromEntries(selected.map((product, index) => [product.productId, [34, 30, 22, 14][index] ?? 10])),
+      tags: Array.from(new Set(["低糖", "肠道健康", "后生元概念", "包埋保护", "轻负担", ...tags])).slice(0, 6),
     };
   }
 
-  if (includesAny(normalized, ["饮料", "即饮", "水", "beverage", "drink"])) {
+  if (includesAny(text, ["果冻", "凝胶", "软糖", "gummy", "jelly"])) {
+    const selected = firstAvailable(products, [
+      "akk-postbiotic-powder",
+      "iota-carrageenan-gel",
+      "bfp-polysaccharide",
+      "akk-encapsulated-particles",
+    ]);
     return {
-      ids: [metabolite.productId, postbiotic.productId, fiber.productId],
-      ratios: { [metabolite.productId]: 45, [postbiotic.productId]: 35, [fiber.productId]: 20 },
-      tags: Array.from(new Set(["即饮化", "轻负担", "肠道健康", ...tags])).slice(0, 5),
-      namePrefix: "AKK 即饮",
-      reason: "识别为功能饮料方向：优先提高水相适配性和清爽口感，用代谢物组合做主体，后生元粉末承接 AKK 差异化概念，纤维低比例参与口感和标签表达。",
+      name: "果冻凝胶平衡方案",
+      reason: "识别为果冻或凝胶产品。优先用 AKK 后生元承担功能表达，用 ι-卡拉胶控制凝胶结构，用红毛藻多糖提供 AKK 底物证据，必要时加入包埋颗粒提高加工稳定性。",
+      ids: selected.map((product) => product.productId),
+      ratios: Object.fromEntries(selected.map((product, index) => [product.productId, [38, 26, 24, 12][index] ?? 10])),
+      tags: Array.from(new Set(["低糖", "肠道健康", "海藻基质", ...tags])).slice(0, 6),
     };
   }
 
-  if (includesAny(normalized, ["粉", "营养", "银发", "老人", "代餐", "奶昔", "meal", "powder"])) {
+  if (includesAny(text, ["爆爆珠", "包埋", "颗粒", "释放"])) {
+    const selected = firstAvailable(products, [
+      "akk-encapsulated-particles",
+      "fucoidan-akk-popping-bead",
+      "fucoidan-substrate",
+      "akk-postbiotic-powder",
+    ]);
     return {
-      ids: [fiber.productId, postbiotic.productId, metabolite.productId],
-      ratios: { [fiber.productId]: 50, [postbiotic.productId]: 42, [metabolite.productId]: 8 },
-      tags: Array.from(new Set(["饱腹感", "肠道健康", "银发营养", ...tags])).slice(0, 5),
-      namePrefix: "AKK 营养",
-      reason: "识别为营养粉/代餐方向：纤维复配物作为结构和饱腹基础，后生元粉末强化肠道健康概念，代谢物组合低比例补充风味和功能表达。",
+      name: "包埋释放原型方案",
+      reason: "识别为包埋或爆珠产品。优先关注粒径、包埋率、泄漏率和模拟消化释放曲线，避免把展示样品误写成最终配方。",
+      ids: selected.map((product) => product.productId),
+      ratios: Object.fromEntries(selected.map((product, index) => [product.productId, [36, 28, 20, 16][index] ?? 10])),
+      tags: Array.from(new Set(["包埋保护", "肠道健康", "产品原型", ...tags])).slice(0, 6),
     };
   }
 
-  if (includesAny(normalized, ["软糖", "糖果", "果冻", "gummy", "jelly"])) {
+  if (includesAny(text, ["鱼丸", "海藻", "红藻", "脱腥", "紫菜", "腥味"])) {
+    const selected = firstAvailable(products, [
+      "red-algae-fish-ball-matrix",
+      "seaweed-fermented-fiber",
+      "porphyra-glycoprotein",
+      "bfp-polysaccharide",
+    ]);
     return {
-      ids: [postbiotic.productId, fiber.productId],
-      ratios: { [postbiotic.productId]: 62, [fiber.productId]: 38 },
-      tags: Array.from(new Set(["儿童友好", "低糖", "后生元概念", ...tags])).slice(0, 5),
-      namePrefix: "AKK 软糖",
-      reason: "识别为软糖/果冻方向：后生元粉末作为核心功能原料，纤维复配物用于支撑质构、低糖和咀嚼体验。",
+      name: "海藻食品基质方案",
+      reason: "识别为海藻食品或鱼丸基质。推荐把口感、腥味、体外消化和结肠发酵放在同一轮验证，不能只按 AKK 增殖单目标优化。",
+      ids: selected.map((product) => product.productId),
+      ratios: Object.fromEntries(selected.map((product, index) => [product.productId, [34, 30, 20, 16][index] ?? 10])),
+      tags: Array.from(new Set(["海藻基质", "低腥味", "食品基质", ...tags])).slice(0, 6),
     };
   }
 
+  if (includesAny(text, ["发酵", "培养", "厌氧", "产线", "短链脂肪酸", "amuc"])) {
+    const selected = firstAvailable(products, [
+      "bfp-polysaccharide",
+      "ubfp-polysaccharide",
+      "lambda-carrageenan-amuc",
+      "php-platycodon-polysaccharide",
+    ]);
+    return {
+      name: "AKK 培养底物筛选方案",
+      reason: "识别为培养或产线参数任务。推荐以 BFP 为核心锚点，加入 UBFP 和 λ-卡拉胶做结构改性与 Amuc-1260 方向对照，并保留 PHP 作为非海藻多糖对照。",
+      ids: selected.map((product) => product.productId),
+      ratios: Object.fromEntries(selected.map((product, index) => [product.productId, [42, 24, 20, 14][index] ?? 10])),
+      tags: Array.from(new Set(["肠道健康", "短链脂肪酸", "机制验证", ...tags])).slice(0, 6),
+    };
+  }
+
+  if (includesAny(text, ["营养粉", "粉", "银发", "老人", "代餐", "奶昔", "meal"])) {
+    const selected = firstAvailable(products, [
+      "akk-fiber-complex",
+      "akk-postbiotic-powder",
+      "bfp-polysaccharide",
+      "akk-metabolite-blend",
+    ]);
+    return {
+      name: "营养粉肠道健康方案",
+      reason: "识别为营养粉或代餐方向。纤维复配物承担粉体结构和饱腹感，AKK 后生元承担核心概念，BFP 提供底物证据，代谢物组合低比例补充风味与功能线索。",
+      ids: selected.map((product) => product.productId),
+      ratios: Object.fromEntries(selected.map((product, index) => [product.productId, [42, 30, 18, 10][index] ?? 10])),
+      tags: Array.from(new Set(["银发营养", "饱腹感", "肠道健康", ...tags])).slice(0, 6),
+    };
+  }
+
+  const selected = firstAvailable(products, [
+    "akk-postbiotic-powder",
+    "bfp-polysaccharide",
+    "akk-fiber-complex",
+    "akk-metabolite-blend",
+  ]);
   return {
-    ids: [postbiotic.productId, metabolite.productId],
-    ratios: { [postbiotic.productId]: 70, [metabolite.productId]: 30 },
-    tags: tags.length ? tags : ["肠道健康", "后生元概念"],
-    namePrefix: "AKK 商品",
-    reason: "未识别到明确品类，默认采用后生元粉末为主、代谢物组合为辅的通用 AKK 商品概念方案。",
+    name: "通用 AKK 产品探索方案",
+    reason: "未识别到强产品形态，采用后生元、BFP、纤维复配和代谢物组合的通用探索结构，适合先做首轮内部小试。",
+    ids: selected.map((product) => product.productId),
+    ratios: Object.fromEntries(selected.map((product, index) => [product.productId, [40, 26, 22, 12][index] ?? 10])),
+    tags: tags.length ? tags : ["肠道健康", "后生元概念", "内部小试"],
   };
 }
 
-function buildName(productType: string, prefix: string, tags: string[]) {
-  const core = productType.trim() || "自定义商品";
-  const tagText = tags.slice(0, 2).filter((tag) => !core.includes(tag)).join("");
-  return `${prefix}${tagText ? ` ${tagText}` : ""}${core}方案`;
-}
-
-function scoreText(score: number) {
-  if (score >= 80) return "适合推进";
-  if (score >= 65) return "可打样";
-  if (score >= 50) return "需优化";
-  return "暂缓";
+function buildProjectName(productType: string, plan: ProductPlan) {
+  const clean = productType.trim() || "自定义产品";
+  return `AKK ${clean}${plan.name}`;
 }
 
 export function FormulaDesignWorkbench({ llmStatus, products }: { llmStatus?: LlmStatus; products: AkkProduct[] }) {
   const router = useRouter();
-  const initialIds = products.slice(0, 2).map((product) => product.productId);
+  const initialPlan = buildPlan("低糖肠道健康果冻", products);
   const [activeStage, setActiveStage] = useState<StageKey>("target");
-  const [selectedIds, setSelectedIds] = useState<string[]>(initialIds);
-  const [ratios, setRatios] = useState<RatioMap>(() =>
-    initialIds.reduce<RatioMap>((acc, id, index) => {
-      acc[id] = index === 0 ? 70 : 30;
-      return acc;
-    }, {}),
-  );
-  const [customProductType, setCustomProductType] = useState("低糖肠道健康酸奶");
-  const [customDemand, setCustomDemand] = useState("面向女性白领，口感清爽，成本中等，适合早餐和轻食渠道。");
-  const [projectName, setProjectName] = useState("AKK 乳品低糖肠道健康酸奶方案");
-  const [targetTags, setTargetTags] = useState<string[]>(["低糖", "肠道健康", "后生元概念"]);
-  const [agentReason, setAgentReason] = useState("先输入目标商品，点击智能推荐配方后，系统会切换到原料配比并给出推荐比例。");
+  const [targetProduct, setTargetProduct] = useState("低糖肠道健康果冻");
+  const [customerDemand, setCustomerDemand] = useState("面向中国境内年轻女性，口感清爽，低糖，不破坏果冻凝胶体系。");
+  const [targetTags, setTargetTags] = useState<string[]>(initialPlan.tags);
+  const [selectedIds, setSelectedIds] = useState<string[]>(initialPlan.ids);
+  const [ratios, setRatios] = useState<RatioMap>(initialPlan.ratios);
+  const [projectName, setProjectName] = useState(buildProjectName("低糖肠道健康果冻", initialPlan));
+  const [agentReason, setAgentReason] = useState(initialPlan.reason);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   const selectedProducts = products.filter((product) => selectedIds.includes(product.productId));
   const normalizedRatios = normalizeRatios(selectedIds, ratios);
-  const demandText = `${customProductType} ${customDemand} ${targetTags.join(" ")}`;
 
   const liveResult = useMemo(() => {
-    const weighted = selectedProducts.reduce(
-      (acc, product) => {
-        const ratio = normalizedRatios[product.productId] || 0;
-        const profile = getIngredientProfile(product.productCategory);
-        acc.cost += (profile.costIndex * ratio) / 100;
-        acc.stability += (profile.stabilityIndex * ratio) / 100;
-        acc.risk += ((product.riskLevel === "high" ? 86 : product.riskLevel === "medium" ? 58 : 32) * ratio) / 100;
-        return acc;
-      },
-      { cost: 0, stability: 0, risk: 0 },
-    );
-    const fit = Math.min(Math.round((weighted.stability + (100 - weighted.risk) + targetTags.length * 9 + 52) / 3), 96);
+    const evidenceScore = selectedProducts.reduce((sum, product) => {
+      const ratio = normalizedRatios[product.productId] || 0;
+      const base = product.evidenceLevel === "A" ? 90 : product.evidenceLevel === "B" ? 78 : 62;
+      return sum + (base * ratio) / 100;
+    }, 0);
+    const riskScore = selectedProducts.reduce((sum, product) => {
+      const ratio = normalizedRatios[product.productId] || 0;
+      const base = product.riskLevel === "high" ? 78 : product.riskLevel === "medium" ? 54 : 28;
+      return sum + (base * ratio) / 100;
+    }, 0);
+    const roleCoverage = new Set(selectedProducts.map((product) => getProductRole(product.productCategory))).size;
+    const fit = Math.min(96, Math.round(evidenceScore * 0.55 + (100 - riskScore) * 0.25 + roleCoverage * 6 + targetTags.length * 2));
+    const readiness = Math.min(95, Math.round((fit + evidenceScore + (100 - riskScore)) / 3));
     return {
       fit,
-      cost: Math.round(weighted.cost),
-      risk: Math.round(weighted.risk),
-      stability: Math.round(weighted.stability),
-      readiness: Math.min(Math.round((fit + weighted.stability + (100 - weighted.risk)) / 3), 96),
+      evidence: Math.round(evidenceScore),
+      risk: Math.round(riskScore),
+      readiness,
+      coverage: roleCoverage,
     };
   }, [normalizedRatios, selectedProducts, targetTags.length]);
 
-  const advantages = [
-    `目标商品为“${customProductType || "自定义商品"}”，适合用本地 LLM 做需求解析和知识库匹配。`,
-    `当前卖点围绕 ${targetTags.slice(0, 4).join("、") || "AKK 概念"} 展开，可生成客户沟通版方案。`,
-    selectedProducts.some((product) => product.productCategory === "fiber_complex")
-      ? "引入纤维复配物，有利于结构、复水、饱腹感或软糖质构表达。"
-      : "以后生元和代谢物组合为主，有利于强化 AKK 差异化和功能概念。",
-  ];
-
-  function runAgentRecommendation(input?: string) {
-    const productType = input ?? customProductType;
-    const text = `${productType} ${customDemand} ${targetTags.join(" ")}`;
-    const plan = inferProductPlan(text, products);
-    const nextTags = plan.tags.length ? plan.tags : targetTags;
-    setCustomProductType(productType);
-    setTargetTags(nextTags);
+  function applyPlan(input?: string, options: { navigate?: boolean } = { navigate: true }) {
+    const nextTarget = input ? extractTargetProduct(input) : targetProduct;
+    const nextDemand = input ?? customerDemand;
+    const text = `${nextTarget} ${nextDemand}`;
+    const plan = buildPlan(text, products);
+    setTargetProduct(nextTarget);
+    if (input) {
+      setCustomerDemand(nextDemand);
+    }
+    setTargetTags(plan.tags);
     setSelectedIds(plan.ids);
     setRatios(plan.ratios);
-    setProjectName(buildName(productType, plan.namePrefix, nextTags));
-    setAgentReason(
-      `${plan.reason} 当前推荐配比：${plan.ids
-        .map((id) => `${products.find((product) => product.productId === id)?.productName ?? id} ${plan.ratios[id]}%`)
-        .join(" / ")}。`,
-    );
-    setActiveStage("formula");
+    setProjectName(buildProjectName(nextTarget, plan));
+    setAgentReason(plan.reason);
+    if (options.navigate) {
+      setActiveStage("formula");
+    }
   }
+
+  useEffect(() => {
+    if (!targetProduct.trim()) {
+      return;
+    }
+    const timer = window.setTimeout(() => {
+      applyPlan(undefined, { navigate: false });
+    }, 420);
+    return () => window.clearTimeout(timer);
+  }, [targetProduct, customerDemand, products]);
 
   function toggleProduct(product: AkkProduct) {
     setSelectedIds((current) => {
@@ -215,12 +282,12 @@ export function FormulaDesignWorkbench({ llmStatus, products }: { llmStatus?: Ll
         const next = current.filter((id) => id !== product.productId);
         return next.length ? next : current;
       }
-      setRatios((ratioMap) => ({ ...ratioMap, [product.productId]: 20 }));
+      setRatios((ratioMap) => ({ ...ratioMap, [product.productId]: 12 }));
       return [...current, product.productId];
     });
   }
 
-  function toggleTarget(tag: string) {
+  function toggleTag(tag: string) {
     setTargetTags((current) => (current.includes(tag) ? current.filter((item) => item !== tag) : [...current, tag]));
   }
 
@@ -231,20 +298,19 @@ export function FormulaDesignWorkbench({ llmStatus, products }: { llmStatus?: Ll
       const constraints = [
         ...selectedIds.map((id) => `custom_ratio:${id}:${normalizedRatios[id] || 0}`),
         `project_name:${projectName}`,
-        `custom_application:${customProductType}`,
-        `customer_demand:${customDemand}`,
-        "llm_agent_mode:local_ollama",
-        "cost_preference:balanced",
-        "clean_label_preferred:true",
+        `custom_application:${targetProduct}`,
+        `customer_demand:${customerDemand}`,
+        "llm_agent_mode:formula_workbench",
+        "research_use_only:true",
       ];
       const result = await generateFormula({
         applicationTargetId: "custom",
-        targetProperties: [...targetTags, customProductType, customDemand].filter(Boolean),
+        targetProperties: [...targetTags, targetProduct, customerDemand].filter(Boolean),
         constraints,
         preferredProductIds: selectedIds,
         excludedProductIds: [],
         maxIngredientCount: selectedIds.length,
-        notes: `custom product: ${customProductType}; demand: ${customDemand}`,
+        notes: `目标产品：${targetProduct}；客户需求：${customerDemand}`,
       });
       router.push(`/formula/results/${encodeURIComponent(result.resultId)}`);
     } catch (error) {
@@ -256,23 +322,23 @@ export function FormulaDesignWorkbench({ llmStatus, products }: { llmStatus?: Ll
 
   return (
     <div className="mx-auto max-w-7xl space-y-4">
-      <section className="rounded-2xl border border-emerald-100 bg-white p-5 shadow-sm">
+      <section className="rounded-lg border border-border bg-white p-5 shadow-sm">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <div className="flex flex-wrap gap-2">
               <Badge tone={llmStatus?.enabled && llmStatus.available ? "success" : "warning"}>
-                {llmStatus?.enabled && llmStatus.available ? "本地大模型已连接" : "规则模板模式"}
+                {llmStatus?.enabled && llmStatus.available ? "本地推理增强可用" : "规则模型可用"}
               </Badge>
-              {llmStatus ? <Badge>{llmStatus.provider} · {llmStatus.model}</Badge> : null}
-              <Badge>Research use only</Badge>
+              <Badge>内部研发实验建议</Badge>
+              <Badge>{products.length} 个产物与底物</Badge>
             </div>
-            <h1 className="mt-3 text-2xl font-semibold text-slate-950">配方设计工作流</h1>
-            <p className="mt-2 max-w-3xl text-xs leading-6 text-muted-foreground">
-              按“输入目标、推荐配比、证据风险、生成报告”的顺序推进；每一步只展示当前任务，避免把所有信息堆在同一屏。
+            <h1 className="mt-3 text-2xl font-semibold text-slate-950">AKK 产品方案生成工作台</h1>
+            <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
+              从目标产品出发，自动匹配论文底物、AKK 产物、食品基质和验证指标。每一步都可以回改，比例变化会实时更新评分。
             </p>
           </div>
           <div className="flex gap-2">
-            <Button onClick={() => runAgentRecommendation()} variant="secondary">智能推荐配方</Button>
+            <Button onClick={() => applyPlan()} variant="secondary">智能推荐组合</Button>
             <Button onClick={() => setActiveStage("submit")}>准备生成</Button>
           </div>
         </div>
@@ -280,7 +346,7 @@ export function FormulaDesignWorkbench({ llmStatus, products }: { llmStatus?: Ll
         <div className="mt-5 grid gap-2 md:grid-cols-4">
           {stages.map((stage) => (
             <button
-              className={`rounded-xl border px-3 py-3 text-left transition ${
+              className={`rounded-lg border px-3 py-3 text-left transition ${
                 activeStage === stage.key ? "border-primary bg-emerald-50 text-primary" : "border-border bg-white text-slate-600 hover:bg-slate-50"
               }`}
               key={stage.key}
@@ -288,7 +354,7 @@ export function FormulaDesignWorkbench({ llmStatus, products }: { llmStatus?: Ll
               type="button"
             >
               <div className="text-sm font-semibold">{stage.label}</div>
-              <div className="mt-1 text-[11px]">{stage.desc}</div>
+              <div className="mt-1 text-xs">{stage.desc}</div>
             </button>
           ))}
         </div>
@@ -296,39 +362,38 @@ export function FormulaDesignWorkbench({ llmStatus, products }: { llmStatus?: Ll
 
       {submitError ? (
         <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm leading-6 text-red-800">
-          方案生成失败：{submitError}。如果使用公网演示，Render 后端首次唤醒可能需要等待几十秒后重试。
+          方案生成失败：{submitError}
         </div>
       ) : null}
 
       <div className="grid gap-4 xl:grid-cols-[1fr_340px]">
-        <div className="min-w-0">
+        <main className="min-w-0">
           {activeStage === "target" ? (
             <TargetStage
-              customDemand={customDemand}
-              customProductType={customProductType}
-              onDemandChange={setCustomDemand}
-              onProductTypeChange={setCustomProductType}
-              onQuickExample={runAgentRecommendation}
-              onTargetToggle={toggleTarget}
+              customerDemand={customerDemand}
+              onDemandChange={setCustomerDemand}
+              onQuickExample={applyPlan}
+              onTagToggle={toggleTag}
+              onTargetChange={setTargetProduct}
+              targetProduct={targetProduct}
               targetTags={targetTags}
             />
           ) : null}
 
           {activeStage === "formula" ? (
             <FormulaStage
+              liveResult={liveResult}
               normalizedRatios={normalizedRatios}
               onProductToggle={toggleProduct}
               onRatioChange={(id, value) => setRatios((current) => ({ ...current, [id]: value }))}
               products={products}
               ratios={ratios}
               selectedIds={selectedIds}
-              selectedProducts={selectedProducts}
             />
           ) : null}
 
           {activeStage === "evidence" ? (
             <EvidenceStage
-              advantages={advantages}
               agentReason={agentReason}
               liveResult={liveResult}
               selectedProducts={selectedProducts}
@@ -338,26 +403,27 @@ export function FormulaDesignWorkbench({ llmStatus, products }: { llmStatus?: Ll
 
           {activeStage === "submit" ? (
             <SubmitStage
-              customDemand={customDemand}
-              customProductType={customProductType}
+              customerDemand={customerDemand}
               isSubmitting={isSubmitting}
+              normalizedRatios={normalizedRatios}
               onBack={() => setActiveStage("evidence")}
               onProjectNameChange={setProjectName}
               onSubmit={submitFormula}
               projectName={projectName}
               selectedProducts={selectedProducts}
+              targetProduct={targetProduct}
               targetTags={targetTags}
             />
           ) : null}
-        </div>
+        </main>
 
         <SummaryPanel
           activeStage={activeStage}
-          customProductType={customProductType}
           liveResult={liveResult}
           normalizedRatios={normalizedRatios}
           projectName={projectName}
           selectedProducts={selectedProducts}
+          targetProduct={targetProduct}
           targetTags={targetTags}
         />
       </div>
@@ -366,51 +432,51 @@ export function FormulaDesignWorkbench({ llmStatus, products }: { llmStatus?: Ll
 }
 
 function TargetStage({
-  customDemand,
-  customProductType,
+  customerDemand,
   onDemandChange,
-  onProductTypeChange,
   onQuickExample,
-  onTargetToggle,
+  onTagToggle,
+  onTargetChange,
+  targetProduct,
   targetTags,
 }: {
-  customDemand: string;
-  customProductType: string;
+  customerDemand: string;
   onDemandChange: (value: string) => void;
-  onProductTypeChange: (value: string) => void;
   onQuickExample: (value: string) => void;
-  onTargetToggle: (value: string) => void;
+  onTagToggle: (value: string) => void;
+  onTargetChange: (value: string) => void;
+  targetProduct: string;
   targetTags: string[];
 }) {
   return (
     <Card className="min-h-[560px]">
-      <CardTitle>目标商品输入</CardTitle>
+      <CardTitle>目标产品输入</CardTitle>
       <div className="mt-4 grid gap-4 lg:grid-cols-[1fr_0.9fr]">
         <div className="space-y-4">
           <label className="block">
-            <span className="text-xs font-medium">目标商品类型</span>
+            <span className="text-xs font-medium">我要做的终端产品</span>
             <input
               className="mt-1 w-full rounded-md border border-border px-3 py-2 text-sm"
-              onChange={(event) => onProductTypeChange(event.target.value)}
-              value={customProductType}
+              onChange={(event) => onTargetChange(event.target.value)}
+              value={targetProduct}
             />
           </label>
           <label className="block">
-            <span className="text-xs font-medium">客户需求与限制</span>
+            <span className="text-xs font-medium">客户需求、产品限制和目标效果</span>
             <textarea
               className="mt-1 min-h-36 w-full rounded-md border border-border px-3 py-2 text-sm leading-6"
               onChange={(event) => onDemandChange(event.target.value)}
-              value={customDemand}
+              value={customerDemand}
             />
           </label>
           <div>
-            <div className="text-xs font-medium">卖点标签</div>
+            <div className="text-xs font-medium">目标标签</div>
             <div className="mt-2 flex flex-wrap gap-2">
               {targetOptions.map((tag) => (
                 <button
                   className={`rounded-full border px-3 py-1.5 text-xs ${targetTags.includes(tag) ? "border-primary bg-emerald-50 text-primary" : "border-border bg-white text-slate-600"}`}
                   key={tag}
-                  onClick={() => onTargetToggle(tag)}
+                  onClick={() => onTagToggle(tag)}
                   type="button"
                 >
                   {tag}
@@ -441,30 +507,33 @@ function TargetStage({
 }
 
 function FormulaStage({
+  liveResult,
   normalizedRatios,
   onProductToggle,
   onRatioChange,
   products,
   ratios,
   selectedIds,
-  selectedProducts,
 }: {
+  liveResult: { fit: number; evidence: number; risk: number; readiness: number; coverage: number };
   normalizedRatios: RatioMap;
   onProductToggle: (product: AkkProduct) => void;
   onRatioChange: (id: string, value: number) => void;
   products: AkkProduct[];
   ratios: RatioMap;
   selectedIds: string[];
-  selectedProducts: AkkProduct[];
 }) {
+  const selectedProducts = products.filter((product) => selectedIds.includes(product.productId));
+  const grouped = selectedProducts.map((product) => getProductRole(product.productCategory));
+
   return (
     <Card className="min-h-[560px]">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <CardTitle>AKK 原料配比</CardTitle>
-        <Badge tone="success">{selectedProducts.length} 项已选</Badge>
+        <CardTitle>产物组合与比例调整</CardTitle>
+        <Badge tone="success">{selectedProducts.length} 个已选对象</Badge>
       </div>
 
-      <div className="mt-5 grid gap-5 lg:grid-cols-[220px_1fr]">
+      <div className="mt-5 grid gap-5 lg:grid-cols-[230px_1fr]">
         <div>
           <RatioDonut products={selectedProducts} ratios={normalizedRatios} />
           <div className="mt-4 space-y-2">
@@ -476,12 +545,15 @@ function FormulaStage({
               </div>
             ))}
           </div>
+          <div className="mt-4 rounded-lg border border-border bg-slate-50 p-3 text-xs leading-5 text-muted-foreground">
+            当前覆盖 {new Set(grouped).size} 类研发角色。建议至少同时覆盖功能产物和论文底物，食品基质类任务还应加入基质或原型对象。
+          </div>
+          <ScoreSurface liveResult={liveResult} products={selectedProducts} ratios={normalizedRatios} />
         </div>
 
         <div className="space-y-3">
           {products.map((product) => {
             const checked = selectedIds.includes(product.productId);
-            const profile = getIngredientProfile(product.productCategory);
             return (
               <div className={`rounded-lg border p-3 ${checked ? "border-primary bg-emerald-50" : "border-border bg-white"}`} key={product.productId}>
                 <div className="flex items-start justify-between gap-2">
@@ -489,15 +561,15 @@ function FormulaStage({
                     <input checked={checked} className="mt-1" onChange={() => onProductToggle(product)} type="checkbox" />
                     <span className="min-w-0">
                       <span className="block truncate text-sm font-semibold">{product.productName}</span>
-                      <span className="mt-1 block text-xs leading-5 text-muted-foreground">{profile.component}</span>
+                      <span className="mt-1 block text-xs leading-5 text-muted-foreground">{product.description}</span>
                     </span>
                   </label>
                   <Badge>{formatCategory(product.productCategory)}</Badge>
                 </div>
-                <div className="mt-2 grid gap-2 text-[11px] text-slate-600 md:grid-cols-3">
+                <div className="mt-2 grid gap-2 text-xs text-slate-600 md:grid-cols-3">
+                  <span className="rounded bg-white px-2 py-1">角色：{getProductRole(product.productCategory)}</span>
                   <span className="rounded bg-white px-2 py-1">风险：{formatRisk(product.riskLevel)}</span>
                   <span className="rounded bg-white px-2 py-1">证据：{product.evidenceLevel}</span>
-                  <span className="rounded bg-white px-2 py-1">建议：{profile.usageRange}</span>
                 </div>
                 {checked ? (
                   <div className="mt-3 flex items-center gap-2">
@@ -521,30 +593,29 @@ function FormulaStage({
 }
 
 function EvidenceStage({
-  advantages,
   agentReason,
   liveResult,
   selectedProducts,
   targetTags,
 }: {
-  advantages: string[];
   agentReason: string;
-  liveResult: { fit: number; cost: number; risk: number; stability: number; readiness: number };
+  liveResult: { fit: number; evidence: number; risk: number; readiness: number; coverage: number };
   selectedProducts: AkkProduct[];
   targetTags: string[];
 }) {
   const requiredChecks = Array.from(
-    new Set(selectedProducts.flatMap((product) => product.validationMetrics.map((metric) => metric.metricName)).concat(["证据与合规复核", "感官接受度"])),
-  ).slice(0, 6);
+    new Set(selectedProducts.flatMap((product) => product.validationMetrics.map((metric) => metric.metricName)).concat(["感官接受度", "证据与合规复核"])),
+  ).slice(0, 8);
+  const highRiskProducts = selectedProducts.filter((product) => product.riskLevel === "high");
 
   return (
     <Card className="min-h-[560px]">
-      <CardTitle>证据、风险与验证规划</CardTitle>
+      <CardTitle>证据、风险与模型解释</CardTitle>
       <div className="mt-4 grid gap-3 md:grid-cols-4">
-        <Metric label="匹配" value={liveResult.fit} />
-        <Metric label="准备" value={liveResult.readiness} />
-        <Metric label="成本" value={liveResult.cost} />
-        <Metric label="风险" value={liveResult.risk} />
+        <Metric label="方案匹配" value={liveResult.fit} />
+        <Metric label="证据强度" value={liveResult.evidence} />
+        <Metric label="风险压力" value={liveResult.risk} />
+        <Metric label="推进准备" value={liveResult.readiness} />
       </div>
 
       <div className="mt-5 rounded-lg border border-emerald-100 bg-emerald-50 p-4">
@@ -554,29 +625,31 @@ function EvidenceStage({
 
       <div className="mt-4 grid gap-4 lg:grid-cols-2">
         <div className="rounded-lg border border-border bg-white p-4">
-          <div className="text-sm font-semibold">产品优势摘要</div>
-          <ul className="mt-3 space-y-2 text-sm leading-6 text-slate-700">
-            {advantages.map((advantage) => (
-              <li key={advantage}>- {advantage}</li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="rounded-lg border border-border bg-white p-4">
-          <div className="text-sm font-semibold">必需验证项目</div>
+          <div className="text-sm font-semibold">必须验证项目</div>
           <div className="mt-3 flex flex-wrap gap-2">
             {requiredChecks.map((check) => (
               <Badge key={check} tone="warning">{check}</Badge>
             ))}
           </div>
-          <div className="mt-4 text-sm leading-6 text-muted-foreground">
-            生成报告时，后端会继续检索论文正文片段，并把引用材料、配比理由、风险边界和实验建议写入方案建议书。
+          <p className="mt-4 text-sm leading-6 text-muted-foreground">
+            这些指标来自已选产物档案。后续接入真实实验数据后，可以把每个指标转成模型训练标签和批次回填字段。
+          </p>
+        </div>
+
+        <div className="rounded-lg border border-border bg-white p-4">
+          <div className="text-sm font-semibold">风险提示</div>
+          <div className="mt-3 space-y-2 text-sm leading-6 text-slate-700">
+            {highRiskProducts.length ? highRiskProducts.map((product) => (
+              <div className="rounded-md bg-red-50 px-3 py-2 text-red-900" key={product.productId}>
+                {product.productName} 为高风险对象，需要先做边界验证。
+              </div>
+            )) : <div className="rounded-md bg-slate-50 px-3 py-2">当前组合没有高风险对象，但仍需完成小试验证。</div>}
           </div>
         </div>
       </div>
 
       <div className="mt-4 rounded-lg border border-border bg-slate-50 p-4">
-        <div className="text-sm font-semibold">当前卖点</div>
+        <div className="text-sm font-semibold">当前目标标签</div>
         <div className="mt-3 flex flex-wrap gap-2">
           {targetTags.map((tag) => (
             <Badge key={tag} tone="success">{tag}</Badge>
@@ -588,33 +661,35 @@ function EvidenceStage({
 }
 
 function SubmitStage({
-  customDemand,
-  customProductType,
+  customerDemand,
   isSubmitting,
+  normalizedRatios,
   onBack,
   onProjectNameChange,
   onSubmit,
   projectName,
   selectedProducts,
+  targetProduct,
   targetTags,
 }: {
-  customDemand: string;
-  customProductType: string;
+  customerDemand: string;
   isSubmitting: boolean;
+  normalizedRatios: RatioMap;
   onBack: () => void;
   onProjectNameChange: (value: string) => void;
   onSubmit: () => void;
   projectName: string;
   selectedProducts: AkkProduct[];
+  targetProduct: string;
   targetTags: string[];
 }) {
   return (
     <Card className="min-h-[560px]">
-      <CardTitle>生成商品方案建议书</CardTitle>
+      <CardTitle>生成内部研发建议书</CardTitle>
       <div className="mt-4 grid gap-4 lg:grid-cols-[1fr_0.8fr]">
         <div className="space-y-4">
           <label className="block">
-            <span className="text-xs font-medium">方案名称</span>
+            <span className="text-xs font-medium">建议书名称</span>
             <input
               className="mt-1 w-full rounded-md border border-border px-3 py-2 text-sm"
               onChange={(event) => onProjectNameChange(event.target.value)}
@@ -622,26 +697,26 @@ function SubmitStage({
             />
           </label>
           <div className="rounded-lg border border-border bg-slate-50 p-4">
-            <div className="text-sm font-semibold">生成内容</div>
+            <div className="text-sm font-semibold">即将写入建议书的内容</div>
             <div className="mt-3 grid gap-2 text-sm leading-6 text-slate-700">
-              <div>目标商品：{customProductType}</div>
-              <div>客户需求：{customDemand}</div>
-              <div>AKK 原料：{selectedProducts.map((product) => product.productName).join("、")}</div>
-              <div>卖点标签：{targetTags.join("、")}</div>
+              <div>目标产品：{targetProduct}</div>
+              <div>客户需求：{customerDemand}</div>
+              <div>研发对象：{selectedProducts.map((product) => `${product.productName} ${normalizedRatios[product.productId] || 0}%`).join("、")}</div>
+              <div>目标标签：{targetTags.join("、")}</div>
             </div>
           </div>
           <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-900">
-            输出仍为内部研发实验建议，不能作为可直接上市配方。正式推进前需要完成稳定性、感官、标志物和合规审核。
+            输出仍为内部研发实验建议，不是最终食品配方，也不是生产指令。正式推进前需要完成小试、中试、检测复核和人工审核。
           </div>
         </div>
 
         <div className="rounded-lg border border-border bg-white p-4">
-          <div className="text-sm font-semibold">将调用的能力</div>
+          <div className="text-sm font-semibold">生成过程</div>
           <div className="mt-3 space-y-2 text-sm text-slate-700">
-            <div className="rounded-md bg-slate-50 px-3 py-2">知识库正文片段检索</div>
-            <div className="rounded-md bg-slate-50 px-3 py-2">本地 Ollama RAG 补充理由</div>
-            <div className="rounded-md bg-slate-50 px-3 py-2">风险预测与验证项目组装</div>
-            <div className="rounded-md bg-slate-50 px-3 py-2">生成后自动进入方案库</div>
+            <div className="rounded-md bg-slate-50 px-3 py-2">读取已选产物档案</div>
+            <div className="rounded-md bg-slate-50 px-3 py-2">整理比例、风险和验证指标</div>
+            <div className="rounded-md bg-slate-50 px-3 py-2">检索知识库证据片段</div>
+            <div className="rounded-md bg-slate-50 px-3 py-2">生成可回填的建议书记录</div>
           </div>
           <div className="mt-5 flex gap-2">
             <Button onClick={onBack} variant="secondary">返回检查</Button>
@@ -657,19 +732,19 @@ function SubmitStage({
 
 function SummaryPanel({
   activeStage,
-  customProductType,
   liveResult,
   normalizedRatios,
   projectName,
   selectedProducts,
+  targetProduct,
   targetTags,
 }: {
   activeStage: StageKey;
-  customProductType: string;
-  liveResult: { fit: number; cost: number; risk: number; stability: number; readiness: number };
+  liveResult: { fit: number; evidence: number; risk: number; readiness: number; coverage: number };
   normalizedRatios: RatioMap;
   projectName: string;
   selectedProducts: AkkProduct[];
+  targetProduct: string;
   targetTags: string[];
 }) {
   const stageLabel = stages.find((stage) => stage.key === activeStage)?.label ?? "";
@@ -681,13 +756,13 @@ function SummaryPanel({
           <Badge>{stageLabel}</Badge>
         </div>
         <div className="mt-4 text-sm font-semibold text-slate-950">{projectName}</div>
-        <div className="mt-1 text-xs text-muted-foreground">{customProductType}</div>
+        <div className="mt-1 text-xs text-muted-foreground">{targetProduct}</div>
         <div className="mt-4 grid grid-cols-2 gap-2">
           <Metric label="匹配" value={liveResult.fit} />
           <Metric label="风险" value={liveResult.risk} />
         </div>
         <div className="mt-4">
-          <div className="text-xs font-medium">当前配比</div>
+          <div className="text-xs font-medium">当前组合</div>
           <div className="mt-2 space-y-2">
             {selectedProducts.map((product, index) => (
               <div className="flex items-center gap-2 text-xs" key={product.productId}>
@@ -701,17 +776,114 @@ function SummaryPanel({
       </Card>
 
       <Card>
-        <CardTitle>卖点标签</CardTitle>
+        <CardTitle>目标标签</CardTitle>
         <div className="mt-3 flex flex-wrap gap-2">
           {targetTags.map((tag) => (
             <Badge key={tag} tone="success">{tag}</Badge>
           ))}
         </div>
         <p className="mt-4 text-xs leading-5 text-muted-foreground">
-          当前判断：{scoreText(liveResult.readiness)}。建议先完成证据风险检查，再生成建议书。
+          当前推进准备度 {liveResult.readiness}/100。建议先检查证据风险，再生成建议书。
         </p>
       </Card>
+
+      <Card>
+        <CardTitle>适配场景</CardTitle>
+        <div className="mt-3 flex flex-wrap gap-2">
+          {Array.from(new Set(selectedProducts.flatMap((product) => product.recommendedApplications))).slice(0, 8).map((application) => (
+            <span className="rounded-md bg-muted px-2 py-1 text-xs" key={application}>{formatApplication(application)}</span>
+          ))}
+        </div>
+      </Card>
     </aside>
+  );
+}
+
+function categoryShare(products: AkkProduct[], ratios: RatioMap, categories: string[]) {
+  return products.reduce((sum, product) => {
+    if (!categories.includes(product.productCategory)) return sum;
+    return sum + (ratios[product.productId] || 0);
+  }, 0);
+}
+
+function ScoreSurface({
+  liveResult,
+  products,
+  ratios,
+}: {
+  liveResult: { fit: number; evidence: number; risk: number; readiness: number; coverage: number };
+  products: AkkProduct[];
+  ratios: RatioMap;
+}) {
+  const functionShare = categoryShare(products, ratios, ["postbiotic", "metabolite_blend", "fiber_complex"]);
+  const substrateShare = categoryShare(products, ratios, [
+    "algae_polysaccharide",
+    "modified_algae_polysaccharide",
+    "carrageenan_substrate",
+    "algae_glycoprotein",
+    "polysaccharide_control",
+  ]);
+  const protectionShare = categoryShare(products, ratios, ["encapsulation", "food_matrix", "prototype_product", "fermented_fiber"]);
+  const x = Math.min(92, Math.max(8, functionShare + protectionShare * 0.35));
+  const y = Math.min(88, Math.max(12, substrateShare + protectionShare * 0.45));
+  const bestX = Math.min(82, Math.max(38, 52 + (liveResult.evidence - 75) * 0.4));
+  const bestY = Math.min(78, Math.max(34, 48 + (liveResult.readiness - 78) * 0.35));
+  const heatX = Math.min(72, Math.max(36, bestX));
+  const heatY = Math.min(70, Math.max(30, bestY));
+  const riskWidth = Math.min(34, Math.max(12, liveResult.risk * 0.28));
+
+  return (
+    <div className="mt-4 rounded-lg bg-slate-950 p-3 text-white">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <div className="text-sm font-semibold">方案评分曲线</div>
+          <div className="mt-1 text-[11px] leading-4 text-slate-300">
+            横轴为功能对象占比，纵轴为底物与包埋支撑。比例变化会实时更新评分点位。
+          </div>
+        </div>
+        <div className="rounded-md border border-white/15 px-2 py-1 text-xs font-semibold">{liveResult.fit}/100</div>
+      </div>
+
+      <div
+        className="relative mt-3 aspect-[1.25] overflow-hidden rounded-md border border-white/10"
+        style={{
+          background: `
+            radial-gradient(circle at ${heatX}% ${100 - heatY}%, rgba(250, 204, 21, 0.92) 0 8%, rgba(45, 212, 191, 0.72) 16%, rgba(15, 118, 110, 0.5) 34%, rgba(30, 64, 175, 0.58) 62%, rgba(15, 23, 42, 0.96) 100%),
+            linear-gradient(90deg, rgba(148, 163, 184, 0.12) 1px, transparent 1px),
+            linear-gradient(0deg, rgba(148, 163, 184, 0.12) 1px, transparent 1px)
+          `,
+          backgroundSize: "100% 100%, 20% 20%, 20% 20%",
+        }}
+      >
+        <div
+          className="absolute inset-y-0 right-0 opacity-40"
+          style={{
+            width: `${riskWidth}%`,
+            background: "repeating-linear-gradient(45deg, rgba(248,113,113,0.85) 0 8px, rgba(248,113,113,0.25) 8px 16px)",
+          }}
+        />
+        <Point label="理论高分区" tone="best" x={bestX} y={bestY} />
+        <Point label="当前方案" tone="current" x={x} y={y} />
+        <div className="absolute bottom-2 left-2 rounded bg-slate-950/70 px-2 py-1 text-[10px] text-slate-200">低支撑</div>
+        <div className="absolute right-2 top-2 rounded bg-slate-950/70 px-2 py-1 text-[10px] text-slate-200">风险升高区</div>
+      </div>
+
+      <div className="mt-2 grid grid-cols-3 gap-2 text-[11px] text-slate-300">
+        <div>功能对象 {Math.round(functionShare)}%</div>
+        <div>底物证据 {Math.round(substrateShare)}%</div>
+        <div>包埋支撑 {Math.round(protectionShare)}%</div>
+      </div>
+    </div>
+  );
+}
+
+function Point({ label, tone, x, y }: { label: string; tone: "best" | "current"; x: number; y: number }) {
+  const color = tone === "best" ? "bg-yellow-300 ring-yellow-100" : "bg-emerald-300 ring-white";
+  return (
+    <div className="absolute -translate-x-1/2 -translate-y-1/2" style={{ left: `${x}%`, top: `${100 - y}%` }}>
+      <div className={`h-3.5 w-3.5 rounded-full ${color} ring-4 shadow-lg`} />
+      <div className="mt-1 whitespace-nowrap rounded bg-slate-950/75 px-1.5 py-0.5 text-[10px] text-white">{label}</div>
+    </div>
   );
 }
 
@@ -731,8 +903,8 @@ function RatioDonut({ products, ratios }: { products: AkkProduct[]; ratios: Rati
       <div className="relative h-40 w-40 rounded-full" style={{ background: gradient }}>
         <div className="absolute inset-6 rounded-full bg-white" />
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <div className="text-[11px] text-muted-foreground">配比</div>
-          <div className="text-lg font-semibold">{products.length} 项</div>
+          <div className="text-xs text-muted-foreground">配比对象</div>
+          <div className="text-lg font-semibold">{products.length} 个</div>
         </div>
       </div>
     </div>
@@ -742,7 +914,7 @@ function RatioDonut({ products, ratios }: { products: AkkProduct[]; ratios: Rati
 function Metric({ label, value }: { label: string; value: number }) {
   return (
     <div className="rounded-lg border border-border bg-white p-3">
-      <div className="text-[11px] text-muted-foreground">{label}</div>
+      <div className="text-xs text-muted-foreground">{label}</div>
       <div className="mt-1 text-lg font-semibold">{value}</div>
     </div>
   );

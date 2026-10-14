@@ -145,6 +145,18 @@ http://127.0.0.1:5001
 | `POST /doctor/review/save` | 保存医生复核、补充结节和临床上下文 |
 | `POST /agent/followup` | 生成结构化随访建议 |
 
+## MCP 与安全工作流
+
+`nexent-upgrade/` 提供模型服务、协议适配层和 MCP Server，把“候选检测 -> 候选分类”封装为 Agent 可调用工具。工作流会校验病例 ID、运行批次 ID 和候选 ID 集合；服务异常、结果缺失或跨批次混用时返回不可用状态，不生成看似可信的诊断结果。所有模型结果保持 `pending`，必须经过医生复核。
+
+```powershell
+cd nexent-upgrade
+$env:MODEL_SERVER_TOKEN = '<随机长令牌>'
+docker compose up --build
+```
+
+具体服务入口、鉴权变量和验证脚本见 `nexent-upgrade/README.md` 与各子目录说明。
+
 ## 科研边界
 
 - 当前结果可支撑“大创项目展示、工程闭环、公开数据子集验证、实验方法设计和后续论文推进”。

@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>仿真系统升级方案 — 删规则换模型</title>
+<style>
+  :root {
+    --bg: #0a0f0d;
+    --surface: #111916;
+    --surface2: #172019;
+    --border: #1e2e25;
+    --border-light: #2a3f32;
+    --text: #e8f0eb;
+    --text-dim: #8fa898;
+    --text-muted: #5a7565;
+    --accent: #4ade80;
+    --accent2: #22d3ee;
+    --accent3: #f59e0b;
+    --accent4: #f472b6;
+    --accent5: #a78bfa;
+    --accent6: #fb923c;
+    --red: #ef4444;
+    --red-dim: rgba(239,68,68,0.12);
+    --green-dim: rgba(74,222,128,0.12);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system,'SF Pro Text','Inter',system-ui,sans-serif;
+    background: var(--bg); color: var(--text);
+    line-height: 1.6; -webkit-font-smoothing: antialiased;
+  }
+  .page { max-width:1200px; margin:0 auto; padding:40px 24px 80px; }
+
+  .header { text-align:center; padding:50px 0 30px; border-bottom:1px solid var(--border); margin-bottom:48px; }
+  .header h1 { font-size:24px; font-weight:700; letter-spacing:-0.02em; }
+  .header h1 span { color:var(--red); }
+  .header h1 em { color:var(--accent); font-style:normal; }
+  .header p { color:var(--text-dim); font-size:14px; margin-top:8px; }
+
+  .section { margin-bottom:56px; scroll-margin-top:20px; }
+  .section-title {
+    font-size:18px; font-weight:700; letter-spacing:-0.01em;
+    margin-bottom:20px; padding-left:14px; border-left:3px solid var(--accent);
+    display:flex; align-items:center; gap:10px;
+  }
+  .section-title .tag {
+    font-size:10px; font-weight:700; padding:2px 8px; border-radius:4px;
+    text-transform:uppercase; letter-spacing:0.06em;
+  }
+  .tag-del { background:var(--red-dim); color:var(--red); }
+  .tag-new { background:var(--green-dim); color:var(--accent); }
+
+  /* Kill list */
+  .kill-list { display:flex; flex-direction:column; gap:8px; }
+  .kill-item {
+    background:var(--surface); border:1px solid var(--border); border-radius:10px;
+    padding:16px 20px; display:grid; grid-template-columns:40px 1fr auto; gap:12px; align-items:start;
+  }
+  .kill-item .kill-num {
+    width:28px; height:28px; border-radius:6px; background:var(--red-dim);
+    color:var(--red); font-size:12px; font-weight:700;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .kill-item .kill-body .kill-file {
+    font-family:'SF Mono','Fira Code',monospace; font-size:11px; color:var(--text-muted);
+    margin-bottom:4px;
+  }
+  .kill-item .kill-body .kill-desc { font-size:13px; color:var(--text-dim); }
+  .kill-item .kill-body .kill-code {
+    font-family:'SF Mono','Fira Code',monospace; font-size:12px;
+    color:var(--red); background:rgba(239,68,68,0.06);
+    border:1px solid rgba(239,68,68,0.12); border-radius:6px;
+    padding:8px 12px; margin-top:8px; line-height:1.6;
+    overflow-x:auto; white-space:pre;
+  }
+  .kill-item .kill-replace {
+    font-size:11px; font-weight:600; padding:4px 10px; border-radius:4px;
+    background:var(--green-dim); color:var(--accent); white-space:nowrap;
+  }
+
+  /* New architecture */
+  .arch-box {
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    padding:28px; margin-bottom:16px;
+  }
+  .arch-box h3 { font-size:15px; font-weight:600; margin-bottom:12px; color:var(--accent); }
+  .arch-box p { font-size:13px; color:var(--text-dim); line-height:1.7; margin-bottom:12px; }
+
+  .code-block {
+    font-family:'SF Mono','Fira Code',monospace; font-size:12px;
+    background:var(--surface2); border:1px solid var(--border);
+    border-radius:8px; padding:16px; line-height:1.7;
+    color:var(--text-dim); overflow-x:auto; white-space:pre;
+  }
+  .code-block .cm { color:var(--text-muted); }
+  .code-block .kw { color:var(--accent5); }
+  .code-block .fn { color:var(--accent2); }
+  .code-block .st { color:var(--accent3); }
+  .code-block .del { color:var(--red); text-decoration:line-through; opacity:0.5; }
+
+  /* Pipeline */
+  .pipeline {
+    display:flex; flex-direction:column; gap:0;
+  }
+  .pipe-stage {
+    display:grid; grid-template-columns:60px 1fr; gap:16px; align-items:start;
+    padding:16px 0; border-bottom:1px solid var(--border);
+  }
+  .pipe-stage:last-child { border-bottom:none; }
+  .pipe-num {
+    width:40px; height:40px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:16px; font-weight:700; color:#fff;
+  }
+  .pipe-num.pn1 { background:linear-gradient(135deg,#166534,#4ade80); }
+  .pipe-num.pn2 { background:linear-gradient(135deg,#0e7490,#22d3ee); }
+  .pipe-num.pn3 { background:linear-gradient(135deg,#92400e,#f59e0b); }
+  .pipe-num.pn4 { background:linear-gradient(135deg,#9d174d,#f472b6); }
+  .pipe-num.pn5 { background:linear-gradient(135deg,#5b21b6,#a78bfa); }
+  .pipe-title { font-size:14px; font-weight:600; margin-bottom:4px; }
+  .pipe-desc { font-size:12px; color:var(--text-dim); line-height:1.6; }
+
+  /* Phase table */
+  .phase-table { width:100%; border-collapse:collapse; font-size:13px; }
+  .phase-table th {
+    text-align:left; padding:10px 14px; font-size:11px; font-weight:700;
+    text-transform:uppercase; letter-spacing:0.06em; color:var(--text-muted);
+    border-bottom:1px solid var(--border-light); background:var(--surface2);
+  }
+  .phase-table td {
+    padding:10px 14px; border-bottom:1px solid var(--border); color:var(--text-dim); vertical-align:top;
+  }
+  .phase-table tr:hover td { background:rgba(74,222,128,0.03); }
+  .phase-table .mono { font-family:'SF Mono','Fira Code',monospace; font-size:12px; color:var(--accent); }
+  .phase-table .del-text { color:var(--red); text-decoration:line-through; }
+  .phase-table .new-text { color:var(--accent); font-weight:600; }
+
+  /* Toc */
+  .toc {
+    background:var(--surface); border:1px solid var(--border); border-radius:10px;
+    padding:16px 20px; margin-bottom:40px;
+  }
+  .toc-title { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--text-muted); margin-bottom:8px; }
+  .toc-links { display:flex; flex-wrap:wrap; gap:6px; }
+  .toc-links a {
+    font-size:12px; color:var(--accent); text-decoration:none; padding:3px 10px;
+    border-radius:4px; background:rgba(74,222,128,0.06); border:1px solid rgba(74,222,128,0.12);
+  }
+
+  .warn-box {
+    background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.2);
+    border-radius:8px; padding:14px 18px; margin:16px 0;
+    font-size:13px; color:var(--accent3); line-height:1.6;
+  }
+  .warn-box strong { color:var(--accent3); }
+
+  @media(max-width:768px) {
+    .kill-item { grid-template-columns:1fr; }
+    .kill-item .kill-num { display:none; }
+    .kill-item .kill-replace { margin-top:8px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="header">
+    <h1>仿真系统升级方案：<span>删规则</span>，<em>换模型</em></h1>
+    <p>22处核心规则公式 → 全部删除 → 替换为sklearn真实模型推理</p>
+  </header>
+
+  <nav class="toc">
+    <div class="toc-title">目录</div>
+    <div class="toc-links">
+      <a href="#kill-list">删除清单</a>
+      <a href="#new-simulation">新仿真引擎</a>
+      <a href="#new-optimization">新优化引擎</a>
+      <a href="#new-7stage">新7阶段管道</a>
+      <a href="#new-formula">新配方引擎</a>
+      <a href="#data-first">数据先行</a>
+      <a href="#phase-plan">分阶段计划</a>
+    </div>
+  </nav>
+
+  <!-- ═══ 1. 删除清单 ═══ -->
+  <section class="section" id="kill-list">
+    <h2 class="section-title">删除清单 <span class="tag tag-del">22处必删</span></h2>
+    <div class="kill-list">
+
+      <div class="kill-item">
+        <div class="kill-num">1</div>
+        <div class="kill-body">
+          <div class="kill-file">simulation_service.py:148-193</div>
+          <div class="kill-desc">核心评分公式：condition_effect / akk_growth / scfa / barrier / mw_fit / stability / overall</div>
+          <div class="kill-code">condition_effect = 0.52*anaerobic + 0.26*exp(...) + 0.22*exp(...)
+akk_growth = 16 + 62 * growth_factor * format_prior * dose_effect * ...
+scfa = 10 + 0.60 * akk_growth * scfa_factor + ...
+barrier = 11 + 0.35 * akk_growth * adhesion_factor + ...
+overall = 0.38*akk + 0.22*scfa + 0.18*barrier + 0.12*mw + 0.10*stab</div>
+        </div>
+        <div class="kill-replace">→ sklearn模型.predict()</div>
+      </div>
+
+      <div class="kill-item">
+        <div class="kill-num">2</div>
+        <div class="kill-body">
+          <div class="kill-file">algae_akk_knowledge.py:195-238</div>
+          <div class="kill-desc">剂量响应/底物置信度/预处理效应/分子量预测 4个公式</div>
+          <div class="kill-code">dose_response = exp(-((c-opt)^2)/(2*sigma^2))
+substrate_confidence = 84/68/52 (硬编码阈值)
+pretreatment_effect = +7/+4/-6/-4/-3 (硬编码加分)
+molecular_weight = (76+shift) - 0.058*P - 0.055*max(0,rpm-140) - 8.5</div>
+        </div>
+        <div class="kill-replace">→ sklearn模型.predict()</div>
+      </div>
+
+      <div class="kill-item">
+        <div class="kill-num">3</div>
+        <div class="kill-body">
+          <div class="kill-file">optimization_orchestrator.py:389-423</div>
+          <div class="kill-desc">3套硬编码方案 + 评分分解 + 预测区间 + 响应面 + 基线改善</div>
+          <div class="kill-code">candidate-balanced: 36.8℃, 6.82pH, 46h, 195rpm, 88.2分
+candidate-yield:    37.4℃, 6.70pH, 52h, 230rpm, 91.6分
+candidate-energy:   35.9℃, 6.95pH, 40h, 165rpm, 84.9分
+responseSurface = score - abs(dt)*1.6 - abs(dp)*8</div>
+        </div>
+        <div class="kill-replace">→ 模型网格搜索</div>
+      </div>
+
+      <div class="kill-item">
+        <div class="kill-num">4</div>
+        <div class="kill-body">
+          <div class="kill-file">optimization_orchestrator.py:557-563</div>
+          <div class="kill-desc">成本指数公式 + 多目标权重</div>
+          <div class="kill-code">cost_index = 0.35*(temp-20)/35 + 0.25*hours/168 + 0.40*rpm/600
+balanced: 0.60*yield + 0.25*stability + 0.15*(1-cost)
+energySaving: 0.55*yield + 0.45*(1-cost)</div>
+        </div>
+        <div class="kill-replace">→ 数据库配置</div>
+      </div>
+
+      <div class="kill-item">
+        <div class="kill-num">5</div>
+        <div class="kill-body">
+          <div class="kill-file">demo_models/service.py:55,62</div>
+          <div class="kill-desc">演示准入评分公式</div>
+          <div class="kill-code">data_adequacy = min(1.0, row_count/100)
+score = min(0.79, 0.35*error + 0.25*r2 + 0.20*adequacy + 0.20)</div>
+        </div>
+        <div class="kill-replace">→ 模型评估报告</div>
+      </div>
+
+      <div class="kill-item">
+        <div class="kill-num">6</div>
+        <div class="kill-body">
+          <div class="kill-file">model_evaluation/agent.py:148-161</div>
+          <div class="kill-desc">可靠性综合评分加权公式 + 准入否决阈值</div>
+          <div class="kill-code">score = 0.30*predictive + 0.15*cv + 0.15*distribution
+     + 0.15*range + 0.10*bias + 0.15*data
+否决: R2<0.5, cv_std>0.25, shift>2.5, ...</div>
+        </div>
+        <div class="kill-replace">→ 可配置权重</div>
+      </div>
+
+      <div class="kill-item">
+        <div class="kill-num">7</div>
+        <div class="kill-body">
+          <div class="kill-file">process_service.py:243-251</div>
+          <div class="kill-desc">工艺综合评分加权公式 + 响应面网格</div>
+          <div class="kill-code">feasibility = line.feasibility*0.55 + line_fit*0.45
+overall = yield*0.25 + activity*0.20 + stability*0.18
+       + cost*0.12 + feasibility*0.15 + risk*0.10
+temp_values = [34,35,36,36.5,37,37.5,38.5,39.5]</div>
+        </div>
+        <div class="kill-replace">→ sklearn模型</div>
+      </div>
+
+      <div class="kill-item">
+        <div class="kill-num">8</div>
+        <div class="kill-body">
+          <div class="kill-file">formula-design-workbench.tsx:90-203</div>
+          <div class="kill-desc">7套硬编码产品方案逻辑及配比</div>
+          <div class="kill-code">巧克力: [34, 30, 22, 14]  果冻: [38, 26, 24, 12]
+爆爆珠: [36, 28, 20, 16]  鱼丸: [34, 30, 20, 16]
+发酵: [42, 24, 20, 14]    营养粉: [42, 30, 18, 10]
+通用: [40, 26, 22, 12]</div>
+        </div>
+        <div class="kill-replace">→ 知识库检索</div>
+      </div>
+
+      <div class="kill-item">
+        <div class="kill-num">9</div>
+        <div class="kill-body">
+          <div class="kill-file">simulation_service.py:209-261</div>
+          <div class="kill-desc">推荐设置/风险阈值/置信度分级/剂量曲线采样点</div>
+          <div class="kill-code">temp: min=36.5, max=37.5  ph: min=6.6, max=7.0
+anaerobic<0.85 → 风险  concentration>3.0 → 风险
+confidence: high/medium/low 硬编码阈值
+dose_curve: [0, 0.25, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 4.0]</div>
+        </div>
+        <div class="kill-replace">→ 模型置信区间</div>
+      </div>
+
+      <div class="kill-item">
+        <div class="kill-num">10</div>
+        <div class="kill-body">
+          <div class="kill-file">optimization_orchestrator.py:226,235</div>
+          <div class="kill-desc">演示训练指标生成 + 阶段进度硬编码</div>
+          <div class="kill-code">trainingLoss=0.42/round, validationScore=0.72+round*0.025
+progressPercent = [25, 55, 82][index]</div>
+        </div>
+        <div class="kill-replace">→ 真实训练指标</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ 2. 新仿真引擎 ═══ -->
+  <section class="section" id="new-simulation">
+    <h2 class="section-title">新仿真引擎 <span class="tag tag-new">替换方案</span></h2>
+
+    <div class="arch-box">
+      <h3>核心改造：SimulationService.predict()</h3>
+      <p>删除 _predict_scores 全部规则公式，改为调用已训练的sklearn模型。没有已晋升模型时，返回"请先完成数据分析并训练模型"，而不是假装预测。</p>
+      <div class="code-block"><span class="kw">class</span> <span class="fn">SimulationService</span>:
+    <span class="kw">def</span> <span class="fn">predict</span>(self, request, experiment_id=<span class="st">None</span>):
+<span class="cm">        # ── 删除全部规则公式 ──</span>
+<span class="del">        # scores = self._predict_scores(request)  ← 删</span>
+<span class="del">        # recommended = self._recommended_settings(...)  ← 删</span>
+<span class="del">        # risks = self._risks(...)  ← 删</span>
+<span class="del">        # confidence = self._confidence(...)  ← 删</span>
+<span class="del">        # curve = self._dose_curve(...)  ← 删</span>
+
+<span class="cm">        # ── 新逻辑：必须走模型 ──</span>
+        <span class="kw">if</span> experiment_id <span class="kw">is None</span>:
+            <span class="kw">raise</span> ValueError(<span class="st">"仿真预测需要指定实验工作区"</span>)
+
+        record = self.registry.latest(experiment_id)
+        <span class="kw">if</span> record <span class="kw">is None</span> <span class="kw">or</span> record.status != <span class="st">"approved"</span>:
+            <span class="kw">raise</span> ValueError(
+                <span class="st">"没有可用的已晋升模型。请先完成数据分析流程，"</span>
+                <span class="st">"训练模型并通过人工验收。"</span>
+            )
+
+<span class="cm">        # 特征绑定：仿真参数 → 模型输入</span>
+        features = self.binding_service.bind(experiment_id, request.to_params())
+
+<span class="cm">        # 模型推理</span>
+        prediction = self.inference_service.predict(record, features)
+
+<span class="cm">        # 预测区间（来自模型评估报告）</span>
+        report = self.evaluation_service.latest_report(experiment_id)
+        interval = report.prediction_interval  <span class="cm"># 真实95%区间</span>
+
+<span class="cm">        # 外推检测</span>
+        extrapolation = self.check_extrapolation(record, features)
+
+        <span class="kw">return</span> SimulationPredictResponse(
+            predictions=prediction,
+            confidence=report.reliability_score,  <span class="cm"># 来自真实评估</span>
+            predictionInterval=interval,
+            extrapolationWarning=extrapolation,
+            modelVersion=record.modelVersion,
+            label=<span class="st">"研发实验建议"</span>,
+        )</div>
+    </div>
+
+    <div class="warn-box">
+      <strong>关键设计决策：</strong>没有模型就不能预测。这是正确的——宁可让用户知道"需要先训练模型"，也不要用假公式骗人。你们是自有产线，数据是现成的，训练模型不是问题。
+    </div>
+
+    <div class="arch-box">
+      <h3>碳源档案：从硬编码改为数据库配置</h3>
+      <p>删除 algae_akk_knowledge.py 中的 CARBON_SOURCE_PROFILES 和 PRODUCT_FORMAT_PRIORS。这些不是规则公式，是配置数据，迁移到SQLite。</p>
+      <div class="code-block"><span class="cm"># 新表：carbon_source_profiles</span>
+<span class="cm"># id | key | display_name | growth_factor | scfa_factor | ...</span>
+<span class="cm"># 1  | BFP | 红毛藻多糖BFP | 1.18 | 1.12 | ...</span>
+<span class="cm"># 2  | UBFP| 超高压改性UBFP| 1.24 | 1.16 | ...</span>
+<span class="cm"># ...</span>
+
+<span class="cm"># 新表：product_format_priors</span>
+<span class="cm"># id | key | display_name | growth | stability | cost | ...</span>
+<span class="cm"># 1  | culture-medium | AKK培养体系 | 1.06 | 0.96 | ...</span>
+<span class="cm"># ...</span>
+
+<span class="cm"># 这些数据不再参与评分计算</span>
+<span class="cm"># 仅作为：前端下拉选项来源 + 知识参考展示</span>
+<span class="cm"># 评分完全由sklearn模型决定</span></div>
+    </div>
+  </section>
+
+  <!-- ═══ 3. 新优化引擎 ═══ -->
+  <section class="section" id="new-optimization">
+    <h2 class="section-title">新优化引擎 <span class="tag tag-new">替换方案</span></h2>
+
+    <div class="arch-box">
+      <h3>核心改造：OptimizationOrchestrator._candidates()</h3>
+      <p>删除3套硬编码方案和规则评分公式。改为基于已晋升模型的参数空间搜索。</p>
+      <div class="code-block"><span class="kw">class</span> <span class="fn">OptimizationOrchestrator</span>:
+    <span class="kw">def</span> <span class="fn">_candidates</span>(self, experiment_id, strategy):
+<span class="del">        # 删除：硬编码3套方案参数</span>
+<span class="del">        # 删除：scoreBreakdown / predictionIntervals 硬编码</span>
+<span class="del">        # 删除：responseSurface = score - abs(dt)*1.6 - abs(dp)*8</span>
+<span class="del">        # 删除：baselineImprovements 硬编码</span>
+
+<span class="cm">        # ── 新逻辑：模型驱动的参数搜索 ──</span>
+        record = self.registry.latest(experiment_id)
+        binding = self.binding_service.get_binding(experiment_id)
+
+<span class="cm">        # 1. 从特征绑定获取参数范围</span>
+        ranges = binding.parameter_ranges
+<span class="cm">        # temperature: [30, 45], ph: [5.5, 8.0], ...</span>
+
+<span class="cm">        # 2. 定义搜索策略（从数据库读取权重，不硬编码）</span>
+        strategy_config = self.db.get_strategy(strategy)
+<span class="cm">        # yieldPriority:  {yield: 1.0}</span>
+<span class="cm">        # balanced:       {yield: 0.55, stability: 0.25, cost: 0.20}</span>
+<span class="cm">        # energySaving:   {yield: 0.45, cost: 0.55}</span>
+
+<span class="cm">        # 3. 网格搜索（粗筛）</span>
+        grid = self.build_grid(ranges, steps_per_dim=8)
+<span class="cm">        # 8^4 = 4096 个组合（vs 当前 3^3 = 27）</span>
+
+        candidates = []
+        <span class="kw">for</span> params <span class="kw">in</span> grid:
+            features = binding.transform(params)
+            <span class="kw">if</span> self.is_extrapolated(record, features):
+                <span class="kw">continue</span>
+            pred = self.inference.predict(record, features)
+            score = self.compute_objective(pred, strategy_config)
+            candidates.append((params, pred, score))
+
+<span class="cm">        # 4. 取Top-3</span>
+        candidates.sort(key=<span class="kw">lambda</span> c: c[2], reverse=<span class="st">True</span>)
+        top3 = candidates[:3]
+
+<span class="cm">        # 5. 对Top-3做精细搜索（局部优化）</span>
+        refined = []
+        <span class="kw">for</span> params, pred, score <span class="kw">in</span> top3:
+            local_best = self.local_search(params, record, binding, strategy_config)
+            refined.append(local_best)
+
+        <span class="kw">return</span> self.build_candidate_plans(refined, strategy)</div>
+    </div>
+
+    <div class="arch-box">
+      <h3>成本模型：从硬编码公式改为数据库配置</h3>
+      <div class="code-block"><span class="cm"># 新表：cost_parameters</span>
+<span class="cm"># id | parameter_key | unit_cost | normalization_base</span>
+<span class="cm"># 1  | temperatureC  | 0.035     | 35</span>
+<span class="cm"># 2  | cultureHours  | 0.025     | 168</span>
+<span class="cm"># 3  | stirringRpm   | 0.040     | 600</span>
+
+<span class="cm"># 新表：optimization_strategies</span>
+<span class="cm"># id | strategy_key | display_name | yield_w | stability_w | cost_w</span>
+<span class="cm"># 1  | yieldPriority| 产出优先     | 1.00    | 0.00        | 0.00</span>
+<span class="cm"># 2  | balanced     | 均衡推荐     | 0.55    | 0.25        | 0.20</span>
+<span class="cm"># 3  | energySaving | 成本优先     | 0.45    | 0.00        | 0.55</span>
+
+<span class="cm"># 权重可配置，不硬编码</span>
+<span class="cm"># 后续可以通过UI让管理员调整</span></div>
+    </div>
+  </section>
+
+  <!-- ═══ 4. 新7阶段管道 ═══ -->
+  <section class="section" id="new-7stage">
+    <h2 class="section-title">新7阶段管道 <span class="tag tag-new">自动化</span></h2>
+
+    <div class="arch-box">
+      <h3>核心改造：SimulationRunOrchestrator.advance()</h3>
+      <p>删除手动推进和硬编码状态更新。改为一次性自动执行7阶段管道，每个阶段有真实计算。</p>
+      <div class="code-block"><span class="kw">class</span> <span class="fn">SimulationRunOrchestrator</span>:
+    <span class="kw">def</span> <span class="fn">run_pipeline</span>(self, experiment_id, params):
+<span class="cm">        """一次性自动执行7阶段，不需要手动推进"""</span>
+        run = self.create(experiment_id, params)
+        <span class="kw">try</span>:
+            <span class="kw">for</span> stage <span class="kw">in</span> run.stages:
+                run = self._execute_stage(run, stage)
+                self._persist(run)
+            run.status = <span class="st">"completed"</span>
+        <span class="kw">except</span> StageFailure <span class="kw">as</span> e:
+            run.status = <span class="st">"failed"</span>
+            run.failureReason = str(e)
+        <span class="kw">return</span> run
+
+    <span class="kw">def</span> <span class="fn">_execute_stage</span>(self, run, stage):
+<span class="cm">        """每个阶段有真实计算，不是空壳"""</span>
+        <span class="kw">if</span> stage.stageId == <span class="st">"model-validation"</span>:
+            result = self._validate_model(run)
+        <span class="kw">elif</span> stage.stageId == <span class="st">"system-initialization"</span>:
+            result = self._init_system(run)
+        <span class="kw">elif</span> stage.stageId == <span class="st">"material-preparation"</span>:
+            result = self._prepare_materials(run)
+        <span class="kw">elif</span> stage.stageId == <span class="st">"core-production"</span>:
+            result = self._run_fermentation(run)
+        <span class="kw">elif</span> stage.stageId == <span class="st">"downstream-processing"</span>:
+            result = self._run_downstream(run)
+        <span class="kw">elif</span> stage.stageId == <span class="st">"product-collection"</span>:
+            result = self._collect_products(run)
+        <span class="kw">elif</span> stage.stageId == <span class="st">"result-evaluation"</span>:
+            result = self._evaluate_results(run)
+
+        stage.status = <span class="st">"completed"</span>
+        stage.outputSummary = result.summary
+        stage.modelBasis = result.evidence
+        <span class="kw">return</span> run</div>
+    </div>
+
+    <div class="arch-box">
+      <h3>7阶段真实计算内容</h3>
+      <table class="phase-table">
+        <thead><tr><th>阶段</th><th>当前（删）</th><th>升级后（新）</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>① 模型校验</td>
+            <td class="del-text">硬编码输出文本</td>
+            <td class="new-text">检查模型版本+特征范围+外推检测，输出校验报告</td>
+          </tr>
+          <tr>
+            <td>② 系统初始化</td>
+            <td class="del-text">硬编码设备快照</td>
+            <td class="new-text">从数据库加载设备能力模板，计算物料需求量</td>
+          </tr>
+          <tr>
+            <td>③ 原料准备</td>
+            <td class="del-text">硬编码输出文本</td>
+            <td class="new-text">物料衡算（碳源用量=浓度×体积），成本核算（单价×用量）</td>
+          </tr>
+          <tr>
+            <td>④ 核心发酵</td>
+            <td class="del-text">调用_predict_scores规则公式</td>
+            <td class="new-text">调用sklearn模型推理，生成过程曲线（温度/pH/OD vs 时间）</td>
+          </tr>
+          <tr>
+            <td>⑤ 下游处理</td>
+            <td class="del-text">硬编码输出文本</td>
+            <td class="new-text">收率模型（数据库配置），活性保留率计算</td>
+          </tr>
+          <tr>
+            <td>⑥ 产物收集</td>
+            <td class="del-text">硬编码输出文本</td>
+            <td class="new-text">最终产物量=发酵产物×下游收率，质量检测判定</td>
+          </tr>
+          <tr>
+            <td>⑦ 结果评估</td>
+            <td class="del-text">硬编码置信度</td>
+            <td class="new-text">聚合模型评估报告的置信度+外推风险+验证指标</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ═══ 5. 新配方引擎 ═══ -->
+  <section class="section" id="new-formula">
+    <h2 class="section-title">新配方引擎 <span class="tag tag-new">知识驱动</span></h2>
+
+    <div class="arch-box">
+      <h3>核心改造：formula-design-workbench.tsx</h3>
+      <p>删除7套硬编码产品方案逻辑。改为调用后端API，基于知识库检索+模型推理生成配方。</p>
+      <div class="code-block"><span class="cm">// 删除：buildPlan 函数（90-203行）</span>
+<span class="cm">// 删除：7套硬编码配比 [34,30,22,14] 等</span>
+<span class="cm">// 删除：inferTags 关键词映射规则</span>
+
+<span class="cm">// 新逻辑：调用后端配方生成API</span>
+<span class="kw">async function</span> <span class="fn">generateFormula</span>(request) {
+  <span class="cm">// 1. 知识检索：匹配相似配方</span>
+  <span class="kw">const</span> recipes = <span class="kw">await</span> fetch(<span class="st">'/api/knowledge/recipes/search'</span>, {
+    body: JSON.stringify({
+      productType: request.productType,
+      functions: request.targetTags,
+    })
+  });
+
+  <span class="cm">// 2. 配方生成：基于检索结果+模型推理</span>
+  <span class="kw">const</span> formula = <span class="kw">await</span> fetch(<span class="st">'/api/formula/generate'</span>, {
+    body: JSON.stringify({
+      recipeReferences: recipes.map(r => r.id),
+      constraints: request.constraints,
+    })
+  });
+
+  <span class="cm">// 3. 仿真验证：配方→产线参数→仿真预测</span>
+  <span class="kw">const</span> simulation = <span class="kw">await</span> fetch(<span class="st">'/api/simulation/predict'</span>, {
+    body: JSON.stringify(formula.productionParams)
+  });
+
+  <span class="kw">return</span> { formula, simulation };
+}</div>
+    </div>
+  </section>
+
+  <!-- ═══ 6. 数据先行 ═══ -->
+  <section class="section" id="data-first">
+    <h2 class="section-title">数据先行 <span class="tag tag-new">前提条件</span></h2>
+
+    <div class="warn-box">
+      <strong>核心前提：</strong>删掉规则公式后，系统必须先有训练好的模型才能运行。你们是自有产线，数据是现成的，但需要先完成数据准备。
+    </div>
+
+    <div class="arch-box">
+      <h3>你们需要准备的数据</h3>
+      <table class="phase-table">
+        <thead><tr><th>数据类型</th><th>来源</th><th>最少数据量</th><th>用途</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>产线运行记录</td>
+            <td>历史生产批次</td>
+            <td>≥50条完整批次</td>
+            <td>训练发酵预测模型</td>
+          </tr>
+          <tr>
+            <td>每批次参数</td>
+            <td>传感器/SCADA</td>
+            <td>温度/pH/搅拌/时长/溶氧</td>
+            <td>模型特征</td>
+          </tr>
+          <tr>
+            <td>每批次产出</td>
+            <td>质检报告</td>
+            <td>AKK增殖/SCFA/屏障指标</td>
+            <td>模型目标</td>
+          </tr>
+          <tr>
+            <td>碳源/原料信息</td>
+            <td>采购/库存系统</td>
+            <td>8种碳源档案</td>
+            <td>配置数据（迁移到DB）</td>
+          </tr>
+          <tr>
+            <td>成本数据</td>
+            <td>财务系统</td>
+            <td>原料单价+能耗单价</td>
+            <td>成本核算</td>
+          </tr>
+          <tr>
+            <td>设备能力</td>
+            <td>设备台账</td>
+            <td>罐体/加热/通气参数</td>
+            <td>仿真初始化</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="arch-box">
+      <h3>数据准备脚本</h3>
+      <div class="code-block"><span class="cm"># scripts/seed_production_data.py</span>
+<span class="cm"># 将你们的历史产线数据导入系统</span>
+
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+<span class="kw">from</span> app.repositories.sqlite_repository <span class="kw">import</span> SqliteRepository
+
+<span class="kw">def</span> <span class="fn">seed</span>(csv_path: str):
+    df = pd.read_csv(csv_path)
+
+    <span class="cm"># 必需列：</span>
+    <span class="cm"># temperature_c, ph, stirring_rpm, culture_hours,</span>
+    <span class="cm"># dissolved_oxygen_pct, carbon_source, carbon_concentration,</span>
+    <span class="cm"># akk_growth_score, scfa_score, barrier_score</span>
+
+    repo = SqliteRepository()
+
+    <span class="cm"># 1. 创建实验工作区</span>
+    experiment_id = repo.create_experiment(...)
+
+    <span class="cm"># 2. 导入数据为文件资产</span>
+    repo.save_file_asset(experiment_id, df)
+
+    <span class="cm"># 3. 自动跑完数据分析7步流水线</span>
+    <span class="cm">#    → 字段识别 → 清洗 → 特征 → 建模 → 评估 → 验收</span>
+
+    <span class="cm"># 4. 训练模型并自动晋升</span>
+    <span class="cm">#    → Ridge / RandomForest / GradientBoosting</span>
+    <span class="cm">#    → 选最佳 → 人工验收 → 晋升为正式模型</span>
+
+    <span class="kw">return</span> experiment_id
+
+<span class="cm"># 使用：</span>
+<span class="cm"># python -m scripts.seed_production_data data/our_production_batches.csv</span></div>
+    </div>
+  </section>
+
+  <!-- ═══ 7. 分阶段计划 ═══ -->
+  <section class="section" id="phase-plan">
+    <h2 class="section-title">分阶段改造计划 <span class="tag tag-new">执行路线</span></h2>
+
+    <div class="pipeline">
+      <div class="pipe-stage">
+        <div class="pipe-num pn1">1</div>
+        <div>
+          <div class="pipe-title">第一阶段：数据准备 + 碳源配置入库</div>
+          <div class="pipe-desc">
+            • 将8种碳源档案从硬编码迁移到SQLite表<br>
+            • 将4种产品格式先验迁移到SQLite表<br>
+            • 将成本参数、优化策略权重迁移到SQLite表<br>
+            • 准备历史产线数据CSV（≥50条）<br>
+            • 编写 seed_production_data.py 导入脚本
+          </div>
+        </div>
+      </div>
+      <div class="pipe-stage">
+        <div class="pipe-num pn2">2</div>
+        <div>
+          <div class="pipe-title">第二阶段：删仿真规则公式，换模型推理</div>
+          <div class="pipe-desc">
+            • 删除 simulation_service.py 的 _predict_scores 全部公式<br>
+            • 删除 algae_akk_knowledge.py 的 dose_response / substrate_confidence / pretreatment_effect / molecular_weight_prediction<br>
+            • SimulationService.predict() 改为调用 PromotedModelInferenceService<br>
+            • 没有模型时抛出明确错误，不用假数据<br>
+            • 前端仿真工作台：碳源/格式选项改为从API获取
+          </div>
+        </div>
+      </div>
+      <div class="pipe-stage">
+        <div class="pipe-num pn3">3</div>
+        <div>
+          <div class="pipe-title">第三阶段：删优化硬编码，换模型搜索</div>
+          <div class="pipe-desc">
+            • 删除 optimization_orchestrator.py 的 _candidates 硬编码3方案<br>
+            • 删除 _cost_index / _stability_index 硬编码公式<br>
+            • 删除多目标权重硬编码，改为从数据库读取<br>
+            • 新增网格搜索 + 局部优化逻辑<br>
+            • 3方案由模型搜索生成，不再硬编码
+          </div>
+        </div>
+      </div>
+      <div class="pipe-stage">
+        <div class="pipe-num pn4">4</div>
+        <div>
+          <div class="pipe-title">第四阶段：7阶段自动化 + 真实计算</div>
+          <div class="pipe-desc">
+            • 删除手动 advance() 推进机制<br>
+            • 新增 run_pipeline() 一次性自动执行<br>
+            • 每阶段添加真实计算逻辑（物料衡算/成本/收率）<br>
+            • 核心发酵阶段调用sklearn模型推理<br>
+            • 前端：删除"推进环节"按钮，改为"开始仿真"一键执行
+          </div>
+        </div>
+      </div>
+      <div class="pipe-stage">
+        <div class="pipe-num pn5">5</div>
+        <div>
+          <div class="pipe-title">第五阶段：删配方硬编码，换知识检索</div>
+          <div class="pipe-desc">
+            • 删除 formula-design-workbench.tsx 的 buildPlan 7套方案<br>
+            • 删除 inferTags 关键词映射<br>
+            • 新增配方检索API（基于知识库向量搜索）<br>
+            • 配方生成调用后端，不再前端硬编码<br>
+            • 删除 process_service.py 的硬编码评分公式
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="warn-box" style="margin-top:24px;">
+      <strong>每个阶段独立可交付。</strong>第一阶段完成后系统就能用（有真实数据+模型），后续阶段逐步替换硬编码。不需要一次性全改完。
+    </div>
+  </section>
+
+  <footer style="text-align:center; padding:40px 0 0; border-top:1px solid var(--border); margin-top:40px;">
+    <p style="font-size:12px; color:var(--text-muted);">
+      菌藻启元·仿真系统升级方案 · 删规则换模型 · 2026
+    </p>
+  </footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,33 @@
+const {chromium}=require('C:/Users/LSY/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+const {pathToFileURL}=require('node:url');
+const path=require('node:path');
+const assert=require('node:assert/strict');
+(async()=>{
+  const browser=await chromium.launch({headless:true,channel:'msedge'});
+  const page=await browser.newPage({viewport:{width:1440,height:1000},deviceScaleFactor:1});
+  const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  await page.goto(pathToFileURL(path.resolve('房间设计.html')).href);
+  await page.waitForFunction(()=>document.querySelector('#canvas').width>0);
+  await page.screenshot({path:'房间草模预览.png',fullPage:true});
+  for(const name of ['top','front','side','3d']){await page.locator('[data-view="'+name+'"]').click();assert.ok(await page.locator('[data-view="'+name+'"]').evaluate(e=>e.classList.contains('active')));await page.locator('#canvas').screenshot({path:({'top':'俯视图.png','front':'正视图.png','side':'侧视图.png','3d':'三维草模.png'})[name]});}
+  await page.locator('[data-view="top"]').click();
+  await page.screenshot({path:'房间俯视图预览.png',fullPage:true});
+  await page.locator('#f-x').fill('1');await page.locator('#f-y').fill('1');
+  assert.match(await page.locator('#warning').innerText(),/卫生间/);
+  await page.locator('#f-x').fill('1.25');await page.locator('#f-y').fill('4.55');
+  await page.locator('#f-angle').fill('90');
+  const saved=page.waitForEvent('download');await page.locator('#save').click();const dl=await saved;await dl.saveAs('验证布局.json');
+  await page.locator('#f-angle').fill('0');
+  await page.locator('#file').setInputFiles('验证布局.json');await page.waitForFunction(()=>document.querySelector('#f-angle').value==='90');
+  await page.locator('summary').click();await page.locator('#op-windowW').fill('8');await page.locator('#op-windowW').blur();assert.match(await page.locator('#openingError').innerText(),/超出/);
+  await page.locator('#op-windowW').fill('3.5');await page.locator('#op-windowW').blur();
+  await page.locator('#f-x').fill('2');assert.equal(await page.evaluate(()=>state.objects.find(o=>o.id==='bed').x),2);
+  await page.locator('#add').click();assert.equal(await page.locator('#object option').count(),8);
+  await page.locator('#visible').uncheck();assert.equal(await page.evaluate(()=>state.objects.at(-1).visible),false);
+  await page.locator('[data-view="3d"]').click();const before=await page.locator('#canvas').evaluate(c=>c.toDataURL());const rect=await page.locator('#canvas').boundingBox();await page.mouse.move(rect.x+rect.width/2,rect.y+rect.height/2);await page.mouse.down();await page.mouse.move(rect.x+rect.width/2+80,rect.y+rect.height/2+20,{steps:10});await page.mouse.up();assert.notEqual(await page.locator('#canvas').evaluate(c=>c.toDataURL()),before);
+  const exported=page.waitForEvent('download');await page.locator('#png').click();const png=await exported;await png.saveAs('验证导出.png');
+  await page.locator('#walls').check();await page.locator('[data-view="3d"]').click();
+  await page.setViewportSize({width:390,height:844});await page.screenshot({path:'移动端预览.png',fullPage:true});
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+  assert.deepEqual(errors,[]);await browser.close();console.log('PASS: browser render, four views, furniture edit, collision warning, JSON round-trip, invalid opening rejection, PNG export, mobile width, no page errors');
+})().catch(e=>{console.error(e);process.exit(1);});
