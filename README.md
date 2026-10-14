@@ -99,13 +99,6 @@ mindmap
 | AI 辅助开发 | GPT、DeepSeek、Grok、Codex |
 | 自动化与算法 | Playwright、BeautifulSoup、C++17、CMake、图算法、路径规划 |
 
-## 证书与语言
-
-- 英语四级：540
-- 英语六级：430
-- 华为人工智能 AI Developer HCIP
-- 语言能力：中文、英文
-
 ## 仓库安全说明
 
 公开仓库已排除以下内容：
